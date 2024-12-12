@@ -1,0 +1,21 @@
+{
+  "name": "code-fire",
+  "workspaces": [
+    "packages/*"
+  ],
+  "version": "1.0.0",
+  "description": "code-fire",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "code-fire"
+  },
+  "keywords": [
+    "code-fire"
+  ],
+  "author": "",
+  "license": "ISC"
+}
