@@ -6,10 +6,11 @@ export default class Celular {
             throw new Error('número de celular inválido.')
         }
 
-        if (!Celular.isValido(valor)) {
+        this.numero = valor.replace(/\D/g, "")
+
+        if (!Celular.isValido(this.numero)) {
             throw new Error('número de celular inválido.')
         }
-        this.numero = valor;
     }
 
     static isValido(valor: string): boolean {

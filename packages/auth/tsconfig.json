@@ -17,6 +17,7 @@
     "build",
     "node_modules",
     "apoio",
-    "coverage"
+    "coverage",
+    "tmp"
   ]
 }

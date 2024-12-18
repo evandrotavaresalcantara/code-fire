@@ -1,6 +1,13 @@
 import SenhaForte from "../../../src/model/obj-valor/SenhaForte"
+//Requesitos da Senha:
+// Ter no mínimo 8 caracteres.
+// Conter pelo menos uma letra minúscula.
+// Conter pelo menos uma letra maiúscula.
+// Conter pelo menos um número.
+// Conter pelo menos um dos seguintes caracteres especiais: ! @ # $ % ^ & *
 
-const errPadrao = "senha fraca."
+
+const errPadrao = "senha inválida."
 
 test("Deve lançar erro com senha vazia", () => {
     expect(() => new SenhaForte("")).toThrow(errPadrao)

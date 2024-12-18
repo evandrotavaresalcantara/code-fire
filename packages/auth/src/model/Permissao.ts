@@ -7,17 +7,29 @@ export interface PermissaoProps extends EntidadeProps {
 }
 
 export default class Permissao extends Entidade<Permissao, PermissaoProps> {
-    readonly nome: Nome
-    readonly descricao: Nome
-    readonly dataCriacao: Date
-    readonly ativo: boolean
+    private nome: Nome
+    private descricao: Nome
+    private dataCriacao: Date
+    private _ativo: boolean
 
     constructor(props: PermissaoProps) {
         super(props)
 
         this.nome = new Nome({ valor: props.nome, minimo: 3, maximo: 20 })
         this.descricao = new Nome({ valor: props.descricao, minimo: 3, maximo: 50 })
-        this.ativo = props.ativo ?? true
+        this._ativo = props.ativo ?? true
         this.dataCriacao = new Date()
+    }
+
+    getNomePermissao() {
+        return this.nome.nome
+    }
+
+    getDescricaoPermissao() {
+        return this.descricao.nome
+    }
+
+    get ativo(){
+        return this._ativo
     }
 }

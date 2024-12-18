@@ -2,20 +2,24 @@ import SenhaHash from "../../../src/model/obj-valor/SenhaHash"
 
 const errPadrao = "hash inválido."
 
-test("Deve lançar erro com senha apenas com números", () => {
+test("Deve gerar erro ao tentar criar hash apenas com números", () => {
     expect(() => new SenhaHash("1234567890")).toThrow(errPadrao)
 })
 
-test("Deve lançar erro com senha apenas com letras", () => {
+test("Deve gerar erro ao tentar criar hash apenas com letras", () => {
     expect(() => new SenhaHash("AbCdEfGhIj")).toThrow(errPadrao)
 })
 
-test("Deve lançar erro com senha apenas com caracteres especiais", () => {
+test("Deve gerar erro ao tentar criar hash apenas com caracteres especiais", () => {
     expect(() => new SenhaHash("!@#$%¨&*()_+")).toThrow(errPadrao)
 })
 
-test("Deve lançar erro com senha com menos de 8 caracteres", () => {
+test("Deve gerar erro ao tentar criar um hash com menos de 8 caracteres", () => {
     expect(() => new SenhaHash("%S3nh4%")).toThrow(errPadrao)
+})
+
+test("Deve gerar erro ao tentar criar um hash com valor undefined", () => {
+    expect(() => new SenhaHash(undefined)).toThrow(errPadrao)
 })
 
 test("Deve criar senha com hash válido", () => {

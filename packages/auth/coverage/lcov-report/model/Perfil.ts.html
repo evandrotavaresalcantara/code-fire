@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>23/23</span>
+                <span class='fraction'>24/24</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>20/20</span>
+                <span class='fraction'>21/21</span>
             </div>
         
             
@@ -118,7 +118,11 @@
 <a name='L53'></a><a href='#L53'>53</a>
 <a name='L54'></a><a href='#L54'>54</a>
 <a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -127,18 +131,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -152,6 +156,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -183,9 +191,9 @@ export interface PerfilProps extends EntidadeProps {
 }
 &nbsp;
 export default class Perfil extends Entidade&lt;Perfil, PerfilProps&gt; {
-    readonly nome: Nome
-    readonly descricao: Nome
-    readonly ativo: boolean
+    private nome: Nome
+    private descricao: Nome
+    private ativo: boolean
     private permissoes: Permissao[]
 &nbsp;
     constructor(props: PerfilProps) {
@@ -196,7 +204,7 @@ export default class Perfil extends Entidade&lt;Perfil, PerfilProps&gt; {
         this.ativo = props.ativo ? props.ativo : true
     }
 &nbsp;
-    getObterPermissoes(): Permissao[] {
+    get obterPermissoes(): Permissao[] {
         return this.permissoes
     }
 &nbsp;
@@ -209,11 +217,15 @@ export default class Perfil extends Entidade&lt;Perfil, PerfilProps&gt; {
         return permissoesQtd &gt; 0 ? true: false
     }
 &nbsp;
+    getNomePerfil() {
+        return this.nome.nome
+    }
+&nbsp;
     adiconarPermissao(permissao: Permissao) {
         if (!this.existePermissao) {
             this.permissoes.push(permissao)
         } else {
-            const isExiste = this.permissoes.find(p =&gt; p.id.valor === permissao.id.valor)
+            const isExiste = this.permissoes.find(p =&gt; p.getUuid() === permissao.getUuid())
             if (!isExiste) {
                 this.permissoes.push(permissao)
             }
@@ -222,9 +234,9 @@ export default class Perfil extends Entidade&lt;Perfil, PerfilProps&gt; {
 &nbsp;
     removerPermissao(permisao: Permissao) {
         if(this.existePermissao){
-            const isExiste = this.permissoes.find(p =&gt; p.id.valor === permisao.id.valor)
+            const isExiste = this.permissoes.find(p =&gt; p.getUuid() === permisao.getUuid())
             if(isExiste){
-                this.permissoes = this.permissoes.filter(p =&gt; p.id.valor !== permisao.id.valor)
+                this.permissoes = this.permissoes.filter(p =&gt; p.getUuid() !== permisao.getUuid())
             }
         }
     }
@@ -235,7 +247,7 @@ export default class Perfil extends Entidade&lt;Perfil, PerfilProps&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-12-12T00:09:41.642Z
+                at 2024-12-14T14:49:39.392Z
             </div>
         <script src="../prettify.js"></script>
         <script>

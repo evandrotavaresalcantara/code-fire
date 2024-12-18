@@ -26,12 +26,14 @@ test('Deve criar um usuário com perfil vazio', () => {
 test('Deve criar um usuário somente com nome e email', () => {
     const novoUsuario = new Usuario(usuarioMinimo)
     expect(novoUsuario.qtdPerfils).toBe(0)
+    expect(novoUsuario.getUrlPerfil()).toBeFalsy()
+    expect(novoUsuario.getCelular()).toBeFalsy()
 })
 
 test('Deve exibir um usuário sem  o hash da senha', () => {
     const novoUsuario = new Usuario(usuario)
     const novoUsuarioSemSenha = novoUsuario.semSenha()
-    expect(novoUsuarioSemSenha.senha).toBe(null)
+    expect(novoUsuarioSemSenha.getSenha()).toBe(null)
 })
 
 test('Deve adicionar um perfil ao usuário', () => {

@@ -1,12 +1,12 @@
 import Nome, { NomeProps } from "./Nome";
 
-export interface NomeCompostoProps extends NomeProps {
+export interface NomePessoaProps extends NomeProps {
 }
 
-export default class NomeComposto extends Nome {
+export default class NomePessoa extends Nome {
     private existeSobrenome: boolean
 
-    constructor(props: NomeCompostoProps) {
+    constructor(props: NomePessoaProps) {
         if (!props.valor) {
             throw new Error('valor inválido.')
         }
@@ -28,19 +28,19 @@ export default class NomeComposto extends Nome {
         return this.existeSobrenome
     }
     get primeiroNome() {
-        return this.valor.split(" ")[0]
+        return this.nome.split(" ")[0]
     }
 
     get sobrenomes(): string[] {
         if(this.existeSobrenome){
-            return this.valor.split(" ").slice(1)
+            return this.nome.split(" ").slice(1)
         }else{
             return []
         }
     }
 
     get ultimoSobrenome(): string {
-        return this.valor.split(" ").pop() as string
+        return this.nome.split(" ").pop() as string
     }
 
     get iniciais(): string {

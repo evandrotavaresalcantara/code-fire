@@ -3,8 +3,8 @@ export interface NomeProps {
     minimo?: number
     maximo?: number
 }
-export default class valor {
-    protected valor: string
+export default class Nome {
+    private valor: string
     private minimo: number
     private maximo: number
 

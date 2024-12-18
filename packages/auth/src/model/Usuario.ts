@@ -15,16 +15,16 @@ export interface UsuarioProps extends EntidadeProps {
 }
 
 export default class Usuario extends Entidade<Usuario, UsuarioProps> {
-    readonly nomeCompleto: NomeComposto
-    readonly email: Email
-    readonly senha: SenhaHash | null
-    readonly dataCriacao: Date
-    readonly celular: Celular | null
-    readonly urlPerfil: Url | null
-    readonly ativo: boolean
-    readonly tokenRecuperacaoSenha: string
-    readonly dataExpiracaoToken: Date | null
-    readonly autenticaçãoDoisFatores: boolean
+    private nomeCompleto: NomeComposto
+    private email: Email
+    private senha: SenhaHash | null
+    private dataCriacao: Date
+    private celular: Celular | null
+    private urlPerfil: Url | null
+    private ativo: boolean
+    private tokenRecuperacaoSenha: string
+    private dataExpiracaoToken: Date | null
+    private autenticaçãoDoisFatores: boolean
     private perfis: Perfil[]
 
     constructor(props: UsuarioProps) {
@@ -33,13 +33,32 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
         this.email = new Email(props.email)
         this.senha = props.senha ? new SenhaHash(props.senha) : null
         this.celular = props.celular ? new Celular(props.celular) : null
-        this.urlPerfil = props.celular ? new Url(props.urlPerfil) : null
+        this.urlPerfil = props.urlPerfil ? new Url(props.urlPerfil) : null
         this.dataCriacao = new Date()
-        this.ativo = props.ativo ? props.ativo : true
+        this.ativo = props.ativo ?? true
         this.tokenRecuperacaoSenha = props.tokenRecuperacaoSenha ?? ""
         this.dataExpiracaoToken = props.dataExpiracaoToken ? props.dataExpiracaoToken : null
         this.autenticaçãoDoisFatores = props.autenticaçãoDoisFatores ? props.autenticaçãoDoisFatores : false
         this.perfis = []
+    }
+
+    getNome(){
+        return this.nomeCompleto.nome
+    }
+    getUrlPerfil(){
+        return this.urlPerfil?.valor
+    }
+
+    getSenha(){
+        return this.senha?.valor ? this.senha.valor : null
+    }
+
+    getEmail(){
+        return this.email.valor
+    }
+
+    getCelular(){
+        return this.celular?.semMascara
     }
 
     get obterPerfis(): Perfil[] {
@@ -48,6 +67,10 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
 
     get qtdPerfils(): number {
         return this.perfis.length
+    }
+
+    get habilitado(){
+        return this.ativo
     }
 
     get existePerfil(): boolean {
@@ -59,7 +82,7 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
         if (!this.existePerfil) {
             this.perfis.push(perfil)
         } else {
-            const isExiste = this.perfis.find(p => p.id.valor === perfil.id.valor)
+            const isExiste = this.perfis.find(p => p.getUuid() === perfil.getUuid())
             if (!isExiste) {
                 this.perfis.push(perfil)
             }
@@ -68,9 +91,9 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
 
     removerPerfil(perfil: Perfil) {
         if (this.existePerfil) {
-            const isExiste = this.perfis.find(p => p.id.valor === perfil.id.valor)
+            const isExiste = this.perfis.find(p => p.getUuid() === perfil.getUuid())
             if (isExiste) {
-                this.perfis = this.perfis.filter(p => p.id.valor !== perfil.id.valor)
+                this.perfis = this.perfis.filter(p => p.getUuid() !== perfil.getUuid())
             }
         }
     }

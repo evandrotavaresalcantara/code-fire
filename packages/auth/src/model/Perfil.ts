@@ -8,9 +8,9 @@ export interface PerfilProps extends EntidadeProps {
 }
 
 export default class Perfil extends Entidade<Perfil, PerfilProps> {
-    readonly nome: Nome
-    readonly descricao: Nome
-    readonly ativo: boolean
+    private nome: Nome
+    private descricao: Nome
+    private ativo: boolean
     private permissoes: Permissao[]
 
     constructor(props: PerfilProps) {
@@ -21,7 +21,7 @@ export default class Perfil extends Entidade<Perfil, PerfilProps> {
         this.ativo = props.ativo ? props.ativo : true
     }
 
-    getObterPermissoes(): Permissao[] {
+    get obterPermissoes(): Permissao[] {
         return this.permissoes
     }
 
@@ -34,11 +34,18 @@ export default class Perfil extends Entidade<Perfil, PerfilProps> {
         return permissoesQtd > 0 ? true: false
     }
 
-    adiconarPermissao(permissao: Permissao) {
+    getNomePerfil() {
+        return this.nome.nome
+    }
+    getDescricaoPerfil() {
+        return this.descricao.nome
+    }
+
+    adicionarPermissao(permissao: Permissao) {
         if (!this.existePermissao) {
             this.permissoes.push(permissao)
         } else {
-            const isExiste = this.permissoes.find(p => p.id.valor === permissao.id.valor)
+            const isExiste = this.permissoes.find(p => p.getUuid() === permissao.getUuid())
             if (!isExiste) {
                 this.permissoes.push(permissao)
             }
@@ -47,9 +54,9 @@ export default class Perfil extends Entidade<Perfil, PerfilProps> {
 
     removerPermissao(permisao: Permissao) {
         if(this.existePermissao){
-            const isExiste = this.permissoes.find(p => p.id.valor === permisao.id.valor)
+            const isExiste = this.permissoes.find(p => p.getUuid() === permisao.getUuid())
             if(isExiste){
-                this.permissoes = this.permissoes.filter(p => p.id.valor !== permisao.id.valor)
+                this.permissoes = this.permissoes.filter(p => p.getUuid() !== permisao.getUuid())
             }
         }
     }

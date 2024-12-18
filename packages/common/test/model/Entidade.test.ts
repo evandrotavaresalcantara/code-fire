@@ -6,15 +6,18 @@ interface EntidadeTesteProps extends EntidadeProps {
 }
 
 class EntidadeTeste extends Entidade<EntidadeTeste, EntidadeTesteProps> {
-    readonly nome: string
+    private valor: string
     constructor(props: EntidadeTesteProps) {
         super(props);
-        this.nome = props.nome ?? ''
+        this.valor = props.nome ?? ''
+    }
+    get nome(){
+        return this.valor
     }
 }
 
 test('Deve calcular igualdade para verdadeiro quando as entidades tem o mesmo id', () => {
-    const id1 = Id.novo.valor
+    const id1 = Id.novo.uuid
     const entidadeTeste1 = new EntidadeTeste({id: id1, nome: "EntidadeTeste1"})
     const entidadeTeste2 = new EntidadeTeste({id: id1, nome: "EntidadeTeste2"})
     expect(entidadeTeste1.igual(entidadeTeste2)).toBeTruthy()
@@ -29,7 +32,6 @@ test('Deve calcular igualdade para falso quando as entidade tem ids diferentes',
 test('Deve clonar uma entidade', ()=> {
     const entidadeTeste1 = new EntidadeTeste({nome: "EntidadeTeste1"})
     const clone = entidadeTeste1.clonar({})
-
-    expect(clone.id.valor).toBe(entidadeTeste1.id.valor)
-    expect(clone.props.nome).toBe(entidadeTeste1.props.nome)
+    expect(clone.getUuid()).toBe(entidadeTeste1.getUuid())
+    expect(clone.nome).toBe(entidadeTeste1.nome)
 })

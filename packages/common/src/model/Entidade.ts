@@ -5,12 +5,12 @@ export interface EntidadeProps {
 }
 
 export default abstract class Entidade<Tipo, Props extends EntidadeProps >{
-    readonly id: Id
-    readonly props: Props
+    private id: Id
+    private props: Props
 
     constructor(props: Props ){
         this.id = new Id(props.id)
-        this.props = {...props, id: this.id.valor }
+        this.props = {...props, id: this.id.uuid }
     }
 
     igual(entidade:Entidade<Tipo, Props> ): boolean{
@@ -25,5 +25,9 @@ export default abstract class Entidade<Tipo, Props extends EntidadeProps >{
         const propsClonada = {...this.props, ...novasProps }
         return new(this.constructor as {new(props: Props):Tipo})(propsClonada)
     }
-}
+
+    getUuid(){
+        return this.id.uuid
+    }
+ }
 
