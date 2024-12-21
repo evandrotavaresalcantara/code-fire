@@ -7,11 +7,11 @@ export class AuthTokenJWTAsymmetricAdapter implements AuthToken {
   private currentDir = path.dirname(__filename);
   private readonly publicKey = readFileSync(
     path.join(this.currentDir, "public.pem"),
-    "utf-8"
+    "utf-8",
   );
   private readonly privateKey = readFileSync(
     path.join(this.currentDir, "private.pem"),
-    "utf-8"
+    "utf-8",
   );
 
   decode(token: string): string | object | null {
@@ -25,6 +25,7 @@ export class AuthTokenJWTAsymmetricAdapter implements AuthToken {
       });
       return true;
     } catch (error) {
+      console.error(error);
       return false;
     }
   }

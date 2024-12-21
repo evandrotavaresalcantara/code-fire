@@ -7,7 +7,10 @@ interface Entrada {
   senha?: string;
 }
 
-type Output = { tokenId: string; token: string };
+interface Output {
+  tokenId: string;
+  token: string;
+}
 
 export default class LoginUsuario implements CasoDeUso<Entrada, Output> {
   constructor(
