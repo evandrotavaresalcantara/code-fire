@@ -1,7 +1,9 @@
 {
-  "name": "auth",
+  "name": "@packages/auth",
   "version": "1.0.0",
   "description": "code-fire-auth",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "npm run clean && tsc -p tsconfig.build.json",
     "clean": "rm -rf dist coverage",
