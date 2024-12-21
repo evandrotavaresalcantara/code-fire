@@ -21,6 +21,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.10.1",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
@@ -29,6 +30,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "common": "1.0.0"
+    "common": "1.0.0",
+    "jsonwebtoken": "^9.0.2"
   }
 }
