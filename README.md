@@ -2,7 +2,7 @@
 
 ## INSTALAÇÃO/USO MODO DEV
 
-- Instalar docker e docker compose no sistema operacional.
+- Instalar docker e docker compose, no sistema operacional.
 
 - copiar arquivo de exemplo env-example.env para .env da API e configurar principalmente o DATABASE_URL com o seguinte comando:
   `cp apps/api/env-example.env apps/api/.env`
