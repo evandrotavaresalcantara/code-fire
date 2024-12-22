@@ -2,12 +2,7 @@
   "name": "@packages/auth",
   "version": "1.0.0",
   "description": "code-fire-auth",
-<<<<<<< HEAD
   "main": "./src/index.ts",
-=======
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
->>>>>>> dev
   "scripts": {
     "build": "npm run rm -rf dist && tsc -p tsconfig.build.json",
     "clean": "rm -rf dist coverage",
@@ -45,10 +40,7 @@
     "@types/jsonwebtoken": "^9.0.7",
     "bcrypt": "^5.1.1",
     "common": "1.0.0",
-<<<<<<< HEAD
     "dotenv": "^16.4.7",
-=======
->>>>>>> dev
     "jsonwebtoken": "^9.0.2"
   }
 }
