@@ -6,9 +6,9 @@ import RepositorioUsuarioMock from "../../mock/RepositorioUsuarioMock";
 
 const senhaErrada = "CodeFire";
 const senha1 = "CodeFire!1";
-const senha2 = "CodeFire!2";
+// const senha2 = "CodeFire!2";
 const hash1 = "$2b$10$TUI.yyDk3K5N38xy3grJ0eNFUf8Kk827oUfREU.t7sIXpB8VRBfUm";
-const hash2 = "$2b$10$yxPNAEZibEGvZ0czM9tYA.UKYDx5dm/w1iNQFi6c2RXo8Pw6bCDES";
+// const hash2 = "$2b$10$yxPNAEZibEGvZ0czM9tYA.UKYDx5dm/w1iNQFi6c2RXo8Pw6bCDES";
 
 test("Deve fazer o login e retornar tokens válido", async () => {
   const usuario = {

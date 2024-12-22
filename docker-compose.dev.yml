@@ -5,19 +5,14 @@ services:
       LC_ALL: C.UTF-8
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: app
+    ports:
+      - "5434:5432"
     volumes:
       - ./apps/api/src/adapters/database/SQL/01_criar_tbl_permissao.sql:/docker-entrypoint-initdb.d/01_criar_tbl_permissao.sql
       - ./apps/api/src/adapters/database/SQL/02_criar_tbl_perfil.sql:/docker-entrypoint-initdb.d/02_criar_tbl_perfil.sql
       - ./apps/api/src/adapters/database/SQL/03_criar_tbl_usuario.sql:/docker-entrypoint-initdb.d/03_criar_tbl_usuario.sql
-    networks:
-      - pg_net
-
-  rabbitmq:
-    image: rabbitmq:3-management
-    ports:
-      - 5672:5672
-      - 15672:15672
-
-networks:
-  pg_net:
-  netBackend:
+  # rabbitmq:
+  #   image: rabbitmq:3-management
+  #   ports:
+  #     - 5672:5672
+  #     - 15672:15672

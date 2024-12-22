@@ -19,6 +19,7 @@ export interface UsuarioProps extends EntidadeProps {
   dataExpiracaoToken?: Date | null;
   tokenRecuperacaoSenha?: string | null;
   autenticaçãoDoisFatores?: boolean;
+  dataCriacao?: Date;
 }
 
 export default class Usuario extends Entidade<Usuario, UsuarioProps> {
@@ -41,7 +42,9 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
     this.senha = props.senha ? new SenhaHash(props.senha) : null;
     this.celular = props.celular ? new Celular(props.celular) : null;
     this.urlPerfil = props.urlPerfil ? new Url(props.urlPerfil) : null;
-    this.dataCriacao = new Date();
+    this.dataCriacao = props.dataCriacao
+      ? new Date(props.dataCriacao)
+      : new Date();
     this.ativo = props.ativo ?? true;
     this.tokenRecuperacaoSenha = props.tokenRecuperacaoSenha ?? "";
     this.dataExpiracaoToken = props.dataExpiracaoToken
@@ -135,5 +138,9 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
 
   getDataExpiracaoToken() {
     return this.dataExpiracaoToken;
+  }
+
+  getDataCriacao() {
+    return this.dataCriacao;
   }
 }
