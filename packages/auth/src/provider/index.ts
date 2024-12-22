@@ -1,9 +1,6 @@
-import RepositorioPermissao from "./RepositorioPermissao"
-import RepositorioPerfil from "./RepositorioPerfil"
-import RepositorioUsuario from "./RepositorioUsuario"
+import RepositorioPerfil from "./RepositorioPerfil";
+import RepositorioPermissao from "./RepositorioPermissao";
+import RepositorioUsuario from "./RepositorioUsuario";
+export * from "./AuthToken";
 
-export type { 
-    RepositorioPermissao,
-    RepositorioPerfil, 
-    RepositorioUsuario,
-}
+export type { RepositorioPerfil, RepositorioPermissao, RepositorioUsuario };

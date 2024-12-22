@@ -1,13 +1,22 @@
 {
-  "name": "auth",
+  "name": "@packages/auth",
   "version": "1.0.0",
   "description": "code-fire-auth",
+<<<<<<< HEAD
   "main": "./src/index.ts",
+=======
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+>>>>>>> dev
   "scripts": {
+    "build": "npm run rm -rf dist && tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist coverage",
+    "lint": "eslint .",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "test": "jest",
     "test:watch": "jest --watchAll --collectCoverage",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "test:openCoverage": "open coverage/lcov-report/index.html"
   },
   "repository": {
     "type": "git",
@@ -20,18 +29,26 @@
   "license": "ISC",
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@eslint/js": "^9.14.0",
+    "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.10.1",
+    "eslint-config-prettier": "^9.1.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.14.0"
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.7",
     "bcrypt": "^5.1.1",
     "common": "1.0.0",
+<<<<<<< HEAD
     "dotenv": "^16.4.7",
+=======
+>>>>>>> dev
     "jsonwebtoken": "^9.0.2"
   }
 }
