@@ -1,18 +1,21 @@
 import { CasoDeUso, Email } from "common";
 import { RepositorioUsuario } from "../../provider";
 import ProvedorCriptografia from "../../provider/ProvedorCriptografia";
-import { Usuario } from "../../model";
+import Token from "../../model/TokenJwt";
+import TokenJwt from "../../model/TokenJwt";
 
 interface Entrada {
     email?: string
     senha?: string
 }
-export default class LoginUsuario implements CasoDeUso<Entrada, Usuario> {
+type Saida = string
+
+export default class LoginUsuario implements CasoDeUso<Entrada, Saida> {
     constructor(
         private repo: RepositorioUsuario,
         private provedorCriptografia: ProvedorCriptografia
     ) { }
-    async executar(entrada: Entrada): Promise<Usuario> {
+    async executar(entrada: Entrada): Promise<Saida> {
         const email = new Email(entrada.email)
         const usuario = await this.repo.obterPorEmail(email.valor)
 
@@ -30,6 +33,13 @@ export default class LoginUsuario implements CasoDeUso<Entrada, Usuario> {
 
         if (!verificarSenha) throw new Error('email ou senha inválida.')
 
-        return usuario.semSenha()
+        const usuarioSemSenha = usuario.semSenha()
+        const token = TokenJwt.gerarToken({
+            id: usuarioSemSenha.getUuid(),
+            nome: usuarioSemSenha.getNome(),
+            email: usuarioSemSenha.getEmail(),
+            perfil: usuarioSemSenha.obterPerfis
+        })
+        return token
     }
 }

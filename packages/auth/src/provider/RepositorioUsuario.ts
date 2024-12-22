@@ -1,4 +1,3 @@
-import { Email, Id } from "common";
 import Usuario from "../model/Usuario";
 
 export default interface RepositorioUsuario {

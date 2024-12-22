@@ -5,12 +5,14 @@ export interface PerfilProps extends EntidadeProps {
     nome?: string
     descricao?: string
     ativo?: boolean
+    dataCriacao?: Date
 }
 
 export default class Perfil extends Entidade<Perfil, PerfilProps> {
     private nome: Nome
     private descricao: Nome
-    private ativo: boolean
+    private _ativo: boolean
+    private dataCriacao: Date
     private permissoes: Permissao[]
 
     constructor(props: PerfilProps) {
@@ -18,7 +20,12 @@ export default class Perfil extends Entidade<Perfil, PerfilProps> {
         this.nome = new Nome({ valor: props.nome, minimo: 3, maximo: 20 })
         this.descricao = new Nome({ valor: props.descricao, minimo: 3, maximo: 50 })
         this.permissoes = []
-        this.ativo = props.ativo ? props.ativo : true
+        this._ativo = props.ativo ? props.ativo : true
+        this.dataCriacao = new Date()
+    }
+
+    get ativo(): boolean {
+        return this._ativo
     }
 
     get obterPermissoes(): Permissao[] {
@@ -37,6 +44,11 @@ export default class Perfil extends Entidade<Perfil, PerfilProps> {
     getNomePerfil() {
         return this.nome.nome
     }
+
+    getDataCriacao() {
+        return this.dataCriacao
+    }
+
     getDescricaoPerfil() {
         return this.descricao.nome
     }

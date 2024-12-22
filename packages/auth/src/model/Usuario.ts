@@ -12,6 +12,7 @@ export interface UsuarioProps extends EntidadeProps {
     dataExpiracaoToken?: Date | null
     tokenRecuperacaoSenha?: string | null
     autenticaçãoDoisFatores?: boolean
+    dataCriacao?: Date
 }
 
 export default class Usuario extends Entidade<Usuario, UsuarioProps> {
@@ -22,9 +23,9 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
     private celular: Celular | null
     private urlPerfil: Url | null
     private ativo: boolean
-    private tokenRecuperacaoSenha: string
+    private _tokenRecuperacaoSenha: string
     private dataExpiracaoToken: Date | null
-    private autenticaçãoDoisFatores: boolean
+    private _autenticacaoDoisFatores: boolean
     private perfis: Perfil[]
 
     constructor(props: UsuarioProps) {
@@ -34,13 +35,38 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
         this.senha = props.senha ? new SenhaHash(props.senha) : null
         this.celular = props.celular ? new Celular(props.celular) : null
         this.urlPerfil = props.urlPerfil ? new Url(props.urlPerfil) : null
-        this.dataCriacao = new Date()
-        this.ativo = props.ativo ?? true
-        this.tokenRecuperacaoSenha = props.tokenRecuperacaoSenha ?? ""
+        this.dataCriacao = props.dataCriacao ? new Date(props.dataCriacao) : new Date()
+        this.ativo = props.ativo ? props.ativo : true
+        this._tokenRecuperacaoSenha = props.tokenRecuperacaoSenha ?? ""
         this.dataExpiracaoToken = props.dataExpiracaoToken ? props.dataExpiracaoToken : null
-        this.autenticaçãoDoisFatores = props.autenticaçãoDoisFatores ? props.autenticaçãoDoisFatores : false
+        this._autenticacaoDoisFatores = props.autenticaçãoDoisFatores ? props.autenticaçãoDoisFatores : false
         this.perfis = []
     }
+    get tokenRecuperacaoSenha():string{
+        return this._tokenRecuperacaoSenha
+    }
+
+    get obterPerfis(): Perfil[] {
+        return this.perfis
+    }
+
+    get qtdPerfils(): number {
+        return this.perfis.length
+    }
+
+    get habilitado(){
+        return this.ativo
+    }
+
+    get autenticacaoDoisFatores():boolean{
+        return this._autenticacaoDoisFatores
+    }
+
+    get existePerfil(): boolean {
+        const qtdPerfils = this.qtdPerfils
+        return qtdPerfils > 0 ? true : false
+    }
+
 
     getNome(){
         return this.nomeCompleto.nome
@@ -61,21 +87,12 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
         return this.celular?.semMascara
     }
 
-    get obterPerfis(): Perfil[] {
-        return this.perfis
+    getDataExpiracaoToken(){
+        return this.dataExpiracaoToken
     }
 
-    get qtdPerfils(): number {
-        return this.perfis.length
-    }
-
-    get habilitado(){
-        return this.ativo
-    }
-
-    get existePerfil(): boolean {
-        const qtdPerfils = this.qtdPerfils
-        return qtdPerfils > 0 ? true : false
+    getDataCriacao(){
+        return this.dataCriacao
     }
 
     adiconarPerfil(perfil: Perfil) {

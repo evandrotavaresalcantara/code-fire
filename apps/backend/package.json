@@ -1,0 +1,39 @@
+{
+  "name": "backend-codefire",
+  "version": "1.0.0",
+  "description": "backend-codefire",
+  "main": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/src/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "test": "jest",
+    "test:watch": "jest --watchAll --collectCoverage",
+    "test:coverage": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "backend-codefire"
+  },
+  "keywords": [
+    "#codefire"
+  ],
+  "author": "codefire",
+  "license": "ISC",
+  "dependencies": {
+    "auth": "1.0.0",
+    "common": "1.0.0",
+    "@prisma/client": "^6.1.0",
+    "@types/node": "^22.10.2",
+    "express": "^4.21.2",
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "prisma": "^6.1.0",
+    "ts-jest": "^29.2.5",
+    "ts-node-dev": "^2.0.0"
+  }
+}

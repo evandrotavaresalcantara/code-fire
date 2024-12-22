@@ -4,6 +4,8 @@ export interface PermissaoProps extends EntidadeProps {
     nome?: string
     descricao?: string
     ativo?: boolean
+    dataCriacao?: Date
+
 }
 
 export default class Permissao extends Entidade<Permissao, PermissaoProps> {
@@ -25,11 +27,15 @@ export default class Permissao extends Entidade<Permissao, PermissaoProps> {
         return this.nome.nome
     }
 
+    getDataCriacao() {
+        return this.dataCriacao
+    }
+
     getDescricaoPermissao() {
         return this.descricao.nome
     }
 
-    get ativo(){
+    get ativo() {
         return this._ativo
     }
 }
