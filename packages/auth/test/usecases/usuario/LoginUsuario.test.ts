@@ -1,8 +1,17 @@
+<<<<<<< HEAD
 import { AuthTokenJWTAsymmetricAdapter } from "@/adapter";
 import { Usuario } from "../../../src";
 import LoginUsuario from "../../../src/usecases/usuario/LoginUsuario";
 import ProvedorCriptografiaMock from "../../mock/ProvedorCriptografiaMock";
 import RepositorioUsuarioMock from "../../mock/RepositorioUsuarioMock";
+=======
+import { TokenFlags } from "typescript"
+import { Usuario } from "../../../src"
+import LoginUsuario from "../../../src/usecases/usuario/LoginUsuario"
+import ProvedorCriptografiaMock from "../../mock/ProvedorCriptografiaMock"
+import RepositorioUsuarioMock from "../../mock/RepositorioUsuarioMock"
+import TokenJwt from "../../../src/model/TokenJwt"
+>>>>>>> 68943cb8d146d82f03f3dd3dfdd971b0f7203a75
 
 const senhaErrada = "CodeFire";
 const senha1 = "CodeFire!1";
@@ -37,6 +46,26 @@ test("Deve fazer o login e retornar tokens válido", async () => {
   // expect(usuarioLogado.getSenha()).toBeNull();
 });
 
+<<<<<<< HEAD
+=======
+test("Deve fazer o login e retornar um token", async () => {
+    const usuario = {
+        nomeCompleto: "Fire Dev",
+        email: "ususariofire1@dev.io",
+        celular: "81986598745",
+        senha: hash1
+    }
+    const novoUsuario = new Usuario(usuario)
+    const casoDeUso = new LoginUsuario(
+        new RepositorioUsuarioMock([novoUsuario]),
+        new ProvedorCriptografiaMock(),
+    )
+    const token = await casoDeUso.executar({ email: usuario.email, senha: senha1 })
+    expect(token).not.toBe("")
+    expect(typeof token).toBe("string")
+})
+
+>>>>>>> 68943cb8d146d82f03f3dd3dfdd971b0f7203a75
 test("Deve gerar um erro ao tentar fazer o login com email errado.", async () => {
   const casoDeUso = new LoginUsuario(
     new RepositorioUsuarioMock(),

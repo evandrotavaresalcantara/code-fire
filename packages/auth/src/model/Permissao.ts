@@ -1,10 +1,18 @@
 import { Entidade, EntidadeProps, Nome } from "common";
 
 export interface PermissaoProps extends EntidadeProps {
+<<<<<<< HEAD
   nome?: string;
   descricao?: string;
   ativo?: boolean;
   dataCriacao?: Date;
+=======
+    nome?: string
+    descricao?: string
+    ativo?: boolean
+    dataCriacao?: Date
+
+>>>>>>> 68943cb8d146d82f03f3dd3dfdd971b0f7203a75
 }
 
 export default class Permissao extends Entidade<Permissao, PermissaoProps> {
@@ -32,6 +40,7 @@ export default class Permissao extends Entidade<Permissao, PermissaoProps> {
     return this.nome.nome;
   }
 
+<<<<<<< HEAD
   getDescricaoPermissao() {
     return this.descricao.nome;
   }
@@ -44,3 +53,17 @@ export default class Permissao extends Entidade<Permissao, PermissaoProps> {
     return this._ativo;
   }
 }
+=======
+    getDataCriacao() {
+        return this.dataCriacao
+    }
+
+    getDescricaoPermissao() {
+        return this.descricao.nome
+    }
+
+    get ativo() {
+        return this._ativo
+    }
+}
+>>>>>>> 68943cb8d146d82f03f3dd3dfdd971b0f7203a75
