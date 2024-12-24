@@ -3,6 +3,8 @@ import { z } from "zod";
 
 const MSG_API = "API_PORT deve ser um número entre 1000 a 9999";
 const MSG_AMQP_PORT = "AMQP_PORT deve ser um número entre 1000 a 9999";
+const MSG_EMAIL_HOST_PORT =
+  "EMAIL_HOST_PORT deve ser um número entre 22 a 9999";
 const MSG_BASE_URL = "BASE_URL dever ser uma string de URL";
 const MSG_DATABASE_URL =
   "DATABASE_URL dever ser uma string de conexão 'postgres://user:pass@localhost:5432/dbname'";
@@ -45,11 +47,12 @@ const envSchema = z.object({
   EMAIL_HOST_PORT: z
     .string()
     .regex(/^\d+$/, {
-      message: MSG_AMQP_PORT,
+      message: MSG_EMAIL_HOST_PORT,
     })
     .min(2)
     .max(4)
-    .default("587"),
+    .default("587")
+    .transform((value) => parseInt(value, 10)),
   EMAIL_HOST_SECURE_SSL: z
     .string()
     .transform((value) => value === "true")

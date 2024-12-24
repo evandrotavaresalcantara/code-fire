@@ -4,6 +4,7 @@ export interface ServidorEmail {
     para: string,
     assunto: string,
     corpo: string,
-    isHtml: boolean
-  ): void;
+    isHtml?: boolean,
+    isTest?: boolean
+  ): Promise<void>;
 }
