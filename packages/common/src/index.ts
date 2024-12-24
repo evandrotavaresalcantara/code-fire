@@ -8,7 +8,6 @@ import CasoDeUso from "./usecase/CasoDeUso";
 import CasoDeUsoComUsuario from "./usecase/CasoDeUsoComUsuario";
 import CasoDeUsoExecutarCom from "./usecase/CasoDeUsoExecutarComo";
 export { default as Nome } from "./model/Nome";
-export * from "./provider";
 
 export type {
   CasoDeUso,

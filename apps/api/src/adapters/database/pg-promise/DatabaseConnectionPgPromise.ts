@@ -1,5 +1,5 @@
-import { ENV } from "@/config";
 import pgp, { IDatabase } from "pg-promise";
+import { ENV } from "../../../config";
 import { DatabaseConnection } from "../providers";
 
 export class PgPromiseAdapter implements DatabaseConnection {

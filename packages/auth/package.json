@@ -38,6 +38,8 @@
     "typescript-eslint": "^8.14.0"
   },
   "dependencies": {
+    "@packages/queue": "*",
+    "@packages/email": "*",
     "bcrypt": "^5.1.1",
     "common": "1.0.0",
     "jsonwebtoken": "^9.0.2"

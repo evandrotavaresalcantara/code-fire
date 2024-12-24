@@ -1,4 +1,5 @@
-import { CasoDeUso, ServidorEmail } from "common";
+import { CasoDeUso } from "common";
+import { ServidorEmail } from "..";
 
 interface Input {
   de: string;
@@ -19,7 +20,7 @@ export class EnviarEmail implements CasoDeUso<Input, void> {
       entrada.assunto,
       entrada.corpo,
       entrada.isHtml,
-      entrada.isTest,
+      entrada.isTest
     );
   }
 }

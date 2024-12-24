@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS usuario (
   ativo BOOLEAN DEFAULT TRUE NOT NULL,
   refresh_token CHAR(1172),
   data_expiracao_refresh_token TIMESTAMPTZ,
+  recuperar_senha_token UUID,
+  data_expiraca_recuperar_senha_token TIMESTAMPTZ,
   dois_fatores BOOLEAN DEFAULT FALSE NOT NULL,
   telefone VARCHAR(11),
   imagem_perfil VARCHAR(250)

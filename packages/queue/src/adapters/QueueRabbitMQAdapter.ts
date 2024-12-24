@@ -1,5 +1,5 @@
 import amqp, { Channel, Connection, Message } from "amqplib";
-import { Queue } from "common";
+import { Queue } from "../provider";
 
 export class RabbitMQAdapter implements Queue {
   private static instance: RabbitMQAdapter; // Propriedade Singleton para a instância única
@@ -12,7 +12,7 @@ export class RabbitMQAdapter implements Queue {
     amqpUser?: string,
     amqpPassword?: string,
     amqpHost?: string,
-    amqpPort?: string,
+    amqpPort?: string
   ) {
     this.url = `amqp://${amqpUser ?? "admin"}:${amqpPassword ?? "123"}@${
       amqpHost ?? "localhost"
@@ -24,14 +24,14 @@ export class RabbitMQAdapter implements Queue {
     amqpUser?: string,
     amqpPassword?: string,
     amqpHost?: string,
-    amqpPort?: string,
+    amqpPort?: string
   ): RabbitMQAdapter {
     if (!RabbitMQAdapter.instance) {
       RabbitMQAdapter.instance = new RabbitMQAdapter(
         amqpUser,
         amqpPassword,
         amqpHost,
-        amqpPort,
+        amqpPort
       );
     }
     return RabbitMQAdapter.instance;
@@ -61,7 +61,7 @@ export class RabbitMQAdapter implements Queue {
 
   async publish<TypeData>(
     queueNames: string | string[],
-    data: TypeData,
+    data: TypeData
   ): Promise<void> {
     await this.connect();
     const queues = Array.isArray(queueNames) ? queueNames : [queueNames];
@@ -71,16 +71,16 @@ export class RabbitMQAdapter implements Queue {
           await this.channel?.assertQueue(queueName, { durable: true });
           this.channel?.sendToQueue(
             queueName,
-            Buffer.from(JSON.stringify(data)),
+            Buffer.from(JSON.stringify(data))
           );
-        }),
+        })
       );
     }
   }
 
   async consume<TypeInput>(
     queueName: string,
-    callback: (input: TypeInput) => Promise<void> | void,
+    callback: (input: TypeInput) => Promise<void> | void
   ): Promise<void> {
     await this.connect();
     if (this.channel) {
@@ -94,7 +94,7 @@ export class RabbitMQAdapter implements Queue {
           } catch (error) {
             console.error(
               "Erro no Consumer ao processar mensagem:",
-              error instanceof Error ? error.message : error,
+              error instanceof Error ? error.message : error
             );
             this.channel?.nack(msg, false, true); // Ou false para descartar a mensagem
           }

@@ -1,10 +1,10 @@
-import { EnviarEmail } from "@/services";
 import { QueuesAuth } from "@packages/auth/src";
-import { Queue, ServidorEmail } from "common";
+import { EnviarEmail, ServidorEmail } from "@packages/email/src";
+import { Queue } from "@packages/queue/src";
 
 export async function enviarEmailSenhaEsquecida(
   queue: Queue,
-  servidorEmail: ServidorEmail,
+  servidorEmail: ServidorEmail
 ) {
   const enviarEmail = new EnviarEmail(servidorEmail);
   await queue.consume<{

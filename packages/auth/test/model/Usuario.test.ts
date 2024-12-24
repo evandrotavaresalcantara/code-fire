@@ -1,6 +1,14 @@
 import Perfil from "../../src/model/Perfil";
 import Usuario from "../../src/model/Usuario";
 
+beforeEach(() => {
+  jest.useFakeTimers();
+});
+
+afterEach(() => {
+  jest.useRealTimers();
+});
+
 const usuario = {
   nomeCompleto: "Maria Jullieta",
   email: "maria@dev.io",
@@ -8,8 +16,8 @@ const usuario = {
   celular: "81985698585",
   urlPerfil: "https://meuperfil.online/maria.png",
   ativo: true,
-  dataExpiracaoToken: new Date(),
-  tokenRecuperacaoSenha: "meuToken",
+  dataExpiracaoTokenRefreshToken: new Date(),
+  tokenRefreshToken: "meuToken",
   autenticaçãoDoisFatores: true,
 };
 
@@ -99,17 +107,61 @@ test("Deve tentar remove uma permissão que não existe no usuario", () => {
   expect(novoUsuario.obterPerfis).toContain(novoPerfil1);
 });
 
-test("Deve alterar apenas tokenRecuperacaoSenha", () => {
+test("Deve alterar apenas tokenRefreshToken, por não ser login", () => {
   const novoUsuario = new Usuario(usuarioMinimo);
-  novoUsuario.setTokenRecuperacaoSenha("abc123");
-  expect(novoUsuario.getTokenRecuperacaoSenha()).toBe("abc123");
-  expect(novoUsuario.getDataExpiracaoToken()).toBeNull();
+  novoUsuario.setTokenReFreshToken("abc123");
+  expect(novoUsuario.getTokenReFreshToken()).toBe("abc123");
+  expect(novoUsuario.getDataExpiracaoTokenFreshToken()).toBeUndefined();
 });
 
-test("Deve alterar tokenRecuperacaoSenha e a Data para + 30 dias", () => {
+test("Deve alterar tokenRefreshToken e a Data para + 30 dias por ser login", () => {
   const novoUsuario = new Usuario(usuarioMinimo);
-  novoUsuario.setTokenRecuperacaoSenha("abc123", true);
-  console.log(novoUsuario.getDataExpiracaoToken());
-  expect(novoUsuario.getTokenRecuperacaoSenha()).toBe("abc123");
-  expect(novoUsuario.getDataExpiracaoToken()).toBeDefined();
+  novoUsuario.setTokenReFreshToken("abc123", true);
+  // console.log(novoUsuario.getDataExpiracaoTokenFreshToken());
+  expect(novoUsuario.getTokenReFreshToken()).toBe("abc123");
+  expect(novoUsuario.getDataExpiracaoTokenFreshToken()).toBeDefined();
+});
+
+test("Deve criar um token de redefinição de senha", () => {
+  const novoUsuario = new Usuario(usuarioMinimo);
+  const token = novoUsuario.setRecuperacaoSenha();
+  expect(token).toBeDefined();
+  expect(novoUsuario.getTokenRecuperacaoSenha()).toStrictEqual(token);
+  expect(novoUsuario.getDataExpiracaoRecuperacaoSenha()).toBeDefined();
+  expect(
+    novoUsuario.getDataExpiracaoRecuperacaoSenha()?.getTime(),
+  ).toBeGreaterThan(new Date().getTime());
+});
+
+test("Deve ao tentar criar um token de redefinição de senha dentro do prazo devolver token ja existente", () => {
+  const novoUsuario = new Usuario(usuarioMinimo);
+  const token1 = novoUsuario.setRecuperacaoSenha();
+  const data1 = novoUsuario.getDataExpiracaoRecuperacaoSenha();
+  const token2 = novoUsuario.setRecuperacaoSenha();
+  const data2 = novoUsuario.getDataExpiracaoRecuperacaoSenha();
+  expect(token1).toStrictEqual(token2);
+  expect(data1).toStrictEqual(data2);
+});
+
+test("Deve criar um token de redefinição de senha após do prazo token anterior ter expirado", () => {
+  const novoUsuario = new Usuario(usuarioMinimo);
+  const token1 = novoUsuario.setRecuperacaoSenha();
+  const data1 = novoUsuario.getDataExpiracaoRecuperacaoSenha();
+  jest.advanceTimersByTime(61 * 60 * 1000); // Avança 1 hora e 1 minuto
+  const token2 = novoUsuario.setRecuperacaoSenha();
+  const data2 = novoUsuario.getDataExpiracaoRecuperacaoSenha();
+  expect(token1).toBeDefined();
+  expect(token2).toBeDefined();
+  expect(token1 === token2).toBeFalsy();
+  expect(data1).toBeDefined();
+  expect(data2).toBeDefined();
+  expect(data1 === data2).toBeFalsy();
+});
+
+test("Deve remover token e data expiracao de redefinição de senha", () => {
+  const novoUsuario = new Usuario(usuarioMinimo);
+  novoUsuario.setRecuperacaoSenha();
+  novoUsuario.cleanRecuperacaoSenha();
+  expect(novoUsuario.getTokenRecuperacaoSenha()).toBeUndefined();
+  expect(novoUsuario.getDataExpiracaoRecuperacaoSenha()).toBeUndefined();
 });

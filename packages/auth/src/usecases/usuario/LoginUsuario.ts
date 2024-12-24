@@ -38,7 +38,7 @@ export default class LoginUsuario implements CasoDeUso<Entrada, Output> {
     const tokenId = this.authToken.create(payloadId, "15m");
     const payloadRefresh = { id: tokenId };
     const token = this.authToken.create(payloadRefresh, "30d");
-    usuario.setTokenRecuperacaoSenha(token, true);
+    usuario.setTokenReFreshToken(token, true);
     await this.repo.editarUsuario(usuario);
     return { tokenId, token };
   }

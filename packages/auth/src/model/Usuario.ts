@@ -6,6 +6,7 @@ import {
   NomeComposto,
   Url,
 } from "common";
+import { randomUUID } from "crypto";
 import SenhaHash from "./obj-valor/SenhaHash";
 import Perfil from "./Perfil";
 
@@ -16,8 +17,10 @@ export interface UsuarioProps extends EntidadeProps {
   celular?: string;
   urlPerfil?: string;
   ativo?: boolean;
-  dataExpiracaoToken?: Date | null;
-  tokenRecuperacaoSenha?: string | null;
+  tokenRecuperacaoSenha?: string;
+  dataExpiracaoTokenRecuperacaoSenha?: Date;
+  tokenRefreshToken?: string;
+  dataExpiracaoTokenRefreshToken?: Date;
   autenticaçãoDoisFatores?: boolean;
   dataCriacao?: Date;
 }
@@ -30,8 +33,10 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
   private celular: Celular | null;
   private urlPerfil: Url | null;
   private ativo: boolean;
-  private tokenRecuperacaoSenha: string;
-  private dataExpiracaoToken: Date | null;
+  private tokenRecuperacaoSenha?: string;
+  private dataExpiracaoTokenRecuperacaoSenha?: Date;
+  private tokenRefreshToken?: string;
+  private dataExpiracaoTokenRefreshToken?: Date;
   private autenticaçãoDoisFatores: boolean;
   private perfis: Perfil[];
 
@@ -46,10 +51,11 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
       ? new Date(props.dataCriacao)
       : new Date();
     this.ativo = props.ativo ?? true;
-    this.tokenRecuperacaoSenha = props.tokenRecuperacaoSenha ?? "";
-    this.dataExpiracaoToken = props.dataExpiracaoToken
-      ? props.dataExpiracaoToken
-      : null;
+    this.tokenRecuperacaoSenha = props.tokenRecuperacaoSenha;
+    this.dataExpiracaoTokenRecuperacaoSenha =
+      props.dataExpiracaoTokenRecuperacaoSenha;
+    this.tokenRefreshToken = props.tokenRefreshToken;
+    this.dataExpiracaoTokenRefreshToken = props.dataExpiracaoTokenRefreshToken;
     this.autenticaçãoDoisFatores = props.autenticaçãoDoisFatores
       ? props.autenticaçãoDoisFatores
       : false;
@@ -73,6 +79,10 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
 
   getCelular() {
     return this.celular?.semMascara;
+  }
+
+  getAutenticaçãoDoisFatores() {
+    return this.autenticaçãoDoisFatores;
   }
 
   get obterPerfis(): Perfil[] {
@@ -122,22 +132,62 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
     return this.clonar({ senha: undefined });
   }
 
-  setTokenRecuperacaoSenha(refreshToken: string, login = false) {
-    this.tokenRecuperacaoSenha = refreshToken;
+  setTokenReFreshToken(refreshToken: string, login = false) {
+    this.tokenRefreshToken = refreshToken;
     if (login) {
       const hoje = new Date();
-      this.dataExpiracaoToken = new Date(
+      this.dataExpiracaoTokenRefreshToken = new Date(
         hoje.getTime() + 30 * 24 * 60 * 60 * 1000,
       );
     }
+  }
+
+  getTokenReFreshToken() {
+    return this.tokenRefreshToken;
+  }
+
+  getDataExpiracaoTokenFreshToken() {
+    return this.dataExpiracaoTokenRefreshToken;
   }
 
   getTokenRecuperacaoSenha() {
     return this.tokenRecuperacaoSenha;
   }
 
-  getDataExpiracaoToken() {
-    return this.dataExpiracaoToken;
+  getDataExpiracaoRecuperacaoSenha() {
+    return this.dataExpiracaoTokenRecuperacaoSenha;
+  }
+
+  setRecuperacaoSenha(): string {
+    if (
+      !this.tokenRecuperacaoSenha &&
+      !this.dataExpiracaoTokenRecuperacaoSenha
+    ) {
+      this.genRecuperacaoSenha();
+    } else if (this.dataExpiracaoTokenRecuperacaoSenha) {
+      if (
+        this.dataExpiracaoTokenRecuperacaoSenha.getTime() < new Date().getTime()
+      ) {
+        this.genRecuperacaoSenha();
+      }
+    }
+    if (!this.tokenRecuperacaoSenha) {
+      this.genRecuperacaoSenha();
+    }
+    return this.tokenRecuperacaoSenha as string;
+  }
+
+  private genRecuperacaoSenha() {
+    const hoje = new Date();
+    this.tokenRecuperacaoSenha = randomUUID();
+    this.dataExpiracaoTokenRecuperacaoSenha = new Date(
+      hoje.getTime() + 60 * 60 * 1000,
+    );
+  }
+
+  cleanRecuperacaoSenha() {
+    this.tokenRecuperacaoSenha = undefined;
+    this.dataExpiracaoTokenRecuperacaoSenha = undefined;
   }
 
   getDataCriacao() {

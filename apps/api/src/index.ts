@@ -1,10 +1,27 @@
+import {
+  RedefinirSenhaPorEmail,
+  VerificarTokenRedefinicaoSenha,
+} from "@packages/auth/src";
+import { ServidorEmailNodeMailerAdapter } from "@packages/email/src";
+import {
+  enviarEmailSenhaEsquecida,
+  RabbitMQAdapter,
+} from "@packages/queue/src";
 import cors, { CorsOptions } from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
-import { RabbitMQAdapter, ServidorEmailNodeMailerAdapter } from "./adapters";
+import {
+  PgPromiseAdapter,
+  RepositorioPerfilPgPromiseAdapter,
+  RepositorioPermissaoPgPromiseAdapter,
+  RepositorioUsuarioPgPromiseAdapter,
+} from "./adapters";
 import { ENV } from "./config";
-import { enviarEmailSenhaEsquecida } from "./queueConsumers";
+import {
+  RedefinirSenhaPorEmailController,
+  VerificarTokenRedefinicaoSenhaController,
+} from "./controllers";
 
 // Configuração Ambiente ----------------------------------------------
 console.log(`🟢 ENVIRONMENT: ${ENV.NODE_ENV} 🟢`);
@@ -26,7 +43,14 @@ app.use(express.urlencoded({ extended: true }));
 app.listen(ENV.API_PORT, () => {
   console.log(`🔥 Server is running on port ${ENV.API_PORT}`);
 });
+// ROTA PRINCIPAL - V1 ------------------------------------
+const v1Router = express.Router();
+app.use("/v1", v1Router);
+// ROTAS AUTH ---------------------------------------------
+const authRouter = express.Router();
+v1Router.use("/auth", authRouter);
 // ADAPTADORES --------------------------------------------
+const databaseConnection = new PgPromiseAdapter();
 const queueRabbitMQ = RabbitMQAdapter.getInstance(
   ENV.AMQP_USER,
   ENV.AMQP_PASSWORD,
@@ -39,6 +63,31 @@ const servidorEmail = new ServidorEmailNodeMailerAdapter(
   ENV.EMAIL_HOST_SECURE_SSL,
   ENV.EMAIL_HOST_USER || "",
   ENV.EMAIL_HOST_PASSWORD || "",
+);
+const repositorioPermissao = new RepositorioPermissaoPgPromiseAdapter(
+  databaseConnection,
+);
+const repositorioPerfil = new RepositorioPerfilPgPromiseAdapter(
+  databaseConnection,
+  repositorioPermissao,
+);
+const repositorioUsuario = new RepositorioUsuarioPgPromiseAdapter(
+  databaseConnection,
+  repositorioPerfil,
+);
+// CASOS DE USO ------------------------------------------
+const redefinirSenhaPorEmail = new RedefinirSenhaPorEmail(
+  repositorioUsuario,
+  queueRabbitMQ,
+);
+const verificarTokenRedefinicaoSenha = new VerificarTokenRedefinicaoSenha(
+  repositorioUsuario,
+);
+// CONTROLLERS -------------------------------------------
+new RedefinirSenhaPorEmailController(authRouter, redefinirSenhaPorEmail);
+new VerificarTokenRedefinicaoSenhaController(
+  authRouter,
+  verificarTokenRedefinicaoSenha,
 );
 // CONSUMERS ---------------------------------------------
 enviarEmailSenhaEsquecida(queueRabbitMQ, servidorEmail);
