@@ -11,8 +11,13 @@ services:
       - ./apps/api/src/adapters/database/SQL/01_criar_tbl_permissao.sql:/docker-entrypoint-initdb.d/01_criar_tbl_permissao.sql
       - ./apps/api/src/adapters/database/SQL/02_criar_tbl_perfil.sql:/docker-entrypoint-initdb.d/02_criar_tbl_perfil.sql
       - ./apps/api/src/adapters/database/SQL/03_criar_tbl_usuario.sql:/docker-entrypoint-initdb.d/03_criar_tbl_usuario.sql
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   ports:
-  #     - 5672:5672
-  #     - 15672:15672
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    hostname: codefire-DEV
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=123
+    ports:
+      - 5673:5672
+      - 15672:15672

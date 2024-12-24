@@ -17,6 +17,7 @@
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.14.0",
+    "@types/amqplib": "^0.10.6",
     "@types/cors": "^2.8.17",
     "@types/eslint__js": "^8.42.3",
     "@types/express": "^5.0.0",
@@ -35,6 +36,7 @@
   },
   "dependencies": {
     "@packages/auth": "1.0.0",
+    "amqplib": "^0.10.5",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
