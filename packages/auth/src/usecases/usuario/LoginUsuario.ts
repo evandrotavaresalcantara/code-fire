@@ -1,6 +1,9 @@
 import { CasoDeUso, Email } from "common";
-import { AuthToken, RepositorioUsuario } from "../../provider";
-import ProvedorCriptografia from "../../provider/ProvedorCriptografia";
+import {
+  AuthToken,
+  ProvedorCriptografia,
+  RepositorioUsuario,
+} from "../../provider";
 
 interface Entrada {
   email?: string;
@@ -21,15 +24,18 @@ export default class LoginUsuario implements CasoDeUso<Entrada, Output> {
   async executar(entrada: Entrada): Promise<Output> {
     const email = new Email(entrada.email);
     const usuario = await this.repo.obterPorEmail(email.valor);
-    if (!usuario) throw new Error("email ou senha inválida.");
-    if (!usuario.habilitado) throw new Error("Usuário desabilitado.");
+    if (!usuario) throw new Error("Dados Inválidos: email ou senha inválida.");
+    if (!usuario.habilitado)
+      throw new Error("Não Autorizado: Usuário desabilitado.");
     const senha = usuario.getSenha();
-    if (!senha || !entrada.senha) throw new Error("email ou senha inválida.");
+    if (!senha || !entrada.senha)
+      throw new Error("Dados Inválidos: email ou senha inválida.");
     const verificarSenha = this.provedorCriptografia.comparar(
       entrada.senha,
       senha,
     );
-    if (!verificarSenha) throw new Error("email ou senha inválida.");
+    if (!verificarSenha)
+      throw new Error("Dados Inválidos: email ou senha inválida.");
     const payloadId = {
       id: usuario.getUuid(),
       nome: usuario.getNome(),

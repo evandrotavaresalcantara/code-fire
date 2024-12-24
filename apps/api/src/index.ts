@@ -1,14 +1,17 @@
 import {
+  AuthTokenJWTAsymmetricAdapter,
   RedefinirSenhaPorEmail,
   VerificarTokenRedefinicaoSenha,
 } from "@packages/auth/src";
+import ProvedorCriptografiaBcryptAdapter from "@packages/auth/src/adapter/Criptografia/ProvedorCriptografiaBcryptAdapter";
+import LoginUsuario from "@packages/auth/src/usecases/usuario/LoginUsuario";
 import { ServidorEmailNodeMailerAdapter } from "@packages/email/src";
 import {
   enviarEmailSenhaEsquecida,
   RabbitMQAdapter,
 } from "@packages/queue/src";
 import cors, { CorsOptions } from "cors";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import {
@@ -19,6 +22,7 @@ import {
 } from "./adapters";
 import { ENV } from "./config";
 import {
+  LoginUsuarioController,
   RedefinirSenhaPorEmailController,
   VerificarTokenRedefinicaoSenhaController,
 } from "./controllers";
@@ -49,6 +53,28 @@ app.use("/v1", v1Router);
 // ROTAS AUTH ---------------------------------------------
 const authRouter = express.Router();
 v1Router.use("/auth", authRouter);
+// Error Handler ------------------------------------------
+app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
+  if (res.headersSent) {
+    next(error);
+    return; // Se os headers já foram enviados, não tente enviar outra resposta
+  }
+  if (error instanceof Error) {
+    if (error.message.startsWith("Dados Inválidos: ")) {
+      res.status(400).json({ message: error.message });
+      return;
+    }
+    if (error.message.startsWith("Não Autorizado: ")) {
+      res.status(403).json({ message: error.message });
+      return;
+    }
+    res.status(500).json({ message: error.message });
+    return;
+  } else {
+    res.status(500).json({ message: "Erro desconhecido" });
+    return;
+  }
+});
 // ADAPTADORES --------------------------------------------
 const databaseConnection = new PgPromiseAdapter();
 const queueRabbitMQ = RabbitMQAdapter.getInstance(
@@ -75,7 +101,14 @@ const repositorioUsuario = new RepositorioUsuarioPgPromiseAdapter(
   databaseConnection,
   repositorioPerfil,
 );
+const provedorCriptografia = new ProvedorCriptografiaBcryptAdapter();
+const authToken = new AuthTokenJWTAsymmetricAdapter();
 // CASOS DE USO ------------------------------------------
+const loginUsuario = new LoginUsuario(
+  repositorioUsuario,
+  provedorCriptografia,
+  authToken,
+);
 const redefinirSenhaPorEmail = new RedefinirSenhaPorEmail(
   repositorioUsuario,
   queueRabbitMQ,
@@ -84,6 +117,7 @@ const verificarTokenRedefinicaoSenha = new VerificarTokenRedefinicaoSenha(
   repositorioUsuario,
 );
 // CONTROLLERS -------------------------------------------
+new LoginUsuarioController(authRouter, loginUsuario);
 new RedefinirSenhaPorEmailController(authRouter, redefinirSenhaPorEmail);
 new VerificarTokenRedefinicaoSenhaController(
   authRouter,

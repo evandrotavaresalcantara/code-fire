@@ -24,8 +24,8 @@
   "author": "code-fire",
   "license": "ISC",
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
     "@eslint/js": "^9.14.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.7",
@@ -38,8 +38,8 @@
     "typescript-eslint": "^8.14.0"
   },
   "dependencies": {
-    "@packages/queue": "*",
     "@packages/email": "*",
+    "@packages/queue": "*",
     "bcrypt": "^5.1.1",
     "common": "1.0.0",
     "jsonwebtoken": "^9.0.2"
