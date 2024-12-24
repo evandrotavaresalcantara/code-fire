@@ -39,6 +39,21 @@ const envSchema = z.object({
     .min(4)
     .max(4)
     .default("5672"),
+  EMAIL_HOST: z.optional(z.string()),
+  EMAIL_HOST_USER: z.optional(z.string()),
+  EMAIL_HOST_PASSWORD: z.optional(z.string()),
+  EMAIL_HOST_PORT: z
+    .string()
+    .regex(/^\d+$/, {
+      message: MSG_AMQP_PORT,
+    })
+    .min(2)
+    .max(4)
+    .default("587"),
+  EMAIL_HOST_SECURE_SSL: z
+    .string()
+    .transform((value) => value === "true")
+    .default("false"),
 });
 
 export const ENV = envSchema.parse(process.env);

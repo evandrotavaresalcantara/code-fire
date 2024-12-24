@@ -1,18 +1,20 @@
-import Id from "./model/Id"
-import Entidade, { EntidadeProps } from "./model/Entidade"
-import Email from "./model/Email"
-import Celular from "./model/Celular"
-import Url from "./model/Url"
-import NomeComposto from "./model/NomePessoa"
-import CasoDeUso from "./usecase/CasoDeUso"
-import CasoDeUsoComUsuario from "./usecase/CasoDeUsoComUsuario"
-import CasoDeUsoExecutarCom from "./usecase/CasoDeUsoExecutarComo"
-export { default as Nome } from './model/Nome'
+import Celular from "./model/Celular";
+import Email from "./model/Email";
+import Entidade, { EntidadeProps } from "./model/Entidade";
+import Id from "./model/Id";
+import NomeComposto from "./model/NomePessoa";
+import Url from "./model/Url";
+import CasoDeUso from "./usecase/CasoDeUso";
+import CasoDeUsoComUsuario from "./usecase/CasoDeUsoComUsuario";
+import CasoDeUsoExecutarCom from "./usecase/CasoDeUsoExecutarComo";
+export { default as Nome } from "./model/Nome";
+export * from "./provider";
 
 export type {
-    EntidadeProps, CasoDeUso, CasoDeUsoComUsuario, CasoDeUsoExecutarCom
-}
+  CasoDeUso,
+  CasoDeUsoComUsuario,
+  CasoDeUsoExecutarCom,
+  EntidadeProps,
+};
 
-export {
-    Id, Entidade, Email, Celular, Url, NomeComposto,
-}
+export { Celular, Email, Entidade, Id, NomeComposto, Url };
