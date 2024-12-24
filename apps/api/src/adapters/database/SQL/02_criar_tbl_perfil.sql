@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS perfil (
 );
 
 CREATE TABLE IF NOT EXISTS perfil_permissoes (
-  perfil_id UUID NOT NULL REFERENCES perfil(id) ON DELETE CASCADE,
-  permissao_id UUID NOT NULL REFERENCES permissao(id) ON DELETE CASCADE,
+  perfil_id UUID NOT NULL REFERENCES perfil(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  permissao_id UUID NOT NULL REFERENCES permissao(id) ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY (perfil_id, permissao_id)
 );
