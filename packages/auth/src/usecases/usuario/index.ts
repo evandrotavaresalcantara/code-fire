@@ -5,6 +5,7 @@ export * from "./HabilitarUsuario";
 export * from "./LoginUsuario";
 // export * from "./Logoff";
 // export * from "./RecuperarSenha";
+export * from "./AtualizarSenhaPeloEmailToken";
 export * from "./RedefinirSenhaPorEmail";
 export * from "./RegistrarUsuario";
 export * from "./RemoverUsuario";

@@ -4,7 +4,9 @@ import {
   VerificarTokenRedefinicaoSenha,
 } from "@packages/auth/src";
 import ProvedorCriptografiaBcryptAdapter from "@packages/auth/src/adapter/Criptografia/ProvedorCriptografiaBcryptAdapter";
+import AtualizarSenhaPeloEmailToken from "@packages/auth/src/usecases/usuario/AtualizarSenhaPeloEmailToken";
 import LoginUsuario from "@packages/auth/src/usecases/usuario/LoginUsuario";
+import RegistrarUsuario from "@packages/auth/src/usecases/usuario/RegistrarUsuario";
 import { ServidorEmailNodeMailerAdapter } from "@packages/email/src";
 import {
   enviarEmailSenhaEsquecida,
@@ -24,8 +26,10 @@ import { ENV } from "./config";
 import {
   LoginUsuarioController,
   RedefinirSenhaPorEmailController,
+  RegistrarUsuarioController,
   VerificarTokenRedefinicaoSenhaController,
 } from "./controllers";
+import { AtualizarSenhaPeloEmailTokenController } from "./controllers/usuario/AtualizarSenhaPeloEmailTokenController";
 
 // Configuração Ambiente ----------------------------------------------
 console.log(`🟢 ENVIRONMENT: ${ENV.NODE_ENV} 🟢`);
@@ -116,6 +120,14 @@ const redefinirSenhaPorEmail = new RedefinirSenhaPorEmail(
 const verificarTokenRedefinicaoSenha = new VerificarTokenRedefinicaoSenha(
   repositorioUsuario,
 );
+const atulizarSenhaPeloEmailToken = new AtualizarSenhaPeloEmailToken(
+  repositorioUsuario,
+  provedorCriptografia,
+);
+const registrarUsuario = new RegistrarUsuario(
+  repositorioUsuario,
+  provedorCriptografia,
+);
 // CONTROLLERS -------------------------------------------
 new LoginUsuarioController(authRouter, loginUsuario);
 new RedefinirSenhaPorEmailController(authRouter, redefinirSenhaPorEmail);
@@ -123,6 +135,11 @@ new VerificarTokenRedefinicaoSenhaController(
   authRouter,
   verificarTokenRedefinicaoSenha,
 );
+new AtualizarSenhaPeloEmailTokenController(
+  authRouter,
+  atulizarSenhaPeloEmailToken,
+);
+new RegistrarUsuarioController(authRouter, registrarUsuario);
 // CONSUMERS ---------------------------------------------
 enviarEmailSenhaEsquecida(queueRabbitMQ, servidorEmail);
 // Gerenciamento de Desconexão do RabbitMQ

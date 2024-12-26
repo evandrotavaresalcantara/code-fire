@@ -8,6 +8,8 @@ export interface UsuarioSchema extends EntidadeSchema {
   ativo: boolean;
   refresh_token: string;
   data_expiracao_refresh_token: Date;
+  recuperar_senha_token: string;
+  data_expiraca_recuperar_senha_token: Date;
   dois_fatores: boolean;
   telefone: string;
   imagem_perfil: string;

@@ -26,7 +26,23 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
     if (usuariosData.length === 0) return [];
     const usuarios = await Promise.all(
       usuariosData.map(async (usuarioData) => {
-        const usuario = new Usuario(usuarioData);
+        const usuario = new Usuario({
+          id: usuarioData.id,
+          nomeCompleto: usuarioData.nome,
+          email: usuarioData.email,
+          senha: usuarioData.senha,
+          celular: usuarioData.telefone,
+          urlPerfil: usuarioData.imagem_perfil,
+          ativo: usuarioData.ativo,
+          tokenRecuperacaoSenha: usuarioData.recuperar_senha_token,
+          dataExpiracaoTokenRecuperacaoSenha:
+            usuarioData.data_expiraca_recuperar_senha_token,
+          tokenRefreshToken: usuarioData.refresh_token,
+          dataExpiracaoTokenRefreshToken:
+            usuarioData.data_expiracao_refresh_token,
+          autenticaçãoDoisFatores: usuarioData.dois_fatores,
+          dataCriacao: usuarioData.data_criacao,
+        });
         const statementPerfils = `SELECT * FROM ${this.tabelaUsuarioPerfils} WHERE usuario_id = $1`;
         const usuarioPerfilssData = await this.conexao.query<
           UsuarioPerfilsSchema[]
@@ -49,7 +65,22 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
       id,
     ]);
     if (!usuarioData) return;
-    const usuario = new Usuario(usuarioData);
+    const usuario = new Usuario({
+      id: usuarioData.id,
+      nomeCompleto: usuarioData.nome,
+      email: usuarioData.email,
+      senha: usuarioData.senha,
+      celular: usuarioData.telefone,
+      urlPerfil: usuarioData.imagem_perfil,
+      ativo: usuarioData.ativo,
+      tokenRecuperacaoSenha: usuarioData.recuperar_senha_token,
+      dataExpiracaoTokenRecuperacaoSenha:
+        usuarioData.data_expiraca_recuperar_senha_token,
+      tokenRefreshToken: usuarioData.refresh_token,
+      dataExpiracaoTokenRefreshToken: usuarioData.data_expiracao_refresh_token,
+      autenticaçãoDoisFatores: usuarioData.dois_fatores,
+      dataCriacao: usuarioData.data_criacao,
+    });
     const statementPerfils = `SELECT * FROM ${this.tabelaUsuarioPerfils} WHERE usuario_id = $1`;
     const usuarioPerfilsData = await this.conexao.query<UsuarioPerfilsSchema[]>(
       statementPerfils,
@@ -72,7 +103,22 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
       token,
     ]);
     if (!usuarioData) return;
-    const usuario = new Usuario(usuarioData);
+    const usuario = new Usuario({
+      id: usuarioData.id,
+      nomeCompleto: usuarioData.nome,
+      email: usuarioData.email,
+      senha: usuarioData.senha,
+      celular: usuarioData.telefone,
+      urlPerfil: usuarioData.imagem_perfil,
+      ativo: usuarioData.ativo,
+      tokenRecuperacaoSenha: usuarioData.recuperar_senha_token,
+      dataExpiracaoTokenRecuperacaoSenha:
+        usuarioData.data_expiraca_recuperar_senha_token,
+      tokenRefreshToken: usuarioData.refresh_token,
+      dataExpiracaoTokenRefreshToken: usuarioData.data_expiracao_refresh_token,
+      autenticaçãoDoisFatores: usuarioData.dois_fatores,
+      dataCriacao: usuarioData.data_criacao,
+    });
     const statementPerfils = `SELECT * FROM ${this.tabelaUsuarioPerfils} WHERE usuario_id = $1`;
     const usuarioPerfilsData = await this.conexao.query<UsuarioPerfilsSchema[]>(
       statementPerfils,
@@ -98,7 +144,22 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
       email,
     ]);
     if (!usuarioData) return;
-    const usuario = new Usuario(usuarioData);
+    const usuario = new Usuario({
+      id: usuarioData.id,
+      nomeCompleto: usuarioData.nome,
+      email: usuarioData.email,
+      senha: usuarioData.senha,
+      celular: usuarioData.telefone,
+      urlPerfil: usuarioData.imagem_perfil,
+      ativo: usuarioData.ativo,
+      tokenRecuperacaoSenha: usuarioData.recuperar_senha_token,
+      dataExpiracaoTokenRecuperacaoSenha:
+        usuarioData.data_expiraca_recuperar_senha_token,
+      tokenRefreshToken: usuarioData.refresh_token,
+      dataExpiracaoTokenRefreshToken: usuarioData.data_expiracao_refresh_token,
+      autenticaçãoDoisFatores: usuarioData.dois_fatores,
+      dataCriacao: usuarioData.data_criacao,
+    });
     const statementPerfils = `SELECT * FROM ${this.tabelaUsuarioPerfils} WHERE usuario_id = $1`;
     const usuarioPerfilsData = await this.conexao.query<UsuarioPerfilsSchema[]>(
       statementPerfils,
@@ -153,6 +214,7 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
       usuario.getAutenticaçãoDoisFatores(),
       usuario.getCelular(),
       usuario.getUrlPerfil(),
+      usuario.getUuid(),
     ]);
     if (resultado.length === 0) {
       throw new Error(Errors.PERFIL_NAO_ENCONTRADO_ATUALIZACAO);
