@@ -1,5 +1,5 @@
 {
-  "name": "common",
+  "name": "@packages/common",
   "version": "1.0.0",
   "description": "common-fire",
   "main": "./src/index.ts",

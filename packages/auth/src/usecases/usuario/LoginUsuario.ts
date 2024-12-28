@@ -1,4 +1,4 @@
-import { CasoDeUso, Email } from "common";
+import { CasoDeUso, Email } from "@packages/common";
 import {
   AuthToken,
   ProvedorCriptografia,

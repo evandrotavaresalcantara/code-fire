@@ -1,22 +1,25 @@
-import { CasoDeUso, Id } from "common";
+import { CasoDeUso } from "@packages/common";
 import { RepositorioPerfil, RepositorioPermissao } from "../../provider";
 
-type IdPermissao = string
+type IdPermissao = string;
 
 export default class ExcluirPermissao implements CasoDeUso<IdPermissao, void> {
-    constructor(
-        private repo: RepositorioPermissao,
-        private repoPerfil: RepositorioPerfil
-    ) { }
+  constructor(
+    private repo: RepositorioPermissao,
+    private repoPerfil: RepositorioPerfil,
+  ) {}
 
-    async executar(idPermissao: IdPermissao): Promise<void> {
+  async executar(idPermissao: IdPermissao): Promise<void> {
+    const permissao = await this.repo.obterPermissaoPorId(idPermissao);
+    if (!permissao) throw new Error("permissão não existe.");
 
-        const permissao = await this.repo.obterPermissaoPorId(idPermissao)
-        if (!permissao) throw new Error("permissão não existe.")
+    const existePerfilComEssaPermissao =
+      await this.repoPerfil.obterPerfilPorPermissaoId(idPermissao);
+    if (existePerfilComEssaPermissao)
+      throw new Error(
+        "não é possível excluir a permissão. Existe perfil associado ela.",
+      );
 
-        const existePerfilComEssaPermissao = await this.repoPerfil.obterPerfilPorPermissaoId(idPermissao)
-        if (existePerfilComEssaPermissao) throw new Error('não é possível excluir a permissão. Existe perfil associado ela.')
-
-        await this.repo.excluirPermissao(idPermissao)
-    }
+    await this.repo.excluirPermissao(idPermissao);
+  }
 }

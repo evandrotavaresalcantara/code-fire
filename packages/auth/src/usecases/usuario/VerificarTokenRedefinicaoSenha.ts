@@ -1,4 +1,4 @@
-import { CasoDeUso } from "common";
+import { CasoDeUso } from "@packages/common";
 import { RepositorioUsuario } from "../../provider";
 
 interface Input {

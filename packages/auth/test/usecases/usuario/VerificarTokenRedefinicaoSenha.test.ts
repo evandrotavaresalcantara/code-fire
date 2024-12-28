@@ -1,5 +1,5 @@
-import { Usuario } from "@/model";
-import { VerificarTokenRedefinicaoSenha } from "@/usecases";
+import { Usuario } from "../../../src/model/index";
+import { VerificarTokenRedefinicaoSenha } from "../../../src/usecases/index";
 import { randomUUID } from "crypto";
 import RepositorioUsuarioMock from "../../mock/RepositorioUsuarioMock";
 

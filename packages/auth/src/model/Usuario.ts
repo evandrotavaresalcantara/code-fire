@@ -5,7 +5,7 @@ import {
   EntidadeProps,
   NomeComposto,
   Url,
-} from "common";
+} from "@packages/common";
 import { randomUUID } from "crypto";
 import SenhaHash from "./obj-valor/SenhaHash";
 import Perfil from "./Perfil";

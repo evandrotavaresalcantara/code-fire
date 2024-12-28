@@ -1,4 +1,4 @@
-import { CasoDeUso, EntidadeProps, Id } from "common";
+import { CasoDeUso, EntidadeProps, Id } from "@packages/common";
 import SenhaForte from "../../model/obj-valor/SenhaForte";
 import { ProvedorCriptografia, RepositorioUsuario } from "../../provider";
 

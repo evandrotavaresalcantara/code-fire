@@ -1,4 +1,4 @@
-import { CasoDeUso, EntidadeProps, Id } from "common";
+import { CasoDeUso, EntidadeProps, Id } from "@packages/common";
 import { RepositorioUsuario } from "../../provider";
 
 interface Entrada extends EntidadeProps {
