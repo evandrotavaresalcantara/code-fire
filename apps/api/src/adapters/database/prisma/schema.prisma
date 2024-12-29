@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL_PRISMA")
+}
+
+model permissao {
+  id                String              @id @db.Uuid
+  nome              String              @db.VarChar(50)
+  descricao         String              @db.VarChar(150)
+  data_criacao      DateTime            @db.Timestamptz(6)
+  ativo             Boolean             @default(true)
+  perfil_permissoes perfil_permissoes[]
+}
+
+model perfil {
+  id                String              @id @db.Uuid
+  nome              String              @db.VarChar(50)
+  descricao         String              @db.VarChar(150)
+  data_criacao      DateTime            @db.Timestamptz(6)
+  ativo             Boolean             @default(true)
+  perfil_permissoes perfil_permissoes[]
+  usuario_perfils   usuario_perfils[]
+}
+
+model perfil_permissoes {
+  perfil_id    String    @db.Uuid
+  permissao_id String    @db.Uuid
+  perfil       perfil    @relation(fields: [perfil_id], references: [id], onDelete: Cascade)
+  permissao    permissao @relation(fields: [permissao_id], references: [id], onDelete: Cascade)
+
+  @@id([perfil_id, permissao_id])
+}
+
+model usuario {
+  id                                  String            @id @db.Uuid
+  nome                                String            @db.VarChar(150)
+  email                               String            @unique @db.VarChar(250)
+  senha                               String            @db.VarChar(60)
+  data_criacao                        DateTime          @db.Timestamptz(6)
+  ativo                               Boolean           @default(true)
+  refresh_token                       String?           @db.Char(1172)
+  data_expiracao_refresh_token        DateTime?         @db.Timestamptz(6)
+  recuperar_senha_token               String?           @db.Uuid
+  data_expiraca_recuperar_senha_token DateTime?         @db.Timestamptz(6)
+  dois_fatores                        Boolean           @default(false)
+  telefone                            String?           @db.VarChar(11)
+  imagem_perfil                       String?           @db.VarChar(250)
+  usuario_perfils                     usuario_perfils[]
+}
+
+model usuario_perfils {
+  perfil_id  String  @db.Uuid
+  usuario_id String  @db.Uuid
+  perfil     perfil  @relation(fields: [perfil_id], references: [id], onDelete: Cascade)
+  usuario    usuario @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
+
+  @@id([perfil_id, usuario_id])
+}
