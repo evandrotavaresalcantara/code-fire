@@ -133,7 +133,7 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
   }
 
   setTokenReFreshToken(refreshToken: string, login = false) {
-    this.tokenRefreshToken = refreshToken;
+    this.tokenRefreshToken = refreshToken.trim();
     if (login) {
       const hoje = new Date();
       this.dataExpiracaoTokenRefreshToken = new Date(
@@ -143,7 +143,7 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
   }
 
   getTokenReFreshToken() {
-    return this.tokenRefreshToken;
+    return this.tokenRefreshToken?.trim();
   }
 
   getDataExpiracaoTokenFreshToken() {
