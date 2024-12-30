@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS usuario (
   senha VARCHAR(60) NOT NULL,
   data_criacao TIMESTAMPTZ NOT NULL,
   ativo BOOLEAN DEFAULT TRUE NOT NULL,
-  refresh_token CHAR(1172),
+  refresh_token VARCHAR(1176),
   data_expiracao_refresh_token TIMESTAMPTZ,
   recuperar_senha_token UUID,
   data_expiraca_recuperar_senha_token TIMESTAMPTZ,

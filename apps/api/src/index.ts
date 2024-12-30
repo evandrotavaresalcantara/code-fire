@@ -1,4 +1,5 @@
 import {
+  AtualizarAccessRefreshTokens,
   AuthTokenJWTAsymmetricAdapter,
   RedefinirSenhaPorEmail,
   VerificarTokenRedefinicaoSenha,
@@ -24,6 +25,7 @@ import {
 } from "./adapters";
 import { ENV } from "./config";
 import {
+  AtualizarAccessRefreshTokensController,
   LoginUsuarioController,
   RedefinirSenhaPorEmailController,
   RegistrarUsuarioController,
@@ -134,6 +136,10 @@ const registrarUsuario = new RegistrarUsuario(
 );
 
 const criarPermissao = new CriarPermissao(repositorioPermissaoPrisma);
+const atualizarAccessRefreshTokens = new AtualizarAccessRefreshTokens(
+  repositorioUsuario,
+  authToken,
+);
 // CONTROLLERS -------------------------------------------
 new LoginUsuarioController(authRouter, loginUsuario);
 new RedefinirSenhaPorEmailController(authRouter, redefinirSenhaPorEmail);
@@ -147,6 +153,10 @@ new AtualizarSenhaPeloEmailTokenController(
 );
 new RegistrarUsuarioController(authRouter, registrarUsuario);
 new CriarPermissaoController(v1Router, criarPermissao);
+new AtualizarAccessRefreshTokensController(
+  authRouter,
+  atualizarAccessRefreshTokens,
+);
 // CONSUMERS ---------------------------------------------
 enviarEmailSenhaEsquecida(queueRabbitMQ, servidorEmail);
 // Gerenciamento de Desconexão do RabbitMQ

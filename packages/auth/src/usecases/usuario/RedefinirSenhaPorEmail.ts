@@ -24,6 +24,7 @@ export class RedefinirSenhaPorEmail implements CasoDeUso<Input, void> {
         assunto: "Redefinição de Senha",
         corpo: `Link para redefinição de senha: ${entrada.baseUrl}/${tokenRedefinicaoSenha}`,
       };
+      await this.repositorioUsuario.editarUsuario(usuario);
       await this.queue.publish<{
         de: string;
         para: string;

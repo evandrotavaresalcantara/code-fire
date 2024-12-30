@@ -11,7 +11,8 @@ export default class SenhaForte {
     }
   }
   static isValida(senha: string): boolean {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{6,20}$/;
     return regex.test(senha);
   }
 

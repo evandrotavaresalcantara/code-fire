@@ -18,9 +18,10 @@ export class AuthTokenJWTAsymmetricAdapter implements AuthToken {
     return jwt.decode(token, { json: true });
   }
 
-  verify(token: string): boolean {
+  verify(token?: string): boolean {
+    if (!token) return false;
     try {
-      jwt.verify(token, this.publicKey, {
+      jwt.verify(token.trim(), this.publicKey, {
         algorithms: ["RS256"],
       });
       return true;
