@@ -30,6 +30,9 @@ import {
   VerificarTokenRedefinicaoSenhaController,
 } from "./controllers";
 import { AtualizarSenhaPeloEmailTokenController } from "./controllers/usuario/AtualizarSenhaPeloEmailTokenController";
+import CriarPermissao from "@packages/auth/src/usecases/permissao/CriarPermissao";
+import PermissaoRepositorioPgPrismaAdapter from "./adapters/database/PermissaoRepositorioPgPrismaAdapter";
+import { CriarPermissaoController } from "./controllers/permissao/CriarPermissao";
 
 // Configuração Ambiente ----------------------------------------------
 console.log(`🟢 ENVIRONMENT: ${ENV.NODE_ENV} 🟢`);
@@ -97,6 +100,7 @@ const servidorEmail = new ServidorEmailNodeMailerAdapter(
 const repositorioPermissao = new RepositorioPermissaoPgPromiseAdapter(
   databaseConnection,
 );
+const repositorioPermissaoPrisma = new PermissaoRepositorioPgPrismaAdapter();
 const repositorioPerfil = new RepositorioPerfilPgPromiseAdapter(
   databaseConnection,
   repositorioPermissao,
@@ -128,6 +132,8 @@ const registrarUsuario = new RegistrarUsuario(
   repositorioUsuario,
   provedorCriptografia,
 );
+
+const criarPermissao = new CriarPermissao(repositorioPermissaoPrisma);
 // CONTROLLERS -------------------------------------------
 new LoginUsuarioController(authRouter, loginUsuario);
 new RedefinirSenhaPorEmailController(authRouter, redefinirSenhaPorEmail);
@@ -140,6 +146,7 @@ new AtualizarSenhaPeloEmailTokenController(
   atulizarSenhaPeloEmailToken,
 );
 new RegistrarUsuarioController(authRouter, registrarUsuario);
+new CriarPermissaoController(v1Router, criarPermissao);
 // CONSUMERS ---------------------------------------------
 enviarEmailSenhaEsquecida(queueRabbitMQ, servidorEmail);
 // Gerenciamento de Desconexão do RabbitMQ

@@ -28,7 +28,7 @@ export interface UsuarioProps extends EntidadeProps {
 export default class Usuario extends Entidade<Usuario, UsuarioProps> {
   private nomeCompleto: NomeComposto;
   private email: Email;
-  private senha: SenhaHash | null;
+  private senha: SenhaHash;
   private dataCriacao: Date;
   private celular: Celular | null;
   private urlPerfil: Url | null;
@@ -44,7 +44,7 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
     super(props);
     this.nomeCompleto = new NomeComposto({ valor: props.nomeCompleto });
     this.email = new Email(props.email);
-    this.senha = props.senha ? new SenhaHash(props.senha) : null;
+    this.senha = new SenhaHash(props.senha);
     this.celular = props.celular ? new Celular(props.celular) : null;
     this.urlPerfil = props.urlPerfil ? new Url(props.urlPerfil) : null;
     this.dataCriacao = props.dataCriacao
@@ -70,7 +70,7 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
   }
 
   getSenha() {
-    return this.senha?.valor ? this.senha.valor : null;
+    return this.senha.valor;
   }
 
   getEmail() {
@@ -81,7 +81,7 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
     return this.celular?.semMascara;
   }
 
-  getAutenticaçãoDoisFatores() {
+  getAutenticacaoDoisFatores() {
     return this.autenticaçãoDoisFatores;
   }
 

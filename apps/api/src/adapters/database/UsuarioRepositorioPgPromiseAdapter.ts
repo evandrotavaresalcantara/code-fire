@@ -187,7 +187,7 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
       usuario.getDataExpiracaoTokenFreshToken(),
       usuario.getTokenRecuperacaoSenha(),
       usuario.getDataExpiracaoRecuperacaoSenha(),
-      usuario.getAutenticaçãoDoisFatores(),
+      usuario.getAutenticacaoDoisFatores(),
       usuario.getCelular(),
       usuario.getUrlPerfil(),
     ]);
@@ -211,7 +211,7 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
       usuario.getDataExpiracaoTokenFreshToken(),
       usuario.getTokenRecuperacaoSenha(),
       usuario.getDataExpiracaoRecuperacaoSenha(),
-      usuario.getAutenticaçãoDoisFatores(),
+      usuario.getAutenticacaoDoisFatores(),
       usuario.getCelular(),
       usuario.getUrlPerfil(),
       usuario.getUuid(),
