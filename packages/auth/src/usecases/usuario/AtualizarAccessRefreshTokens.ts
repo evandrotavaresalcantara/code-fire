@@ -1,4 +1,4 @@
-import { CasoDeUso } from "common";
+import { CasoDeUso } from "@packages/common";
 import { AuthToken, RepositorioUsuario } from "../../provider";
 
 interface Input {
@@ -27,6 +27,7 @@ export class AtualizarAccessRefreshTokens
       iat: number;
       exp: number;
     };
+    // TODO: Verificar se ira manter o tokenId
     if (payloadToken.id !== entrada.tokenId) return null;
     const payloadTokenId = this.authToken.decode(entrada.tokenId) as {
       id: string;
