@@ -25,8 +25,7 @@ export class AuthTokenJWTAsymmetricAdapter implements AuthToken {
         algorithms: ["RS256"],
       });
       return true;
-    } catch (error) {
-      console.error(error);
+    } catch {
       return false;
     }
   }

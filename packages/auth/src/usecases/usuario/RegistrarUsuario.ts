@@ -1,4 +1,4 @@
-import { CasoDeUso, Celular, Email, NomeComposto } from "common";
+import { CasoDeUso, Celular, Email, NomeComposto } from "@packages/common";
 import { Usuario } from "../../model";
 import SenhaForte from "../../model/obj-valor/SenhaForte";
 import { ProvedorCriptografia, RepositorioUsuario } from "../../provider";

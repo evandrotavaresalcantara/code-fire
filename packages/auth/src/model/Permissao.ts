@@ -1,4 +1,4 @@
-import { Entidade, EntidadeProps, Nome } from "common";
+import { Entidade, EntidadeProps, Nome } from "@packages/common";
 
 export interface PermissaoProps extends EntidadeProps {
   nome?: string;

@@ -1,5 +1,5 @@
 import { Queue } from "@packages/queue/src";
-import { CasoDeUso } from "common";
+import { CasoDeUso } from "@packages/common";
 import { QueuesAuth } from "../../constants";
 import { RepositorioUsuario } from "../../provider";
 

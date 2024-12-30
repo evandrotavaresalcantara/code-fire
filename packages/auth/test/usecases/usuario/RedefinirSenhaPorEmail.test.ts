@@ -1,5 +1,5 @@
-import { Usuario } from "@/model";
-import { RedefinirSenhaPorEmail } from "@/usecases";
+import { Usuario } from "../../../src/model/index";
+import { RedefinirSenhaPorEmail } from "../../../src/usecases/index";
 import { Queue, RabbitMQAdapter } from "@packages/queue/src";
 import RepositorioUsuarioMock from "../../mock/RepositorioUsuarioMock";
 

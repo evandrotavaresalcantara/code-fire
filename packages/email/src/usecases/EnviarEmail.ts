@@ -1,4 +1,4 @@
-import { CasoDeUso } from "common";
+import { CasoDeUso } from "@packages/common";
 import { ServidorEmail } from "..";
 
 interface Input {

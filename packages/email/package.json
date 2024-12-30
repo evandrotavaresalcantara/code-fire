@@ -33,6 +33,7 @@
     "typescript-eslint": "^8.14.0"
   },
   "dependencies": {
-    "nodemailer": "^6.9.16"
+    "nodemailer": "^6.9.16",
+    "@packages/common": "*"
   }
 }

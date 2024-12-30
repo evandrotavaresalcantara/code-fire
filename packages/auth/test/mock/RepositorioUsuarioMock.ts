@@ -5,17 +5,12 @@ export default class RepositorioUsuarioMock implements RepositorioUsuario {
   async obterUsuarioPorTokenRedefinicaoSenha(
     token: string,
   ): Promise<Usuario | undefined> {
-    return (
-      this.usuarios.find((u) => u.getTokenRecuperacaoSenha() === token) ??
-      undefined
-    );
+    return this.usuarios.find((u) => u.getTokenRecuperacaoSenha() === token);
   }
 
   async obterUsuarioPorPerfilId(id: string): Promise<Usuario | undefined> {
-    return (
-      this.usuarios.find((usuario) =>
-        usuario.obterPerfis.find((perfil) => perfil.getUuid() === id),
-      ) ?? undefined
+    return this.usuarios.find((usuario) =>
+      usuario.obterPerfis.find((perfil) => perfil.getUuid() === id),
     );
   }
 
@@ -24,11 +19,11 @@ export default class RepositorioUsuarioMock implements RepositorioUsuario {
   }
 
   async obterUsuarioPorId(id: string): Promise<Usuario | undefined> {
-    return this.usuarios.find((u) => u.getUuid() === id) ?? undefined;
+    return this.usuarios.find((u) => u.getUuid() === id);
   }
 
   async obterPorEmail(email: string): Promise<Usuario | undefined> {
-    return this.usuarios.find((u) => u.getEmail() === email) ?? undefined;
+    return this.usuarios.find((u) => u.getEmail() === email);
   }
 
   async criarUsuario(usuario: Usuario): Promise<void> {
