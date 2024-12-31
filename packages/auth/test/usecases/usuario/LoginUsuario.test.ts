@@ -83,21 +83,3 @@ test("Deve gerar um erro ao tentar fazer o login com usuário desabilitado", asy
     await casoDeUso.executar({ email: usuario.email, senha: senhaErrada });
   }).rejects.toThrow("Usuário desabilitado.");
 });
-
-test("Deve gerar um erro ao tentar fazer o login de um usuário sem senha", async () => {
-  const usuario = {
-    nomeCompleto: "Fire Dev",
-    email: "ususariofire1@dev.io",
-    celular: "81986598745",
-  };
-  const novoUsuario = new Usuario(usuario);
-  const casoDeUso = new LoginUsuario(
-    new RepositorioUsuarioMock([novoUsuario]),
-    new ProvedorCriptografiaMock(),
-    new AuthTokenJWTAsymmetricAdapter(),
-  );
-
-  expect(async () => {
-    await casoDeUso.executar({ email: usuario.email, senha: senhaErrada });
-  }).rejects.toThrow("email ou senha inválida.");
-});

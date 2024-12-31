@@ -17,13 +17,6 @@ const usuarioComHash = {
   urlPerfil: "http://imagens.io/fire.png",
 };
 
-const usuarioSemSenha = {
-  nomeCompleto: "Fire Dev",
-  email: "ususariofire1@dev.io",
-  celular: "81911112222",
-  urlPerfil: "http://imagens.io/fire.png",
-};
-
 test("Deve atualizar senha do usuário.", async () => {
   const novoUsuario = new Usuario(usuarioComHash);
   const repoUsuario = new RepositorioUsuarioMock([novoUsuario]);
@@ -57,22 +50,6 @@ test("Deve gerar um erro ao tentar atualizar senha, com a nova senha diferente d
       senhaNovaConfirmacao: senha1,
     });
   }).rejects.toThrow("senha nova e confirmação da senha nova são diferentes.");
-});
-
-test("Deve gerar um erro ao tentar atualizar senha, sem senha cadastrada.", async () => {
-  const novoUsuario = new Usuario(usuarioSemSenha);
-  const repoUsuario = new RepositorioUsuarioMock([novoUsuario]);
-  const provedorCriptografia = new ProvedorCriptografiaMock();
-  const casoDeUso = new AtualizarSenha(repoUsuario, provedorCriptografia);
-
-  expect(async () => {
-    await casoDeUso.executar({
-      id: novoUsuario.getUuid(),
-      senhaAntiga: senha1,
-      senhaNova: senha2,
-      senhaNovaConfirmacao: senha2,
-    });
-  }).rejects.toThrow("usuário inativo.");
 });
 
 test("Deve gerar um erro ao tentar atualizar a senha, sem passar a senha antiga.", async () => {

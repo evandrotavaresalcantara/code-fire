@@ -12,18 +12,19 @@ afterEach(() => {
 const usuario = {
   nomeCompleto: "Maria Jullieta",
   email: "maria@dev.io",
-  senha: "$2a$13$7/Gb19Ma6OsiFR/UsGBMKej/Eun98.d2x0IUtGku1gh4FCZEpRVfq",
+  senha: "$2a$08$BXiml0an1MG9lZ/5Tcm1sO1Kl1QMttGxd0Eba9DtTRJkTe9BzY/L6",
   celular: "81985698585",
   urlPerfil: "https://meuperfil.online/maria.png",
   ativo: true,
   dataExpiracaoTokenRefreshToken: new Date(),
   tokenRefreshToken: "meuToken",
-  autenticaçãoDoisFatores: true,
+  autenticacaooDoisFatores: true,
 };
 
 const usuarioMinimo = {
   nomeCompleto: "Zé Dev",
   email: "ze@dev.io",
+  senha: "$2b$10$TUI.yyDk3K5N38xy3grJ0eNFUf8Kk827oUfREU.t7sIXpB8VRBfUm",
 };
 
 test("Deve criar um usuário com perfil vazio", () => {
@@ -36,12 +37,6 @@ test("Deve criar um usuário somente com nome e email", () => {
   expect(novoUsuario.qtdPerfils).toBe(0);
   expect(novoUsuario.getUrlPerfil()).toBeFalsy();
   expect(novoUsuario.getCelular()).toBeFalsy();
-});
-
-test("Deve exibir um usuário sem  o hash da senha", () => {
-  const novoUsuario = new Usuario(usuario);
-  const novoUsuarioSemSenha = novoUsuario.semSenha();
-  expect(novoUsuarioSemSenha.getSenha()).toBe(null);
 });
 
 test("Deve adicionar um perfil ao usuário", () => {

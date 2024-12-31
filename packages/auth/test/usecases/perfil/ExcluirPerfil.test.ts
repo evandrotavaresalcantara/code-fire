@@ -32,6 +32,7 @@ test("gerar um erro ao tentar excluir um perfil com usuário associado", async (
   const novoUsuario = new Usuario({
     nomeCompleto: "Usuario",
     email: "usuario@io.dev",
+    senha: "$2b$10$TUI.yyDk3K5N38xy3grJ0eNFUf8Kk827oUfREU.t7sIXpB8VRBfUm",
   });
   novoUsuario.adiconarPerfil(novoPerfil);
 

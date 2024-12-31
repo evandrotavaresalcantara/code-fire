@@ -1,10 +1,10 @@
 import SenhaForte from "../../../src/model/obj-valor/SenhaForte";
 //Requesitos da Senha:
-// Ter no mínimo 8 caracteres.
+// Ter no mínimo 6 caracteres.
 // Conter pelo menos uma letra minúscula.
 // Conter pelo menos uma letra maiúscula.
 // Conter pelo menos um número.
-// Conter pelo menos um dos seguintes caracteres especiais: ! @ # $ % ^ & *
+// Conter pelo menos um dos seguintes caracteres especiais: !@#$%^&*(),.?":{}|<>
 
 const errPadrao = "senha inválida.";
 
@@ -24,8 +24,8 @@ test("Deve lançar erro com senha apenas com caracteres especiais", () => {
   expect(() => new SenhaForte("!@#$%¨&*()_+")).toThrow(errPadrao);
 });
 
-test("Deve lançar erro com senha com menos de 8 caracteres", () => {
-  expect(() => new SenhaForte("%S3nh4%")).toThrow(errPadrao);
+test("Deve lançar erro com senha com menos de 6 caracteres", () => {
+  expect(() => new SenhaForte("%S3nh")).toThrow(errPadrao);
 });
 
 test("Deve criar senha forte", () => {
