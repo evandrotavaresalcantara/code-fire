@@ -27,7 +27,10 @@ export default class EditarPerfil implements CasoDeUso<Entrada, void> {
       const existePerfilComEsseNome = await this.repoPerfil.obterPerfilPorNome(
         entrada.nome,
       );
-      if (existePerfilComEsseNome)
+      if (
+        existePerfilComEsseNome &&
+        existePerfilComEsseNome.getUuid() !== idPerfil.uuid
+      )
         throw new Error("já existe perfil com esse nome.");
     }
 

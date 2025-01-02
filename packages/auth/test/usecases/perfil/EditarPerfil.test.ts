@@ -5,6 +5,7 @@ import RepositorioPerfilMock from "../../mock/RepositorioPerfilMock";
 import { RepositorioPermissaoMock } from "../../mock/RepositorioPermissaoMock";
 
 const perfil1 = { nome: "Admin", descricao: "Administrador" };
+const perfil2 = { nome: "Dev", descricao: "Desenvolvimento" };
 
 const permissao1 = { nome: "editar", descricao: "edicao" };
 const permissao2 = { nome: "atualizar", descricao: "atualização" };
@@ -104,11 +105,12 @@ test("Deve lançar um erro a tentar alterar um perfil inexistente", async () => 
 
 test("Deve lançar um erro ao tentar alterar o nome do perfil para um nome já existente", async () => {
   const novoPerfil1 = new Perfil(perfil1);
-  const repo = new RepositorioPerfilMock([novoPerfil1]);
+  const novoPerfil2 = new Perfil(perfil2);
+  const repo = new RepositorioPerfilMock([novoPerfil1, novoPerfil2]);
   const repoPermissao = new RepositorioPermissaoMock();
 
   const perfil1AtualizadoNomeIgual = {
-    id: novoPerfil1.getUuid(),
+    id: novoPerfil2.getUuid(),
     nome: "Admin",
     descricao: "Administrador",
   };

@@ -2,13 +2,11 @@ import { CasoDeUso, EntidadeProps } from "@packages/common";
 import { Perfil } from "../../model";
 import { RepositorioPerfil, RepositorioPermissao } from "../../provider";
 
-type idPermissao = string;
-
 interface Entrada extends EntidadeProps {
   nome?: string;
   descricao?: string;
   ativo?: boolean;
-  permissoes?: idPermissao[];
+  permissoes?: string[];
 }
 
 export default class CriarPerfil implements CasoDeUso<Entrada, void> {
@@ -18,8 +16,7 @@ export default class CriarPerfil implements CasoDeUso<Entrada, void> {
   ) {}
   async executar(entrada: Entrada): Promise<void> {
     const permissoes = entrada.permissoes || [];
-    const { id, ...perfil } = entrada;
-    const novoPerfil = new Perfil(perfil);
+    const novoPerfil = new Perfil(entrada);
 
     const existePerfil = await this.repoPerfil.obterPerfilPorNome(
       novoPerfil.getNomePerfil(),

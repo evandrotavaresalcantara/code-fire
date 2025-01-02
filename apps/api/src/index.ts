@@ -1,6 +1,8 @@
 import {
   AtualizarAccessRefreshTokens,
   AuthTokenJWTAsymmetricAdapter,
+  ObterPerfis,
+  ObterPermissoes,
   RedefinirSenhaPorEmail,
   VerificarTokenRedefinicaoSenha,
 } from "@packages/auth/src";
@@ -35,6 +37,20 @@ import { AtualizarSenhaPeloEmailTokenController } from "./controllers/usuario/At
 import CriarPermissao from "@packages/auth/src/usecases/permissao/CriarPermissao";
 import PermissaoRepositorioPgPrismaAdapter from "./adapters/database/PermissaoRepositorioPgPrismaAdapter";
 import { CriarPermissaoController } from "./controllers/permissao/CriarPermissao";
+import EditarPermissao from "@packages/auth/src/usecases/permissao/EditarPermissao";
+import { EditarPermissaoController } from "./controllers/permissao/EditarPermissao";
+import ExcluirPermissao from "@packages/auth/src/usecases/permissao/ExcluirPermissao";
+import PerfilRepositorioPgPrismaAdapter from "./adapters/database/PerfilRepositorioPgPrismaAdapter";
+import { ExcluirPermissaoController } from "./controllers/permissao/ExcluirPermissao";
+import { ObterPermissoesController } from "./controllers/permissao/ObterPermissoes";
+import CriarPerfil from "@packages/auth/src/usecases/perfil/CriarPerfil";
+import EditarPerfil from "@packages/auth/src/usecases/perfil/EditarPerfil";
+import ExcluirPerfil from "@packages/auth/src/usecases/perfil/ExcluirPerfil";
+import { CriarPerfilController } from "./controllers/perfil/CriarPerfil";
+import { EditarPerfilController } from "./controllers/perfil/EditarPerfil";
+import { ExcluirPerfilController } from "./controllers/perfil/ExcluirPerfil";
+import { ObterPerfisController } from "./controllers/perfil/ObterPerfis";
+import UsuarioRepositorioPgPrismaAdapter from "./adapters/database/UsuarioRepositorioPgPrismaAdapter";
 
 // Configuração Ambiente ----------------------------------------------
 console.log(`🟢 ENVIRONMENT: ${ENV.NODE_ENV} 🟢`);
@@ -102,7 +118,6 @@ const servidorEmail = new ServidorEmailNodeMailerAdapter(
 const repositorioPermissao = new RepositorioPermissaoPgPromiseAdapter(
   databaseConnection,
 );
-const repositorioPermissaoPrisma = new PermissaoRepositorioPgPrismaAdapter();
 const repositorioPerfil = new RepositorioPerfilPgPromiseAdapter(
   databaseConnection,
   repositorioPermissao,
@@ -110,6 +125,13 @@ const repositorioPerfil = new RepositorioPerfilPgPromiseAdapter(
 const repositorioUsuario = new RepositorioUsuarioPgPromiseAdapter(
   databaseConnection,
   repositorioPerfil,
+);
+const repositorioPermissaoPrisma = new PermissaoRepositorioPgPrismaAdapter();
+const repositorioPerfilPrisma = new PerfilRepositorioPgPrismaAdapter(
+  repositorioPermissaoPrisma,
+);
+const repositorioUsuarioPrisma = new UsuarioRepositorioPgPrismaAdapter(
+  repositorioPerfilPrisma,
 );
 const provedorCriptografia = new ProvedorCriptografiaBcryptAdapter();
 const authToken = new AuthTokenJWTAsymmetricAdapter();
@@ -134,12 +156,26 @@ const registrarUsuario = new RegistrarUsuario(
   repositorioUsuario,
   provedorCriptografia,
 );
-
-const criarPermissao = new CriarPermissao(repositorioPermissaoPrisma);
 const atualizarAccessRefreshTokens = new AtualizarAccessRefreshTokens(
   repositorioUsuario,
   authToken,
 );
+
+const criarPermissao = new CriarPermissao(repositorioPermissaoPrisma);
+const editarPermissao = new EditarPermissao(repositorioPermissaoPrisma);
+const excluirPermissao = new ExcluirPermissao(
+  repositorioPermissaoPrisma,
+  repositorioPerfilPrisma,
+);
+const obterPermissoes = new ObterPermissoes(repositorioPermissaoPrisma);
+
+const criarPerfil = new CriarPerfil(repositorioPerfil, repositorioPermissao);
+const editarPerfil = new EditarPerfil(repositorioPerfil, repositorioPermissao);
+const excluirPerfil = new ExcluirPerfil(
+  repositorioPerfilPrisma,
+  repositorioUsuarioPrisma,
+);
+const obterPerfis = new ObterPerfis(repositorioPerfilPrisma);
 // CONTROLLERS -------------------------------------------
 new LoginUsuarioController(authRouter, loginUsuario);
 new RedefinirSenhaPorEmailController(authRouter, redefinirSenhaPorEmail);
@@ -152,11 +188,20 @@ new AtualizarSenhaPeloEmailTokenController(
   atulizarSenhaPeloEmailToken,
 );
 new RegistrarUsuarioController(authRouter, registrarUsuario);
-new CriarPermissaoController(v1Router, criarPermissao);
 new AtualizarAccessRefreshTokensController(
   authRouter,
   atualizarAccessRefreshTokens,
 );
+
+new CriarPermissaoController(v1Router, criarPermissao);
+new EditarPermissaoController(v1Router, editarPermissao);
+new ExcluirPermissaoController(v1Router, excluirPermissao);
+new ObterPermissoesController(v1Router, obterPermissoes);
+
+new CriarPerfilController(v1Router, criarPerfil);
+new EditarPerfilController(v1Router, editarPerfil);
+new ExcluirPerfilController(v1Router, excluirPerfil);
+new ObterPerfisController(v1Router, obterPerfis);
 // CONSUMERS ---------------------------------------------
 enviarEmailSenhaEsquecida(queueRabbitMQ, servidorEmail);
 // Gerenciamento de Desconexão do RabbitMQ

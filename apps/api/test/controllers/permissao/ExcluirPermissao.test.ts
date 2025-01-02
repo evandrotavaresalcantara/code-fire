@@ -1,16 +1,17 @@
 import { axiosApi } from "../../config";
 import RepositorioPermissaoPrismaPg from "@/adapters/database/PermissaoRepositorioPgPrismaAdapter";
 
-test("Deve criar uma nova permissão", async () => {
+test("Deve excluir uma permissão existente", async () => {
   const ENDPOINT = "/permissoes";
   const data = {
-    name: "permissao1",
-    description: "permissao1-descricao",
+    name: "permissao4",
+    description: "permissao4-descricao",
   };
-  const response = await axiosApi.post(ENDPOINT, data);
-  expect(response.status).toBe(201);
 
+  await axiosApi.post(ENDPOINT, data);
   const repoPermissao = new RepositorioPermissaoPrismaPg();
   const permissao = await repoPermissao.obterPermissaoPorNome(data.name);
-  await repoPermissao.excluirPermissao(`${permissao?.getUuid()}`);
+  const ENDPOINTDELETE = `${ENDPOINT}/${permissao?.getUuid()}`;
+  const response = await axiosApi.delete(ENDPOINTDELETE);
+  expect(response.status).toBe(201);
 });
