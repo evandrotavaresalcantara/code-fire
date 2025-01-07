@@ -128,6 +128,10 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
     }
   }
 
+  limparPerfis() {
+    this.perfis = [];
+  }
+
   setTokenReFreshToken(refreshToken: string, login = false) {
     this.tokenRefreshToken = refreshToken.trim();
     if (login) {

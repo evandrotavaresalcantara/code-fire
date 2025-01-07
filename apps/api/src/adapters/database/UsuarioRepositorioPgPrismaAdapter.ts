@@ -236,7 +236,7 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
         },
       });
     } catch {
-      throw new Error(Errors.PERFIL_NAO_ENCONTRADO_ATUALIZACAO);
+      throw new Error(Errors.USUARIO_NAO_ENCONTRADO_ATUALIZACAO);
     }
 
     await this.prisma.usuario_perfils.deleteMany({
@@ -253,16 +253,12 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
   }
 
   async excluirUsuario(id: string): Promise<void> {
-    await this.prisma.usuario_perfils.deleteMany({
-      where: { usuario_id: id },
-    });
-
     try {
       await this.prisma.usuario.delete({
         where: { id },
       });
     } catch {
-      throw new Error(Errors.PERFIL_NAO_ENCONTRADO_ATUALIZACAO);
+      throw new Error(Errors.USUARIO_NAO_ENCONTRADO_ATUALIZACAO);
     }
   }
 }

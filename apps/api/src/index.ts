@@ -1,8 +1,12 @@
 import {
   AtualizarAccessRefreshTokens,
   AuthTokenJWTAsymmetricAdapter,
+  ObterPerfilPorId,
   ObterPerfis,
+  ObterPermissaoPorId,
   ObterPermissoes,
+  ObterUsuarioPorId,
+  ObterUsuarios,
   RedefinirSenhaPorEmail,
   VerificarTokenRedefinicaoSenha,
 } from "@packages/auth/src";
@@ -51,6 +55,12 @@ import { EditarPerfilController } from "./controllers/perfil/EditarPerfil";
 import { ExcluirPerfilController } from "./controllers/perfil/ExcluirPerfil";
 import { ObterPerfisController } from "./controllers/perfil/ObterPerfis";
 import UsuarioRepositorioPgPrismaAdapter from "./adapters/database/UsuarioRepositorioPgPrismaAdapter";
+import AtualizarPerfilUsuario from "@packages/auth/src/usecases/usuario/AtualizarPerfilUsuario";
+import { AtualizarPerfilUsuarioController } from "./controllers/usuario/AtualizarPerfilUsuarioController";
+import { ObterUsuarioPorIdController } from "./controllers/usuario/ObterUsuarioPorId";
+import { ObterUsuariosController } from "./controllers/usuario/ObterUsuarios";
+import { ObterPermissaoPorIdController } from "./controllers/permissao/ObterPermissaoPorId";
+import { ObterPerfilPorIdController } from "./controllers/perfil/ObterPerfilPorId";
 
 // Configuração Ambiente ----------------------------------------------
 console.log(`🟢 ENVIRONMENT: ${ENV.NODE_ENV} 🟢`);
@@ -160,6 +170,12 @@ const atualizarAccessRefreshTokens = new AtualizarAccessRefreshTokens(
   repositorioUsuario,
   authToken,
 );
+const atualizarPerfilUsuario = new AtualizarPerfilUsuario(
+  repositorioUsuario,
+  repositorioPerfil,
+);
+const obterUsuarios = new ObterUsuarios(repositorioUsuarioPrisma);
+const obterUsuarioPorId = new ObterUsuarioPorId(repositorioUsuarioPrisma);
 
 const criarPermissao = new CriarPermissao(repositorioPermissaoPrisma);
 const editarPermissao = new EditarPermissao(repositorioPermissaoPrisma);
@@ -168,6 +184,7 @@ const excluirPermissao = new ExcluirPermissao(
   repositorioPerfilPrisma,
 );
 const obterPermissoes = new ObterPermissoes(repositorioPermissaoPrisma);
+const obterPermissaoPorId = new ObterPermissaoPorId(repositorioPermissao);
 
 const criarPerfil = new CriarPerfil(repositorioPerfil, repositorioPermissao);
 const editarPerfil = new EditarPerfil(repositorioPerfil, repositorioPermissao);
@@ -176,6 +193,7 @@ const excluirPerfil = new ExcluirPerfil(
   repositorioUsuarioPrisma,
 );
 const obterPerfis = new ObterPerfis(repositorioPerfilPrisma);
+const obterPerfilPorId = new ObterPerfilPorId(repositorioPerfilPrisma);
 // CONTROLLERS -------------------------------------------
 new LoginUsuarioController(authRouter, loginUsuario);
 new RedefinirSenhaPorEmailController(authRouter, redefinirSenhaPorEmail);
@@ -192,16 +210,21 @@ new AtualizarAccessRefreshTokensController(
   authRouter,
   atualizarAccessRefreshTokens,
 );
+new AtualizarPerfilUsuarioController(authRouter, atualizarPerfilUsuario);
+new ObterUsuariosController(v1Router, obterUsuarios);
+new ObterUsuarioPorIdController(v1Router, obterUsuarioPorId);
 
 new CriarPermissaoController(v1Router, criarPermissao);
 new EditarPermissaoController(v1Router, editarPermissao);
 new ExcluirPermissaoController(v1Router, excluirPermissao);
 new ObterPermissoesController(v1Router, obterPermissoes);
+new ObterPermissaoPorIdController(v1Router, obterPermissaoPorId);
 
 new CriarPerfilController(v1Router, criarPerfil);
 new EditarPerfilController(v1Router, editarPerfil);
 new ExcluirPerfilController(v1Router, excluirPerfil);
 new ObterPerfisController(v1Router, obterPerfis);
+new ObterPerfilPorIdController(v1Router, obterPerfilPorId);
 // CONSUMERS ---------------------------------------------
 enviarEmailSenhaEsquecida(queueRabbitMQ, servidorEmail);
 // Gerenciamento de Desconexão do RabbitMQ

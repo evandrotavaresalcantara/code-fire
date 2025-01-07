@@ -1,5 +1,6 @@
 export * from "./AtualizarSenha";
 export * from "./AtualizarUsuario";
+export * from "./AtualizarPerfilUsuario";
 export * from "./DesabilitarUsuario";
 export * from "./HabilitarUsuario";
 export * from "./LoginUsuario";
@@ -11,3 +12,5 @@ export * from "./RedefinirSenhaPorEmail";
 export * from "./RegistrarUsuario";
 export * from "./RemoverUsuario";
 export * from "./VerificarTokenRedefinicaoSenha";
+export * from "./ObterUsuarios";
+export * from "./ObterUsuarioPorId";

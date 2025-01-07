@@ -5,6 +5,7 @@ interface Entrada extends EntidadeProps {
   nomeCompleto?: string;
   celular?: string;
   urlPerfil?: string;
+  perfis?: string[];
 }
 
 export default class AtualizarUsuario implements CasoDeUso<Entrada, void> {
