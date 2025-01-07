@@ -6,7 +6,7 @@ import { Id } from "@packages/common";
 const ENDPOINT = "/permissoes";
 
 test("Deve obter permissão pelo id", async () => {
-  const permissao = { nome: "permissao1", descricao: "descricao" };
+  const permissao = { nome: "permissao5", descricao: "descricao" };
   const novaPermissao = new Permissao(permissao);
   const repoPermissao = new RepositorioPermissaoPrismaPg();
   await repoPermissao.criarPermissao(novaPermissao);
@@ -17,7 +17,7 @@ test("Deve obter permissão pelo id", async () => {
 });
 
 test("Deve retornar null para id não encotrado", async () => {
-  const permissao = { nome: "permissao1", descricao: "descricao" };
+  const permissao = { nome: "permissao6", descricao: "descricao" };
   const novaPermissao = new Permissao(permissao);
   const repoPermissao = new RepositorioPermissaoPrismaPg();
   await repoPermissao.criarPermissao(novaPermissao);

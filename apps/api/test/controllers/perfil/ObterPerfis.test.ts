@@ -6,11 +6,11 @@ test("Deve obter perfis existentes", async () => {
   const ENDPOINT = "/perfis";
   const data1 = {
     name: "perfil7",
-    description: "perfil6-descrição",
+    description: "perfil9-descrição",
   };
   const data2 = {
     name: "perfil8",
-    description: "perfil8-descrição",
+    description: "perfil10-descrição",
   };
   await axiosApi.post(ENDPOINT, data1);
   await axiosApi.post(ENDPOINT, data2);

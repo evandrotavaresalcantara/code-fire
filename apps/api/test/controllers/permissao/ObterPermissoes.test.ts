@@ -4,12 +4,12 @@ import { axiosApi } from "../../config";
 test("Deve obter permissões existentes", async () => {
   const ENDPOINT = "/permissoes";
   const data1 = {
-    name: "editar",
-    description: "edição",
+    name: "permissao7",
+    description: "descricao",
   };
   const data2 = {
-    name: "vizualizar",
-    description: "vizualização",
+    name: "permissao8",
+    description: "descricao",
   };
   await axiosApi.post(ENDPOINT, data1);
   await axiosApi.post(ENDPOINT, data2);

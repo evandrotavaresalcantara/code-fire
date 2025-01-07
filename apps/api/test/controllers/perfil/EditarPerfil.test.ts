@@ -34,8 +34,14 @@ test("Deve editar as permissões de perfil existente", async () => {
   const repoPermissao = new RepositorioPermissaoPrismaPg();
   const repoPerfil = new RepositorioPerfilPrismaPg(repoPermissao);
 
-  const permissao1 = { nome: "permissao2", descricao: "permissao2-descricao" };
-  const permissao2 = { nome: "permissao3", descricao: "permissao3-descricao" };
+  const permissao1 = {
+    nome: "permissao10",
+    descricao: "permissao10-descricao",
+  };
+  const permissao2 = {
+    nome: "permissao11",
+    descricao: "permissao11-descricao",
+  };
   const novaPermissao1 = new Permissao(permissao1);
   const novaPermissao2 = new Permissao(permissao2);
   await repoPermissao.criarPermissao(novaPermissao1);

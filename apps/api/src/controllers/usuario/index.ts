@@ -3,3 +3,7 @@ export * from "./LoginUsuarioController";
 export * from "./RedefinirSenhaPorEmailController";
 export * from "./RegistrarUsuarioController";
 export * from "./VerificarTokenRedefinicaoSenhaController";
+export * from "./ObterUsuarioPorId";
+export * from "./ObterUsuarios";
+export * from "./AtualizarPerfilUsuarioController";
+export * from "./AtualizarUsuarioController";

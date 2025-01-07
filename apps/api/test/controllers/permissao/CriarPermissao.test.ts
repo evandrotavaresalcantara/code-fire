@@ -5,7 +5,7 @@ test("Deve criar uma nova permissão", async () => {
   const ENDPOINT = "/permissoes";
   const data = {
     name: "permissao1",
-    description: "permissao1-descricao",
+    description: "descricao",
   };
   const response = await axiosApi.post(ENDPOINT, data);
   expect(response.status).toBe(201);

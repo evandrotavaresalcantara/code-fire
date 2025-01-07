@@ -32,6 +32,7 @@ import {
 import { ENV } from "./config";
 import {
   AtualizarAccessRefreshTokensController,
+  AtualizarUsuarioController,
   LoginUsuarioController,
   RedefinirSenhaPorEmailController,
   RegistrarUsuarioController,
@@ -61,6 +62,9 @@ import { ObterUsuarioPorIdController } from "./controllers/usuario/ObterUsuarioP
 import { ObterUsuariosController } from "./controllers/usuario/ObterUsuarios";
 import { ObterPermissaoPorIdController } from "./controllers/permissao/ObterPermissaoPorId";
 import { ObterPerfilPorIdController } from "./controllers/perfil/ObterPerfilPorId";
+import AtualizarUsuario from "@packages/auth/src/usecases/usuario/AtualizarUsuario";
+import RemoverUsuario from "@packages/auth/src/usecases/usuario/RemoverUsuario";
+import { RemoverUsuarioController } from "./controllers/usuario/RemoverUsuario";
 
 // Configuração Ambiente ----------------------------------------------
 console.log(`🟢 ENVIRONMENT: ${ENV.NODE_ENV} 🟢`);
@@ -176,6 +180,8 @@ const atualizarPerfilUsuario = new AtualizarPerfilUsuario(
 );
 const obterUsuarios = new ObterUsuarios(repositorioUsuarioPrisma);
 const obterUsuarioPorId = new ObterUsuarioPorId(repositorioUsuarioPrisma);
+const atualizarUsuario = new AtualizarUsuario(repositorioUsuario);
+const removerUsuarios = new RemoverUsuario(repositorioUsuarioPrisma);
 
 const criarPermissao = new CriarPermissao(repositorioPermissaoPrisma);
 const editarPermissao = new EditarPermissao(repositorioPermissaoPrisma);
@@ -211,8 +217,10 @@ new AtualizarAccessRefreshTokensController(
   atualizarAccessRefreshTokens,
 );
 new AtualizarPerfilUsuarioController(authRouter, atualizarPerfilUsuario);
-new ObterUsuariosController(v1Router, obterUsuarios);
-new ObterUsuarioPorIdController(v1Router, obterUsuarioPorId);
+new ObterUsuariosController(authRouter, obterUsuarios);
+new ObterUsuarioPorIdController(authRouter, obterUsuarioPorId);
+new AtualizarUsuarioController(authRouter, atualizarUsuario);
+new RemoverUsuarioController(authRouter, removerUsuarios);
 
 new CriarPermissaoController(v1Router, criarPermissao);
 new EditarPermissaoController(v1Router, editarPermissao);
