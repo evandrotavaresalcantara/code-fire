@@ -8,8 +8,8 @@ export class CriarPermissaoController {
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = {
-            nome: req.body.name as string,
-            descricao: req.body.description as string,
+            nome: req.body.nome as string,
+            descricao: req.body.descricao as string,
           };
           await this.useCase.executar(input);
           res.sendStatus(201);

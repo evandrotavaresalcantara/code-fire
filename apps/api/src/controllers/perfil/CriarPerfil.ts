@@ -8,10 +8,10 @@ export class CriarPerfilController {
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = {
-            nome: req.body.name as string,
-            descricao: req.body.description as string,
-            ativo: req.body.active as boolean,
-            permissoes: req.body.permissions as [],
+            nome: req.body.nome as string,
+            descricao: req.body.descricao as string,
+            ativo: req.body.ativo as boolean,
+            permissoes: req.body.permissoes as string[],
           };
           await this.useCase.executar(input);
           res.sendStatus(201);

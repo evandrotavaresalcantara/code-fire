@@ -8,11 +8,11 @@ export class RegistrarUsuarioController {
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = {
-            nomeCompleto: req.body.name as string,
-            senhaConfirmacao: req.body.passwordConfirm as string,
+            nomeCompleto: req.body.nome as string,
+            senhaConfirmacao: req.body.senhaConfirmacao as string,
             email: req.body.email as string,
-            senha: req.body.password as string,
-            celular: req.body.telephone as string,
+            senha: req.body.senha as string,
+            celular: req.body.telefone as string,
           };
           await this.useCase.executar(input);
           res.sendStatus(201);

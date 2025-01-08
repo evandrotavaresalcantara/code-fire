@@ -9,7 +9,7 @@ export class AtualizarPerfilUsuarioController {
         try {
           const input = {
             id: req.params.id as string,
-            perfis: req.body.profiles as string[],
+            perfis: req.body.perfis as string[],
           };
           await this.useCase.executar(input);
           res.sendStatus(201);

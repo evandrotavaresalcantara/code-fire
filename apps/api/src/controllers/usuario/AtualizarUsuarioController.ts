@@ -9,9 +9,9 @@ export class AtualizarUsuarioController {
         try {
           const input = {
             id: req.params.id as string,
-            nomeCompleto: req.body.name as string,
-            celular: req.body.telephone as string,
-            urlPerfil: req.body.avatar as string,
+            nomeCompleto: req.body.nome as string,
+            celular: req.body.telefone as string,
+            urlPerfil: req.body.urlPerfil as string,
           };
           await this.useCase.executar(input);
           res.sendStatus(201);

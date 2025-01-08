@@ -12,8 +12,8 @@ export class AtualizarSenhaPeloEmailTokenController {
         try {
           const input = {
             token: req.body.token as string,
-            senhaNova: req.body.password as string,
-            senhaNovaConfirmacao: req.body.passwordConfirm as string,
+            senhaNova: req.body.senhaNova as string,
+            senhaNovaConfirmacao: req.body.senhaNovaConfirmacao as string,
           };
           const output = await this.useCase.executar(input);
           res.status(200).json(output);
