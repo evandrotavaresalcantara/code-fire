@@ -65,6 +65,7 @@ import { ObterPerfilPorIdController } from "./controllers/perfil/ObterPerfilPorI
 import AtualizarUsuario from "@packages/auth/src/usecases/usuario/AtualizarUsuario";
 import RemoverUsuario from "@packages/auth/src/usecases/usuario/RemoverUsuario";
 import { RemoverUsuarioController } from "./controllers/usuario/RemoverUsuario";
+import { PrismaClient } from "@prisma/client";
 
 // Configuração Ambiente ----------------------------------------------
 console.log(`🟢 ENVIRONMENT: ${ENV.NODE_ENV} 🟢`);
@@ -116,6 +117,7 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
 });
 // ADAPTADORES --------------------------------------------
 const databaseConnection = new PgPromiseAdapter();
+const conexaoPrisma = new PrismaClient();
 const queueRabbitMQ = RabbitMQAdapter.getInstance(
   ENV.AMQP_USER,
   ENV.AMQP_PASSWORD,
@@ -140,47 +142,51 @@ const repositorioUsuario = new RepositorioUsuarioPgPromiseAdapter(
   databaseConnection,
   repositorioPerfil,
 );
-const repositorioPermissaoPrisma = new PermissaoRepositorioPgPrismaAdapter();
+const repositorioPermissaoPrisma = new PermissaoRepositorioPgPrismaAdapter(
+  conexaoPrisma,
+);
 const repositorioPerfilPrisma = new PerfilRepositorioPgPrismaAdapter(
+  conexaoPrisma,
   repositorioPermissaoPrisma,
 );
 const repositorioUsuarioPrisma = new UsuarioRepositorioPgPrismaAdapter(
+  conexaoPrisma,
   repositorioPerfilPrisma,
 );
 const provedorCriptografia = new ProvedorCriptografiaBcryptAdapter();
 const authToken = new AuthTokenJWTAsymmetricAdapter();
 // CASOS DE USO ------------------------------------------
 const loginUsuario = new LoginUsuario(
-  repositorioUsuario,
+  repositorioUsuarioPrisma,
   provedorCriptografia,
   authToken,
 );
 const redefinirSenhaPorEmail = new RedefinirSenhaPorEmail(
-  repositorioUsuario,
+  repositorioUsuarioPrisma,
   queueRabbitMQ,
 );
 const verificarTokenRedefinicaoSenha = new VerificarTokenRedefinicaoSenha(
-  repositorioUsuario,
+  repositorioUsuarioPrisma,
 );
 const atulizarSenhaPeloEmailToken = new AtualizarSenhaPeloEmailToken(
-  repositorioUsuario,
+  repositorioUsuarioPrisma,
   provedorCriptografia,
 );
 const registrarUsuario = new RegistrarUsuario(
-  repositorioUsuario,
+  repositorioUsuarioPrisma,
   provedorCriptografia,
 );
 const atualizarAccessRefreshTokens = new AtualizarAccessRefreshTokens(
-  repositorioUsuario,
+  repositorioUsuarioPrisma,
   authToken,
 );
 const atualizarPerfilUsuario = new AtualizarPerfilUsuario(
-  repositorioUsuario,
+  repositorioUsuarioPrisma,
   repositorioPerfil,
 );
 const obterUsuarios = new ObterUsuarios(repositorioUsuarioPrisma);
 const obterUsuarioPorId = new ObterUsuarioPorId(repositorioUsuarioPrisma);
-const atualizarUsuario = new AtualizarUsuario(repositorioUsuario);
+const atualizarUsuario = new AtualizarUsuario(repositorioUsuarioPrisma);
 const removerUsuarios = new RemoverUsuario(repositorioUsuarioPrisma);
 
 const criarPermissao = new CriarPermissao(repositorioPermissaoPrisma);
@@ -190,10 +196,16 @@ const excluirPermissao = new ExcluirPermissao(
   repositorioPerfilPrisma,
 );
 const obterPermissoes = new ObterPermissoes(repositorioPermissaoPrisma);
-const obterPermissaoPorId = new ObterPermissaoPorId(repositorioPermissao);
+const obterPermissaoPorId = new ObterPermissaoPorId(repositorioPermissaoPrisma);
 
-const criarPerfil = new CriarPerfil(repositorioPerfil, repositorioPermissao);
-const editarPerfil = new EditarPerfil(repositorioPerfil, repositorioPermissao);
+const criarPerfil = new CriarPerfil(
+  repositorioPerfilPrisma,
+  repositorioPermissaoPrisma,
+);
+const editarPerfil = new EditarPerfil(
+  repositorioPerfilPrisma,
+  repositorioPermissaoPrisma,
+);
 const excluirPerfil = new ExcluirPerfil(
   repositorioPerfilPrisma,
   repositorioUsuarioPrisma,

@@ -133,9 +133,30 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
     return usuario;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async obterUsuarioPorPerfilId(id: string): Promise<Usuario | undefined> {
-    throw new Error("Method not implemented.");
+    const statement = `
+       SELECT p.* 
+       FROM ${this.tabelaUsuario} p
+       INNER JOIN ${this.tabelaUsuarioPerfils} pp ON pp.usuario_id = p.id
+       WHERE pp.perfil_id = $1
+     `;
+    const [usuarioData] = await this.conexao.query<UsuarioSchema[]>(statement, [
+      id,
+    ]);
+    if (!usuarioData) return;
+    const usuario = new Usuario(usuarioData);
+    const statementPerfis = `SELECT * FROM ${this.tabelaUsuarioPerfils} WHERE usuario_id = $1`;
+    const usuarioPerfisData = await this.conexao.query<UsuarioPerfilsSchema[]>(
+      statementPerfis,
+      [usuarioData.id],
+    );
+    for (const usuarioPerfil of usuarioPerfisData) {
+      const perfil = await this.perfilRepositorio.obterPerfilPorId(
+        usuarioPerfil.perfil_id,
+      );
+      if (perfil) usuario.adiconarPerfil(perfil);
+    }
+    return usuario;
   }
 
   async obterPorEmail(email: string): Promise<Usuario | undefined> {

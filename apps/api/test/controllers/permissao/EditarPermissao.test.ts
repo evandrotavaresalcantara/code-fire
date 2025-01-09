@@ -1,22 +1,24 @@
 import { axiosApi } from "../../config";
 import RepositorioPermissaoPrismaPg from "@/adapters/database/PermissaoRepositorioPgPrismaAdapter";
+import conexaoPrismaJest from "../db/ConexaoPrisma";
 
 test("Deve editar uma permissão existente", async () => {
   const ENDPOINT = "/permissoes";
   const data = {
-    name: "permissao2",
-    description: "permissao2-descricao",
+    nome: "permissao2",
+    descricao: "permissao2-descricao",
   };
   const dataUpdate = {
-    name: "permissao3",
-    description: "permissao3-descricao",
+    nome: "permissao3",
+    descricao: "permissao3-descricao",
   };
   await axiosApi.post(ENDPOINT, data);
-  const repoPermissao = new RepositorioPermissaoPrismaPg();
-  const permissao = await repoPermissao.obterPermissaoPorNome(data.name);
+  const repoPermissao = new RepositorioPermissaoPrismaPg(conexaoPrismaJest);
+  const permissao = await repoPermissao.obterPermissaoPorNome(data.nome);
   const ENDPOINTUPDATE = `${ENDPOINT}/${permissao?.getUuid()}`;
 
   const response = await axiosApi.put(ENDPOINTUPDATE, dataUpdate);
-  expect(response.status).toBe(201);
   await repoPermissao.excluirPermissao(`${permissao?.getUuid()}`);
+
+  expect(response.status).toBe(201);
 });

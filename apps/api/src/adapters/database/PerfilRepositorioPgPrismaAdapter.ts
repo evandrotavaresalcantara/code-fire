@@ -4,8 +4,11 @@ import { PrismaClient } from "@prisma/client";
 
 export default class RepositorioPerfilPrismaPg implements RepositorioPerfil {
   private readonly prisma: PrismaClient;
-  constructor(private permissaoRepositorio: RepositorioPermissao) {
-    this.prisma = new PrismaClient();
+  constructor(
+    conexaoPrisma: PrismaClient,
+    private permissaoRepositorio: RepositorioPermissao,
+  ) {
+    this.prisma = conexaoPrisma;
   }
   async obterPerfis(): Promise<Perfil[]> {
     const perfilsData = await this.prisma.perfil.findMany({

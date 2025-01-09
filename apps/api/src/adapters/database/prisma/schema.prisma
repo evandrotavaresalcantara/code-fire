@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL_PRISMA")
+  url      = env("DATABASE_URL")
 }
 
 model permissao {
@@ -42,7 +42,7 @@ model usuario {
   senha                               String            @db.VarChar(60)
   data_criacao                        DateTime          @db.Timestamptz(6)
   ativo                               Boolean           @default(true)
-  refresh_token                       String?           @db.Char(1172)
+  refresh_token                       String?           @db.VarChar(2024)
   data_expiracao_refresh_token        DateTime?         @db.Timestamptz(6)
   recuperar_senha_token               String?           @db.Uuid
   data_expiraca_recuperar_senha_token DateTime?         @db.Timestamptz(6)

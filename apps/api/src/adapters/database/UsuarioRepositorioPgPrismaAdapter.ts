@@ -5,8 +5,11 @@ import { PrismaClient } from "@prisma/client";
 export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
   private readonly prisma: PrismaClient;
 
-  constructor(private perfilRepositorio: RepositorioPerfil) {
-    this.prisma = new PrismaClient();
+  constructor(
+    conexaoPrisma: PrismaClient,
+    private perfilRepositorio: RepositorioPerfil,
+  ) {
+    this.prisma = conexaoPrisma;
   }
 
   async obterUsuarios(): Promise<Usuario[]> {

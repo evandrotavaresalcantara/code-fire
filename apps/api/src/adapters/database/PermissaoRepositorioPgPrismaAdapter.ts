@@ -1,13 +1,13 @@
-import { PrismaClient } from "@prisma/client";
 import RepositorioPermissao from "@packages/auth/src/provider/RepositorioPermissao";
 import { Errors, Permissao } from "@packages/auth/src";
+import { PrismaClient } from "@prisma/client";
 
 export default class RepositorioPermissaoPrismaPg
   implements RepositorioPermissao
 {
   private readonly prisma: PrismaClient;
-  constructor() {
-    this.prisma = new PrismaClient();
+  constructor(conexaoPrisma: PrismaClient) {
+    this.prisma = conexaoPrisma;
   }
 
   async obterPermissoes(): Promise<Permissao[]> {

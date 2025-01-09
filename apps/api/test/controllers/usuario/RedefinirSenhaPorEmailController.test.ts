@@ -8,5 +8,6 @@ test("Deve enviar um email e retornar status 204", async () => {
     baseUrl: "http://localhost:3000/accounts/recovery",
   };
   const response = await axiosApi.post(ENDPOINT, data);
+
   expect(response.status).toBe(204);
 });

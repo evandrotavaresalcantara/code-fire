@@ -2,6 +2,7 @@ import RepositorioPerfilPrismaPg from "@/adapters/database/PerfilRepositorioPgPr
 import { axiosApi } from "../../config";
 import RepositorioPermissaoPrismaPg from "@/adapters/database/PermissaoRepositorioPgPrismaAdapter";
 import { Perfil, Permissao } from "@packages/auth/src";
+import conexaoPrismaJest from "../db/ConexaoPrisma";
 
 test("Deve editar um perfil existente", async () => {
   const ENDPOINT = "/perfis";
@@ -11,12 +12,15 @@ test("Deve editar um perfil existente", async () => {
     ativo: true,
   };
   const data = {
-    name: "perfil4",
-    description: "perfil4-descrição",
-    active: true,
+    nome: "perfil4",
+    descricao: "perfil4-descrição",
+    ativo: true,
   };
-  const repoPermissao = new RepositorioPermissaoPrismaPg();
-  const repoPerfil = new RepositorioPerfilPrismaPg(repoPermissao);
+  const repoPermissao = new RepositorioPermissaoPrismaPg(conexaoPrismaJest);
+  const repoPerfil = new RepositorioPerfilPrismaPg(
+    conexaoPrismaJest,
+    repoPermissao,
+  );
   const novoPerfil = new Perfil(perfil);
   await repoPerfil.criarPerfil(novoPerfil);
   const perfilSalvo = await repoPerfil.obterPerfilPorNome(perfil.nome);
@@ -25,14 +29,17 @@ test("Deve editar um perfil existente", async () => {
     `${ENDPOINT}/${perfilSalvo?.getUuid()}`,
     data,
   );
+  await repoPerfil.excluirPerfil(`${perfilSalvo?.getUuid()}`);
 
   expect(response.status).toBe(201);
-  await repoPerfil.excluirPerfil(`${perfilSalvo?.getUuid()}`);
 });
 
 test("Deve editar as permissões de perfil existente", async () => {
-  const repoPermissao = new RepositorioPermissaoPrismaPg();
-  const repoPerfil = new RepositorioPerfilPrismaPg(repoPermissao);
+  const repoPermissao = new RepositorioPermissaoPrismaPg(conexaoPrismaJest);
+  const repoPerfil = new RepositorioPerfilPrismaPg(
+    conexaoPrismaJest,
+    repoPermissao,
+  );
 
   const permissao1 = {
     nome: "permissao10",
@@ -64,10 +71,10 @@ test("Deve editar as permissões de perfil existente", async () => {
 
   const ENDPOINT = "/perfis";
   const data = {
-    name: "perfil5",
-    description: "perfil5-descrição",
-    active: true,
-    permissions: [
+    nome: "perfil5",
+    descricao: "perfil5-descrição",
+    ativo: true,
+    permissoes: [
       `${permissaoSalva1?.getUuid()}`,
       `${permissaoSalva2?.getUuid()}`,
     ],
@@ -76,9 +83,9 @@ test("Deve editar as permissões de perfil existente", async () => {
     `${ENDPOINT}/${perfilSalvo?.getUuid()}`,
     data,
   );
-  expect(response.status).toBe(201);
-
   await repoPermissao.excluirPermissao(`${permissaoSalva1?.getUuid()}`);
   await repoPermissao.excluirPermissao(`${permissaoSalva2?.getUuid()}`);
   await repoPerfil.excluirPerfil(`${perfilSalvo?.getUuid()}`);
+
+  expect(response.status).toBe(201);
 });

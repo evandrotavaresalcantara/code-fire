@@ -3,21 +3,28 @@ import { axiosApi } from "../../config";
 import RepositorioPerfilPrismaPg from "@/adapters/database/PerfilRepositorioPgPrismaAdapter";
 import RepositorioPermissaoPrismaPg from "@/adapters/database/PermissaoRepositorioPgPrismaAdapter";
 import { Perfil } from "@packages/auth/src";
+import conexaoPrismaJest from "../db/ConexaoPrisma";
 
 const ENDPOINT_REGISTRAR_USUARIO = "/auth/registrar-usuario";
 const ENDPOINT_ATUALIZAR_PERFIL = "/auth/atualizar-perfil";
 
 test("Deve atualizar o perfil do usuário", async () => {
-  const repoPermissao = new RepositorioPermissaoPrismaPg();
-  const repoPerfil = new RepositorioPerfilPrismaPg(repoPermissao);
-  const repoUsuario = new RepositorioUsuarioPrismaPg(repoPerfil);
+  const repoPermissao = new RepositorioPermissaoPrismaPg(conexaoPrismaJest);
+  const repoPerfil = new RepositorioPerfilPrismaPg(
+    conexaoPrismaJest,
+    repoPermissao,
+  );
+  const repoUsuario = new RepositorioUsuarioPrismaPg(
+    conexaoPrismaJest,
+    repoPerfil,
+  );
 
   const usuarioData = {
-    name: "Usuario Teste",
+    nome: "Usuario Teste",
     email: "usuarioteste@zmail.com",
-    password: "Abc@123",
-    passwordConfirm: "Abc@123",
-    telephone: "+5581922221111",
+    senha: "Abc@123",
+    senhaConfirmacao: "Abc@123",
+    telefone: "+5581922221111",
   };
   await axiosApi.post(ENDPOINT_REGISTRAR_USUARIO, usuarioData);
 
@@ -41,14 +48,14 @@ test("Deve atualizar o perfil do usuário", async () => {
     perfis: [`${perfil1Salvo?.getUuid()}`, `${perfil2Salvo?.getUuid()}`],
   };
 
-  const response = await axiosApi.post(
+  const response = await axiosApi.put(
     `${ENDPOINT_ATUALIZAR_PERFIL}/${usuarioSalvo?.getUuid()}`,
     data,
   );
 
-  expect(response.status).toBe(201);
-
+  await repoUsuario.excluirUsuario(`${usuarioSalvo?.getUuid()}`);
   await repoPerfil.excluirPerfil(`${perfil1Salvo?.getUuid()}`);
   await repoPerfil.excluirPerfil(`${perfil2Salvo?.getUuid()}`);
-  await repoUsuario.excluirUsuario(`${usuarioSalvo?.getUuid()}`);
+
+  expect(response.status).toBe(201);
 });

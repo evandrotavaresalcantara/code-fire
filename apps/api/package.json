@@ -9,9 +9,10 @@
     "lint": "eslint .",
     "dev:linux": "nodemon --watch 'src/**' --ext 'ts,json' --ignore 'src/**/*.test.ts' --exec 'ts-node -r tsconfig-paths/register src/index.ts/'",
     "dev": " nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.test.ts\" --exec \"ts-node -r tsconfig-paths/register src/index.ts\"",
-    "test": "jest",
+    "test": "jest --runInBand",
     "test:coverage": "jest --coverage",
-    "test:openCoverage": "open coverage/lcov-report/index.html"
+    "test:openCoverage": "open coverage/lcov-report/index.html",
+    "prisma": "prisma generate"
   },
   "keywords": [],
   "author": "Braulio Henrique Marques Souto <braulio@disroot.org>",

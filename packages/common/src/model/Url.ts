@@ -1,31 +1,31 @@
 export default class Url {
-    private url: URL
+  private url: URL;
 
-    constructor(valor?: string) {
-        if (!valor) {
-            throw new Error('url inválida.')
-        }
-
-        if (!Url.isValida(valor)) {
-            throw new Error('url inválida.')
-        }
-        this.url = new URL(valor)
+  constructor(valor?: string) {
+    if (!valor) {
+      throw new Error("url inválida.");
     }
 
-    get valor(){
-        return this.url.href
+    if (!Url.isValida(valor)) {
+      throw new Error("url inválida.");
     }
+    this.url = new URL(valor);
+  }
 
-    get dominio(){
-        return this.url.hostname
-    }
+  get valor() {
+    return this.url.href;
+  }
 
-    static isValida(url: string): boolean {
-        try {
-            new URL(url)
-            return true
-        } catch (error) {
-            return false
-        }
+  get dominio() {
+    return this.url.hostname;
+  }
+
+  static isValida(url: string): boolean {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
     }
+  }
 }

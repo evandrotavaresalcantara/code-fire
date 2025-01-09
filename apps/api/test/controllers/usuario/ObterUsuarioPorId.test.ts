@@ -4,8 +4,9 @@ import RepositorioPerfilPrismaPg from "@/adapters/database/PerfilRepositorioPgPr
 import RepositorioUsuarioPrismaPg from "@/adapters/database/UsuarioRepositorioPgPrismaAdapter";
 import { Usuario } from "@packages/auth/src";
 import { Id } from "@packages/common";
+import conexaoPrismaJest from "../db/ConexaoPrisma";
 
-const ENDPOINT = "/usuarios";
+const ENDPOINT = "/auth/usuarios";
 const hash1 = "$2b$10$TUI.yyDk3K5N38xy3grJ0eNFUf8Kk827oUfREU.t7sIXpB8VRBfUm";
 
 test("Deve obter usuário pelo id", async () => {
@@ -17,15 +18,22 @@ test("Deve obter usuário pelo id", async () => {
   };
 
   const novoUsuario = new Usuario(usuario);
-  const repoPrisma = new RepositorioPermissaoPrismaPg();
-  const repoPerfil = new RepositorioPerfilPrismaPg(repoPrisma);
-  const repoUsuario = new RepositorioUsuarioPrismaPg(repoPerfil);
+  const repoPrisma = new RepositorioPermissaoPrismaPg(conexaoPrismaJest);
+  const repoPerfil = new RepositorioPerfilPrismaPg(
+    conexaoPrismaJest,
+    repoPrisma,
+  );
+  const repoUsuario = new RepositorioUsuarioPrismaPg(
+    conexaoPrismaJest,
+    repoPerfil,
+  );
 
   await repoUsuario.criarUsuario(novoUsuario);
 
   const response = await axiosApi.get(`${ENDPOINT}/${novoUsuario.getUuid()}`);
-  expect(response.status).toBe(200);
   await repoUsuario.excluirUsuario(novoUsuario.getUuid());
+
+  expect(response.status).toBe(200);
 });
 
 test("Deve retornar null para id não encotrado", async () => {
@@ -37,14 +45,20 @@ test("Deve retornar null para id não encotrado", async () => {
   };
 
   const novoUsuario = new Usuario(usuario);
-  const repoPrisma = new RepositorioPermissaoPrismaPg();
-  const repoPerfil = new RepositorioPerfilPrismaPg(repoPrisma);
-  const repoUsuario = new RepositorioUsuarioPrismaPg(repoPerfil);
+  const repoPrisma = new RepositorioPermissaoPrismaPg(conexaoPrismaJest);
+  const repoPerfil = new RepositorioPerfilPrismaPg(
+    conexaoPrismaJest,
+    repoPrisma,
+  );
+  const repoUsuario = new RepositorioUsuarioPrismaPg(
+    conexaoPrismaJest,
+    repoPerfil,
+  );
 
   await repoUsuario.criarUsuario(novoUsuario);
-
   const response = await axiosApi.get(`${ENDPOINT}/${Id.novo.uuid}`);
+  await repoUsuario.excluirUsuario(novoUsuario.getUuid());
+
   expect(response.status).toBe(200);
   expect(response.data).toBeNull();
-  await repoUsuario.excluirUsuario(novoUsuario.getUuid());
 });

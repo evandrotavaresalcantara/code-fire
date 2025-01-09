@@ -2,43 +2,47 @@ import RepositorioPerfilPrismaPg from "@/adapters/database/PerfilRepositorioPgPr
 import { axiosApi } from "../../config";
 import RepositorioPermissaoPrismaPg from "@/adapters/database/PermissaoRepositorioPgPrismaAdapter";
 import { Permissao } from "@packages/auth/src";
+import conexaoPrismaJest from "../db/ConexaoPrisma";
 
 const ENDPOINT = "/perfis";
-
 test("Deve criar um novo perfil sem permissão", async () => {
   const data = {
-    name: "perfil1",
-    description: "perfil1-descricao",
-    active: true,
+    nome: "perfil1",
+    descricao: "perfil1-descricao",
+    ativo: true,
   };
   const response = await axiosApi.post(ENDPOINT, data);
-  expect(response.status).toBe(201);
-
   const repoPerfil = new RepositorioPerfilPrismaPg(
-    new RepositorioPermissaoPrismaPg(),
+    conexaoPrismaJest,
+    new RepositorioPermissaoPrismaPg(conexaoPrismaJest),
   );
-  const perfil = await repoPerfil.obterPerfilPorNome(data.name);
+  const perfil = await repoPerfil.obterPerfilPorNome(data.nome);
   if (perfil) await repoPerfil.excluirPerfil(perfil.getUuid());
+
+  expect(response.status).toBe(201);
 });
 
 test("Deve criar um novo perfil com uma permissão", async () => {
   const permissao = { nome: "permissao9", descricao: "permissao9-descricao" };
   const novaPermissao = new Permissao(permissao);
-  const repoPermissao = new RepositorioPermissaoPrismaPg();
-  const repoPerfil = new RepositorioPerfilPrismaPg(repoPermissao);
+  const repoPermissao = new RepositorioPermissaoPrismaPg(conexaoPrismaJest);
+  const repoPerfil = new RepositorioPerfilPrismaPg(
+    conexaoPrismaJest,
+    repoPermissao,
+  );
   await repoPermissao.criarPermissao(novaPermissao);
 
   const ENDPOINT = "/perfis";
   const data = {
-    name: "perfil2",
-    description: "perfil2-descrição",
-    active: true,
-    permissions: [novaPermissao.getUuid()],
+    nome: "perfil2",
+    descricao: "perfil2-descrição",
+    ativo: true,
+    permissoes: [novaPermissao.getUuid()],
   };
   const response = await axiosApi.post(ENDPOINT, data);
-  expect(response.status).toBe(201);
-
-  const perfil = await repoPerfil.obterPerfilPorNome(data.name);
+  const perfil = await repoPerfil.obterPerfilPorNome(data.nome);
   await repoPermissao.excluirPermissao(novaPermissao.getUuid());
   await repoPerfil.excluirPerfil(`${perfil?.getUuid()}`);
+
+  expect(response.status).toBe(201);
 });

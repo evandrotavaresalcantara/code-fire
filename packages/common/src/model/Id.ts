@@ -1,33 +1,33 @@
-import { validate } from "uuid"
-import { v4 as uuid } from "uuid"
+import { validate } from "uuid";
+import { v4 as uuid } from "uuid";
 
 export default class Id {
-    private valor: string
+  private valor: string;
 
-    constructor(id?: string) {
-        this.valor = id?.trim() ?? uuid()
-        if (!Id.isValido(this.valor)) {
-            throw new Error('Id inválido.')
-        }
+  constructor(id?: string) {
+    this.valor = id?.trim() ?? uuid();
+    if (!Id.isValido(this.valor)) {
+      throw new Error("Id inválido.");
     }
+  }
 
-    static get novo(): Id {
-        return new Id()
-    }
+  static get novo(): Id {
+    return new Id();
+  }
 
-    static isValido(valor: string): boolean {
-        return validate(valor)
-    }
+  static isValido(valor: string): boolean {
+    return validate(valor);
+  }
 
-    get uuid(){
-        return this.valor
-    }
+  get uuid() {
+    return this.valor;
+  }
 
-    igual(id: Id): boolean {
-        return this.valor === id.valor
-    }
+  igual(id: Id): boolean {
+    return this.valor === id.valor;
+  }
 
-    diferente(id: Id): boolean {
-        return this.valor !== id.valor
-    }
+  diferente(id: Id): boolean {
+    return this.valor !== id.valor;
+  }
 }
