@@ -1,10 +1,16 @@
+import { Middleware } from "@/adapters/middlewares/middleware";
 import EditarPerfil from "@packages/auth/src/usecases/perfil/EditarPerfil";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class EditarPerfilController {
-  constructor(private server: Router, private useCase: EditarPerfil) {
+  constructor(
+    private server: Router,
+    private useCase: EditarPerfil,
+    ...middleware: Middleware[]
+  ) {
     this.server.put(
       "/perfis/:id",
+      ...middleware,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = {

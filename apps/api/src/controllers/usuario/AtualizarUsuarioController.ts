@@ -1,10 +1,16 @@
+import { Middleware } from "@/adapters/middlewares/middleware";
 import AtualizarUsuario from "@packages/auth/src/usecases/usuario/AtualizarUsuario";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class AtualizarUsuarioController {
-  constructor(private server: Router, private useCase: AtualizarUsuario) {
+  constructor(
+    private server: Router,
+    private useCase: AtualizarUsuario,
+    ...middleware: Middleware[]
+  ) {
     this.server.put(
       "/atualizar-usuario/:id",
+      ...middleware,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = {

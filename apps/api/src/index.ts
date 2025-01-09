@@ -66,6 +66,7 @@ import AtualizarUsuario from "@packages/auth/src/usecases/usuario/AtualizarUsuar
 import RemoverUsuario from "@packages/auth/src/usecases/usuario/RemoverUsuario";
 import { RemoverUsuarioController } from "./controllers/usuario/RemoverUsuario";
 import { PrismaClient } from "@prisma/client";
+import UsuarioMiddleware from "./adapters/middlewares/UsuarioMiddleware";
 
 // Configuração Ambiente ----------------------------------------------
 console.log(`🟢 ENVIRONMENT: ${ENV.NODE_ENV} 🟢`);
@@ -93,6 +94,7 @@ app.use("/v1", v1Router);
 // ROTAS AUTH ---------------------------------------------
 const authRouter = express.Router();
 v1Router.use("/auth", authRouter);
+
 // Error Handler ------------------------------------------
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   if (res.headersSent) {
@@ -155,9 +157,10 @@ const repositorioUsuarioPrisma = new UsuarioRepositorioPgPrismaAdapter(
 );
 const provedorCriptografia = new ProvedorCriptografiaBcryptAdapter();
 const authToken = new AuthTokenJWTAsymmetricAdapter();
+const rotaProtegida = UsuarioMiddleware(repositorioUsuarioPrisma, authToken);
 // CASOS DE USO ------------------------------------------
 const loginUsuario = new LoginUsuario(
-  repositorioUsuarioPrisma,
+  repositorioUsuario,
   provedorCriptografia,
   authToken,
 );
@@ -228,23 +231,27 @@ new AtualizarAccessRefreshTokensController(
   authRouter,
   atualizarAccessRefreshTokens,
 );
-new AtualizarPerfilUsuarioController(authRouter, atualizarPerfilUsuario);
-new ObterUsuariosController(authRouter, obterUsuarios);
-new ObterUsuarioPorIdController(authRouter, obterUsuarioPorId);
-new AtualizarUsuarioController(authRouter, atualizarUsuario);
-new RemoverUsuarioController(authRouter, removerUsuarios);
+new AtualizarPerfilUsuarioController(
+  authRouter,
+  atualizarPerfilUsuario,
+  rotaProtegida,
+);
+new ObterUsuariosController(authRouter, obterUsuarios, rotaProtegida);
+new ObterUsuarioPorIdController(authRouter, obterUsuarioPorId, rotaProtegida);
+new AtualizarUsuarioController(authRouter, atualizarUsuario, rotaProtegida);
+new RemoverUsuarioController(authRouter, removerUsuarios, rotaProtegida);
 
-new CriarPermissaoController(v1Router, criarPermissao);
-new EditarPermissaoController(v1Router, editarPermissao);
-new ExcluirPermissaoController(v1Router, excluirPermissao);
-new ObterPermissoesController(v1Router, obterPermissoes);
-new ObterPermissaoPorIdController(v1Router, obterPermissaoPorId);
+new CriarPermissaoController(v1Router, criarPermissao, rotaProtegida);
+new EditarPermissaoController(v1Router, editarPermissao, rotaProtegida);
+new ExcluirPermissaoController(v1Router, excluirPermissao, rotaProtegida);
+new ObterPermissaoPorIdController(v1Router, obterPermissaoPorId, rotaProtegida);
+new ObterPermissoesController(v1Router, obterPermissoes, rotaProtegida);
 
-new CriarPerfilController(v1Router, criarPerfil);
-new EditarPerfilController(v1Router, editarPerfil);
-new ExcluirPerfilController(v1Router, excluirPerfil);
-new ObterPerfisController(v1Router, obterPerfis);
-new ObterPerfilPorIdController(v1Router, obterPerfilPorId);
+new CriarPerfilController(v1Router, criarPerfil, rotaProtegida);
+new EditarPerfilController(v1Router, editarPerfil, rotaProtegida);
+new ExcluirPerfilController(v1Router, excluirPerfil, rotaProtegida);
+new ObterPerfisController(v1Router, obterPerfis, rotaProtegida);
+new ObterPerfilPorIdController(v1Router, obterPerfilPorId, rotaProtegida);
 // CONSUMERS ---------------------------------------------
 enviarEmailSenhaEsquecida(queueRabbitMQ, servidorEmail);
 // Gerenciamento de Desconexão do RabbitMQ

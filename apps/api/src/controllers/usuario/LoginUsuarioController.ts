@@ -1,10 +1,16 @@
+import { Middleware } from "@/adapters/middlewares/middleware";
 import LoginUsuario from "@packages/auth/src/usecases/usuario/LoginUsuario";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class LoginUsuarioController {
-  constructor(private server: Router, private useCase: LoginUsuario) {
+  constructor(
+    private server: Router,
+    private useCase: LoginUsuario,
+    ...middleware: Middleware[]
+  ) {
     this.server.post(
       "/login",
+      ...middleware,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = {

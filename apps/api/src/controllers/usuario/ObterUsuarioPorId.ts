@@ -1,10 +1,16 @@
+import { Middleware } from "@/adapters/middlewares/middleware";
 import { ObterUsuarioPorId } from "@packages/auth/src";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class ObterUsuarioPorIdController {
-  constructor(private server: Router, private useCase: ObterUsuarioPorId) {
+  constructor(
+    private server: Router,
+    private useCase: ObterUsuarioPorId,
+    ...middleware: Middleware[]
+  ) {
     this.server.get(
       "/usuarios/:id",
+      ...middleware,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = { id: req.params.id as string };

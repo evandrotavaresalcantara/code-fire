@@ -1,10 +1,16 @@
+import { Middleware } from "@/adapters/middlewares/middleware";
 import CriarPerfil from "@packages/auth/src/usecases/perfil/CriarPerfil";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class CriarPerfilController {
-  constructor(private server: Router, private useCase: CriarPerfil) {
+  constructor(
+    private server: Router,
+    private useCase: CriarPerfil,
+    ...middleware: Middleware[]
+  ) {
     this.server.post(
       "/perfis",
+      ...middleware,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = {

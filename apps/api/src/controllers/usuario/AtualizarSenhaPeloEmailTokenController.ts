@@ -1,3 +1,4 @@
+import { Middleware } from "@/adapters/middlewares/middleware";
 import AtualizarSenhaPeloEmailToken from "@packages/auth/src/usecases/usuario/AtualizarSenhaPeloEmailToken";
 import { NextFunction, Request, Response, Router } from "express";
 
@@ -5,9 +6,11 @@ export class AtualizarSenhaPeloEmailTokenController {
   constructor(
     private server: Router,
     private useCase: AtualizarSenhaPeloEmailToken,
+    ...middleware: Middleware[]
   ) {
     this.server.post(
       "/alterar-senha-email",
+      ...middleware,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = {

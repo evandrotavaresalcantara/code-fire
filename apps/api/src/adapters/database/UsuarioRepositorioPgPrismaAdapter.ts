@@ -196,7 +196,7 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
         senha: usuario.getSenha(),
         data_criacao: usuario.getDataCriacao(),
         ativo: usuario.habilitado,
-        refresh_token: usuario.getTokenRecuperacaoSenha(),
+        refresh_token: usuario.getTokenReFreshToken(),
         data_expiracao_refresh_token: usuario.getDataExpiracaoTokenFreshToken(),
         recuperar_senha_token: usuario.getTokenRecuperacaoSenha(),
         data_expiraca_recuperar_senha_token:

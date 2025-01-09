@@ -1,10 +1,16 @@
+import { Middleware } from "@/adapters/middlewares/middleware";
 import ExcluirPerfil from "@packages/auth/src/usecases/perfil/ExcluirPerfil";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class ExcluirPerfilController {
-  constructor(private server: Router, private useCase: ExcluirPerfil) {
+  constructor(
+    private server: Router,
+    private useCase: ExcluirPerfil,
+    ...middleware: Middleware[]
+  ) {
     this.server.delete(
       "/perfis/:id",
+      ...middleware,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = {

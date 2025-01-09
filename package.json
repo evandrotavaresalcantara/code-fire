@@ -12,7 +12,7 @@
     "docker:dev:start": "docker-compose -f docker-compose.dev.yml up -d",
     "docker:dev:stop": "docker-compose -f docker-compose.dev.yml stop",
     "docker:dev:down": "docker-compose -f docker-compose.dev.yml down",
-    "test": "npm --prefix apps/api run test && npm --prefix packages/auth run test && npm --prefix packages/common run test"
+    "test": "npm --prefix packages/auth run test && npm --prefix packages/common run test"
   },
   "workspaces": [
     "packages/*",

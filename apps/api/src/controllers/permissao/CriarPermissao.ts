@@ -1,10 +1,16 @@
+import { Middleware } from "@/adapters/middlewares/middleware";
 import CriarPermissao from "@packages/auth/src/usecases/permissao/CriarPermissao";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class CriarPermissaoController {
-  constructor(private server: Router, private useCase: CriarPermissao) {
+  constructor(
+    private server: Router,
+    private useCase: CriarPermissao,
+    ...middleware: Middleware[]
+  ) {
     this.server.post(
       "/permissoes",
+      ...middleware,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = {
