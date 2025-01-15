@@ -1,43 +1,54 @@
-import { Id, Email } from "common";
 import { RepositorioUsuario, Usuario } from "../../src";
 
 export default class RepositorioUsuarioMock implements RepositorioUsuario {
-    constructor(private readonly usuarios: Usuario[] = []) { }
+  constructor(private readonly usuarios: Usuario[] = []) {}
+  async obterUsuarioPorTokenRedefinicaoSenha(
+    token: string,
+  ): Promise<Usuario | undefined> {
+    return this.usuarios.find((u) => u.getTokenRecuperacaoSenha() === token);
+  }
 
-    async obterUsuarios(): Promise<Usuario[]> {
-        return this.usuarios
-    }
+  async obterUsuarioPorPerfilId(id: string): Promise<Usuario | undefined> {
+    return this.usuarios.find((usuario) =>
+      usuario.obterPerfis.find((perfil) => perfil.getUuid() === id),
+    );
+  }
 
-    async obterUsuarioPorId(id: Id): Promise<Usuario | null> {
-        return this.usuarios.find((u) => u.id.valor === id.valor) ?? null
-    }
+  async obterUsuarios(): Promise<Usuario[]> {
+    return this.usuarios;
+  }
 
-    async obterPorEmail(email: Email): Promise<Usuario | null> {
-        return this.usuarios.find((u) => email.valor === email.valor) ?? null
-    }
+  async obterUsuarioPorId(id: string): Promise<Usuario | undefined> {
+    return this.usuarios.find((u) => u.getUuid() === id);
+  }
 
-    async criarUsuario(usuario: Usuario): Promise<void> {
-        this._salvar(usuario)
-    }
+  async obterPorEmail(email: string): Promise<Usuario | undefined> {
+    return this.usuarios.find((u) => u.getEmail() === email);
+  }
 
-    async editarUsuario(usuario: Usuario): Promise<void> {
-        this._salvar(usuario)
-    }
-    
-    async excluirUsuario(id: Id): Promise<void> {
-        const index = this.usuarios.findIndex((u) => u.id.valor === id.valor)
-        if (index !== -1) {
-            this.usuarios.splice(index, 1)
-        }
-    }
+  async criarUsuario(usuario: Usuario): Promise<void> {
+    this._salvar(usuario);
+  }
 
-    private _salvar(usuario: Usuario): void {
-        const index = this.usuarios.findIndex((u) => u.id.valor === usuario.id.valor)
-        if (index >= 0) {
-            this.usuarios[index] = usuario
-        } else {
-            this.usuarios.push(usuario)
-        }
-    }
+  async editarUsuario(usuario: Usuario): Promise<void> {
+    this._salvar(usuario);
+  }
 
+  async excluirUsuario(id: string): Promise<void> {
+    const index = this.usuarios.findIndex((u) => u.getUuid() === id);
+    if (index !== -1) {
+      this.usuarios.splice(index, 1);
+    }
+  }
+
+  private _salvar(usuario: Usuario): void {
+    const index = this.usuarios.findIndex(
+      (u) => u.getUuid() === usuario.getUuid(),
+    );
+    if (index >= 0) {
+      this.usuarios[index] = usuario;
+    } else {
+      this.usuarios.push(usuario);
+    }
+  }
 }

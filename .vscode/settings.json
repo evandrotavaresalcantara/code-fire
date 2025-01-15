@@ -1,0 +1,4 @@
+{
+  "jestrunner.runOptions": ["--detectOpenHandles"],
+  "jestrunner.changeDirectoryToWorkspaceRoot": true
+}

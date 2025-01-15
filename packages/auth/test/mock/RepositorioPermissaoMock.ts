@@ -1,38 +1,45 @@
-import { Id } from "common";
 import { Permissao, RepositorioPermissao } from "../../src";
 
-export class RepositorioPermissaoMock implements RepositorioPermissao{
-    constructor(private readonly permissoes: Permissao[] = []){  }
+export class RepositorioPermissaoMock implements RepositorioPermissao {
+  constructor(private readonly permissoes: Permissao[] = []) {}
 
-    async obterPermissoes(): Promise<Permissao[]> {
-        return  this.permissoes
-    }
+  async obterPermissaoPorNome(nome: string): Promise<Permissao | undefined> {
+    return this.permissoes.find(
+      (permissao) => permissao.getNomePermissao() === nome,
+    );
+  }
 
-    async obterPermissaoPorId(id: Id): Promise<Permissao | null> {
-       return this.permissoes.find((p) => p.id.valor === id.valor) ?? null
-    }
+  async obterPermissoes(): Promise<Permissao[]> {
+    return this.permissoes;
+  }
 
-    async criarPermissao(permissao: Permissao): Promise<void> {
-        this._salvar(permissao)
-    }
+  async obterPermissaoPorId(id: string): Promise<Permissao | undefined> {
+    return this.permissoes.find((p) => p.getUuid() === id);
+  }
 
-    async editarPermissao(permissao: Permissao): Promise<void> {
-       this._salvar(permissao)
-    }
+  async criarPermissao(permissao: Permissao): Promise<void> {
+    this._salvar(permissao);
+  }
 
-    async excluirPermissao(id: Id): Promise<void> {
-       const index = this.permissoes.findIndex((p) => p.id.valor === id.valor)
-       if(index !== -1){
-            this.permissoes.splice(index, 1)
-       }
-    }
+  async editarPermissao(permissao: Permissao): Promise<void> {
+    this._salvar(permissao);
+  }
 
-    private _salvar(permissao: Permissao): void {
-        const index = this.permissoes.findIndex((p) => p.id.valor === permissao.id.valor)
-        if(index >=0){
-            this.permissoes[index] = permissao
-        }else{
-            this.permissoes.push(permissao)
-        }
+  async excluirPermissao(id: string): Promise<void> {
+    const index = this.permissoes.findIndex((p) => p.getUuid() === id);
+    if (index !== -1) {
+      this.permissoes.splice(index, 1);
     }
+  }
+
+  private _salvar(permissao: Permissao): void {
+    const index = this.permissoes.findIndex(
+      (p) => p.getUuid() === permissao.getUuid(),
+    );
+    if (index >= 0) {
+      this.permissoes[index] = permissao;
+    } else {
+      this.permissoes.push(permissao);
+    }
+  }
 }

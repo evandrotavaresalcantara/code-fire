@@ -1,14 +1,23 @@
 {
   "name": "code-fire",
-  "workspaces": [
-    "packages/*"
-  ],
   "version": "1.0.0",
   "description": "code-fire",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "test"
+    "frontend": "npm --prefix frontend run dev",
+    "api": "npm --prefix apps/api run dev",
+    "prisma": "npm --prefix apps/api run prisma",
+    "docker:start": "docker compose up -d",
+    "docker:stop": "docker compose stop",
+    "docker:dev:start": "docker-compose -f docker-compose.dev.yml up -d",
+    "docker:dev:stop": "docker-compose -f docker-compose.dev.yml stop",
+    "docker:dev:down": "docker-compose -f docker-compose.dev.yml down",
+    "test": "npm --prefix apps/api run test && npm --prefix packages/auth run test && npm --prefix packages/common run test"
   },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "repository": {
     "type": "git",
     "url": "code-fire"
@@ -17,5 +26,8 @@
     "code-fire"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/eslint-config-prettier": "^6.11.3"
+  }
 }
