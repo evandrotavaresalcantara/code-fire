@@ -12,6 +12,7 @@ const usuarioComSenha = {
   senha: senha1,
   senhaConfirmacao: senha1,
   urlPerfil: "http://imagens.io/fire.png",
+  ativo: true,
 };
 
 const usuarioComSenhaErrada = {
@@ -21,6 +22,7 @@ const usuarioComSenhaErrada = {
   senha: senha1,
   senhaConfirmacao: senhaErrada,
   urlPerfil: "http://imagens.io/fire.png",
+  ativo: true,
 };
 
 test("Deve registrar um novo usuário", async () => {

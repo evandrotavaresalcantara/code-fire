@@ -67,6 +67,16 @@ import RemoverUsuario from "@packages/auth/src/usecases/usuario/RemoverUsuario";
 import { RemoverUsuarioController } from "./controllers/usuario/RemoverUsuario";
 import { PrismaClient } from "@prisma/client";
 import UsuarioMiddleware from "./adapters/middlewares/UsuarioMiddleware";
+import AtualizarSenha from "@packages/auth/src/usecases/usuario/AtualizarSenha";
+import { AtualizarSenhaController } from "./controllers/usuario/AtualizarSenhaController";
+import CriarUsuario from "@packages/auth/src/usecases/usuario/CriarUsuario";
+import { CriarUsuarioController } from "./controllers/usuario/CriarUsuarioController";
+import HabilitarUsuario from "@packages/auth/src/usecases/usuario/HabilitarUsuario";
+import DesabilitarUsuario from "@packages/auth/src/usecases/usuario/DesabilitarUsuario";
+import { HabilitarUsuarioController } from "./controllers/usuario/HabilitarUsuarioController";
+import { DesabilitarUsuarioController } from "./controllers/usuario/DesabilitarUsuarioController";
+import LogoutUsuario from "@packages/auth/src/usecases/usuario/LogoutUsuario";
+import { LogoutUsuarioController } from "./controllers/usuario/LogoutUsuarioController";
 
 // Configuração Ambiente ----------------------------------------------
 console.log(`🟢 ENVIRONMENT: ${ENV.NODE_ENV} 🟢`);
@@ -160,7 +170,7 @@ const authToken = new AuthTokenJWTAsymmetricAdapter();
 const rotaProtegida = UsuarioMiddleware(repositorioUsuarioPrisma, authToken);
 // CASOS DE USO ------------------------------------------
 const loginUsuario = new LoginUsuario(
-  repositorioUsuario,
+  repositorioUsuarioPrisma,
   provedorCriptografia,
   authToken,
 );
@@ -171,7 +181,7 @@ const redefinirSenhaPorEmail = new RedefinirSenhaPorEmail(
 const verificarTokenRedefinicaoSenha = new VerificarTokenRedefinicaoSenha(
   repositorioUsuarioPrisma,
 );
-const atulizarSenhaPeloEmailToken = new AtualizarSenhaPeloEmailToken(
+const atualizarSenhaPeloEmailToken = new AtualizarSenhaPeloEmailToken(
   repositorioUsuarioPrisma,
   provedorCriptografia,
 );
@@ -187,6 +197,18 @@ const atualizarPerfilUsuario = new AtualizarPerfilUsuario(
   repositorioUsuarioPrisma,
   repositorioPerfil,
 );
+const atualizarSenha = new AtualizarSenha(
+  repositorioUsuarioPrisma,
+  provedorCriptografia,
+);
+const criarUsuario = new CriarUsuario(
+  repositorioUsuarioPrisma,
+  provedorCriptografia,
+);
+const habilitarUsuario = new HabilitarUsuario(repositorioUsuarioPrisma);
+const desabilitarUsuario = new DesabilitarUsuario(repositorioUsuarioPrisma);
+const logoutUsuario = new LogoutUsuario(repositorioUsuarioPrisma);
+
 const obterUsuarios = new ObterUsuarios(repositorioUsuarioPrisma);
 const obterUsuarioPorId = new ObterUsuarioPorId(repositorioUsuarioPrisma);
 const atualizarUsuario = new AtualizarUsuario(repositorioUsuarioPrisma);
@@ -224,7 +246,7 @@ new VerificarTokenRedefinicaoSenhaController(
 );
 new AtualizarSenhaPeloEmailTokenController(
   authRouter,
-  atulizarSenhaPeloEmailToken,
+  atualizarSenhaPeloEmailToken,
 );
 new RegistrarUsuarioController(authRouter, registrarUsuario);
 new AtualizarAccessRefreshTokensController(
@@ -236,6 +258,12 @@ new AtualizarPerfilUsuarioController(
   atualizarPerfilUsuario,
   rotaProtegida,
 );
+new AtualizarSenhaController(authRouter, atualizarSenha, rotaProtegida);
+new CriarUsuarioController(authRouter, criarUsuario, rotaProtegida);
+new HabilitarUsuarioController(authRouter, habilitarUsuario, rotaProtegida);
+new DesabilitarUsuarioController(authRouter, desabilitarUsuario, rotaProtegida);
+new LogoutUsuarioController(authRouter, logoutUsuario, rotaProtegida);
+
 new ObterUsuariosController(authRouter, obterUsuarios, rotaProtegida);
 new ObterUsuarioPorIdController(authRouter, obterUsuarioPorId, rotaProtegida);
 new AtualizarUsuarioController(authRouter, atualizarUsuario, rotaProtegida);

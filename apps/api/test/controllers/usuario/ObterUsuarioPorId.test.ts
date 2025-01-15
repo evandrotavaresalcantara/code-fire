@@ -5,11 +5,13 @@ import RepositorioUsuarioPrismaPg from "@/adapters/database/UsuarioRepositorioPg
 import { Usuario } from "@packages/auth/src";
 import { Id } from "@packages/common";
 import conexaoPrismaJest from "../db/ConexaoPrisma";
+import usuarioToken from "../usuarioToken";
 
 const ENDPOINT = "/auth/usuarios";
 const hash1 = "$2b$10$TUI.yyDk3K5N38xy3grJ0eNFUf8Kk827oUfREU.t7sIXpB8VRBfUm";
 
 test("Deve obter usuário pelo id", async () => {
+  const token = await usuarioToken.token();
   const usuario = {
     nomeCompleto: "Usuario Um",
     email: "usuarioum@dev.io",
@@ -30,13 +32,17 @@ test("Deve obter usuário pelo id", async () => {
 
   await repoUsuario.criarUsuario(novoUsuario);
 
-  const response = await axiosApi.get(`${ENDPOINT}/${novoUsuario.getUuid()}`);
+  const response = await axiosApi.get(`${ENDPOINT}/${novoUsuario.getUuid()}`, {
+    headers: { Authorization: token },
+  });
   await repoUsuario.excluirUsuario(novoUsuario.getUuid());
+  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(200);
 });
 
 test("Deve retornar null para id não encotrado", async () => {
+  const token = await usuarioToken.token();
   const usuario = {
     nomeCompleto: "Usuario Um",
     email: "usuarioum@dev.io",
@@ -56,8 +62,11 @@ test("Deve retornar null para id não encotrado", async () => {
   );
 
   await repoUsuario.criarUsuario(novoUsuario);
-  const response = await axiosApi.get(`${ENDPOINT}/${Id.novo.uuid}`);
+  const response = await axiosApi.get(`${ENDPOINT}/${Id.novo.uuid}`, {
+    headers: { Authorization: token },
+  });
   await repoUsuario.excluirUsuario(novoUsuario.getUuid());
+  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(200);
   expect(response.data).toBeNull();

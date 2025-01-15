@@ -227,15 +227,15 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
           senha: usuario.getSenha(),
           data_criacao: usuario.getDataCriacao(),
           ativo: usuario.habilitado,
-          refresh_token: usuario.getTokenRecuperacaoSenha(),
+          refresh_token: usuario.getTokenReFreshToken() ?? null,
           data_expiracao_refresh_token:
-            usuario.getDataExpiracaoTokenFreshToken(),
-          recuperar_senha_token: usuario.getTokenRecuperacaoSenha(),
+            usuario.getDataExpiracaoTokenFreshToken() ?? null,
+          recuperar_senha_token: usuario.getTokenRecuperacaoSenha() ?? null,
           data_expiraca_recuperar_senha_token:
-            usuario.getDataExpiracaoRecuperacaoSenha(),
+            usuario.getDataExpiracaoRecuperacaoSenha() ?? null,
           dois_fatores: usuario.getAutenticacaoDoisFatores(),
-          telefone: usuario.getCelular(),
-          imagem_perfil: usuario.getUrlPerfil(),
+          telefone: usuario.getCelular() ?? null,
+          imagem_perfil: usuario.getUrlPerfil() ?? null,
         },
       });
     } catch {

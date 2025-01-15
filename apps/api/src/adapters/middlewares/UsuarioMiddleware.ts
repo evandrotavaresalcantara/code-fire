@@ -1,8 +1,8 @@
 import { AuthToken, RepositorioUsuario } from "@packages/auth/src";
 import { Request, Response, NextFunction } from "express";
 
-interface emailToken {
-  email: string;
+interface idToken {
+  id: string;
 }
 
 export default function UsuarioMiddleware(
@@ -20,16 +20,16 @@ export default function UsuarioMiddleware(
         return;
       }
 
-      const usuarioToken = provedorToken.decode(token) as emailToken;
+      const usuarioToken = provedorToken.decode(token) as idToken;
       if (!usuarioToken) {
         acessoNegado();
         return;
       }
 
-      const usuario = await repositorioUsuario.obterPorEmail(
-        usuarioToken.email,
+      const usuario = await repositorioUsuario.obterUsuarioPorId(
+        usuarioToken.id,
       );
-      if (!usuario?.habilitado) {
+      if (!usuario?.habilitado || !usuario?.getTokenReFreshToken()) {
         acessoNegado();
         return;
       }

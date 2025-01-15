@@ -14,6 +14,7 @@ test("Deve fazer o login e retornar tokens válido", async () => {
     email: "ususariofire1@dev.io",
     celular: "81986598745",
     senha: hash1,
+    ativo: true,
   };
   const authToken = new AuthTokenJWTAsymmetricAdapter();
   const novoUsuario = new Usuario(usuario);
@@ -52,6 +53,7 @@ test("Deve gerar um erro ao tentar fazer o login com a senha errada", async () =
     email: "ususariofire1@dev.io",
     celular: "81986598745",
     senha: hash1,
+    ativo: true,
   };
   const novoUsuario = new Usuario(usuario);
   const casoDeUso = new LoginUsuario(

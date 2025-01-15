@@ -4,6 +4,7 @@ import RepositorioPerfilPrismaPg from "@/adapters/database/PerfilRepositorioPgPr
 import RepositorioUsuarioPrismaPg from "@/adapters/database/UsuarioRepositorioPgPrismaAdapter";
 import { Usuario } from "@packages/auth/src";
 import conexaoPrismaJest from "../db/ConexaoPrisma";
+import usuarioToken from "../usuarioToken";
 
 const ENDPOINT = "/auth/usuarios";
 const hash1 = "$2b$10$TUI.yyDk3K5N38xy3grJ0eNFUf8Kk827oUfREU.t7sIXpB8VRBfUm";
@@ -18,8 +19,10 @@ const usuario2 = {
   email: "usuariodois@dev.io",
   celular: "81933334444",
   senha: hash1,
+  ativo: true,
 };
 test("Deve obter usuários existentes", async () => {
+  const token = await usuarioToken.token();
   const novoUsuario1 = new Usuario(usuario1);
   const novoUsuario2 = new Usuario(usuario2);
   const repoPrisma = new RepositorioPermissaoPrismaPg(conexaoPrismaJest);
@@ -35,9 +38,12 @@ test("Deve obter usuários existentes", async () => {
   await repoUsuario.criarUsuario(novoUsuario1);
   await repoUsuario.criarUsuario(novoUsuario2);
 
-  const response = await axiosApi.get(ENDPOINT);
+  const response = await axiosApi.get(ENDPOINT, {
+    headers: { Authorization: token },
+  });
 
   await repoUsuario.excluirUsuario(novoUsuario1.getUuid());
+  await usuarioToken.excluirUsuario();
   await repoUsuario.excluirUsuario(novoUsuario2.getUuid());
 
   expect(response.status).toBe(200);

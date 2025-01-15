@@ -12,7 +12,7 @@ interface Entrada {
   ativo: boolean;
 }
 
-export default class RegistrarUsuario implements CasoDeUso<Entrada, void> {
+export default class CriarUsuario implements CasoDeUso<Entrada, void> {
   constructor(
     private repo: RepositorioUsuario,
     private provedorCriptografia: ProvedorCriptografia,

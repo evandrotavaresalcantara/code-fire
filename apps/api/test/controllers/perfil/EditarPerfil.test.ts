@@ -3,8 +3,10 @@ import { axiosApi } from "../../config";
 import RepositorioPermissaoPrismaPg from "@/adapters/database/PermissaoRepositorioPgPrismaAdapter";
 import { Perfil, Permissao } from "@packages/auth/src";
 import conexaoPrismaJest from "../db/ConexaoPrisma";
+import usuarioToken from "../usuarioToken";
 
 test("Deve editar um perfil existente", async () => {
+  const token = await usuarioToken.token();
   const ENDPOINT = "/perfis";
   const perfil = {
     nome: "perfil3",
@@ -28,13 +30,16 @@ test("Deve editar um perfil existente", async () => {
   const response = await axiosApi.put(
     `${ENDPOINT}/${perfilSalvo?.getUuid()}`,
     data,
+    { headers: { Authorization: token } },
   );
   await repoPerfil.excluirPerfil(`${perfilSalvo?.getUuid()}`);
+  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });
 
 test("Deve editar as permissões de perfil existente", async () => {
+  const token = await usuarioToken.token();
   const repoPermissao = new RepositorioPermissaoPrismaPg(conexaoPrismaJest);
   const repoPerfil = new RepositorioPerfilPrismaPg(
     conexaoPrismaJest,
@@ -82,10 +87,12 @@ test("Deve editar as permissões de perfil existente", async () => {
   const response = await axiosApi.put(
     `${ENDPOINT}/${perfilSalvo?.getUuid()}`,
     data,
+    { headers: { Authorization: token } },
   );
   await repoPermissao.excluirPermissao(`${permissaoSalva1?.getUuid()}`);
   await repoPermissao.excluirPermissao(`${permissaoSalva2?.getUuid()}`);
   await repoPerfil.excluirPerfil(`${perfilSalvo?.getUuid()}`);
+  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });

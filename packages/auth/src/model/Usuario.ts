@@ -33,10 +33,10 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
   private celular: Celular | null;
   private urlPerfil: Url | null;
   private ativo: boolean;
-  private tokenRecuperacaoSenha?: string;
-  private dataExpiracaoTokenRecuperacaoSenha?: Date;
   private tokenRefreshToken?: string;
   private dataExpiracaoTokenRefreshToken?: Date;
+  private tokenRecuperacaoSenha?: string;
+  private dataExpiracaoTokenRecuperacaoSenha?: Date;
   private autenticaçãoDoisFatores: boolean;
   private perfis: Perfil[];
 
@@ -50,12 +50,12 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
     this.dataCriacao = props.dataCriacao
       ? new Date(props.dataCriacao)
       : new Date();
-    this.ativo = props.ativo ?? true;
+    this.ativo = props.ativo ? true : false;
+    this.tokenRefreshToken = props.tokenRefreshToken;
+    this.dataExpiracaoTokenRefreshToken = props.dataExpiracaoTokenRefreshToken;
     this.tokenRecuperacaoSenha = props.tokenRecuperacaoSenha;
     this.dataExpiracaoTokenRecuperacaoSenha =
       props.dataExpiracaoTokenRecuperacaoSenha;
-    this.tokenRefreshToken = props.tokenRefreshToken;
-    this.dataExpiracaoTokenRefreshToken = props.dataExpiracaoTokenRefreshToken;
     this.autenticaçãoDoisFatores = props.autenticaçãoDoisFatores
       ? props.autenticaçãoDoisFatores
       : false;
@@ -188,6 +188,11 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
   cleanRecuperacaoSenha() {
     this.tokenRecuperacaoSenha = undefined;
     this.dataExpiracaoTokenRecuperacaoSenha = undefined;
+  }
+
+  limparRefreshToken() {
+    this.tokenRefreshToken = undefined;
+    this.dataExpiracaoTokenRefreshToken = undefined;
   }
 
   getDataCriacao() {

@@ -10,12 +10,15 @@ const usuario = {
   celular: "81911112222",
   senha: hash1,
   urlPerfil: "http://imagens.io/fire.png",
+  ativo: true,
 };
 
 const usuarioAtualizado = {
   nomeCompleto: "Fire Dev atualizado",
   celular: "81922223333",
   urlPerfil: "http://imagens.io/fireAtualizado.png",
+  ativo: true,
+  email: "ususariofire1up@dev.io",
 };
 
 test("Deve atualizar nome, celular e url do usuário", async () => {
@@ -28,6 +31,7 @@ test("Deve atualizar nome, celular e url do usuário", async () => {
     nomeCompleto: usuarioAtualizado.nomeCompleto,
     celular: usuarioAtualizado.celular,
     urlPerfil: usuarioAtualizado.urlPerfil,
+    email: usuarioAtualizado.email,
   });
 
   const usuarioSalvo = await repoUsuario.obterUsuarioPorId(

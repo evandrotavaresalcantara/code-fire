@@ -4,11 +4,13 @@ import RepositorioPerfilPrismaPg from "@/adapters/database/PerfilRepositorioPgPr
 import RepositorioPermissaoPrismaPg from "@/adapters/database/PermissaoRepositorioPgPrismaAdapter";
 import { Perfil } from "@packages/auth/src";
 import conexaoPrismaJest from "../db/ConexaoPrisma";
+import usuarioToken from "../usuarioToken";
 
 const ENDPOINT_REGISTRAR_USUARIO = "/auth/registrar-usuario";
 const ENDPOINT_ATUALIZAR_PERFIL = "/auth/atualizar-perfil";
 
 test("Deve atualizar o perfil do usuário", async () => {
+  const token = await usuarioToken.token();
   const repoPermissao = new RepositorioPermissaoPrismaPg(conexaoPrismaJest);
   const repoPerfil = new RepositorioPerfilPrismaPg(
     conexaoPrismaJest,
@@ -26,7 +28,9 @@ test("Deve atualizar o perfil do usuário", async () => {
     senhaConfirmacao: "Abc@123",
     telefone: "+5581922221111",
   };
-  await axiosApi.post(ENDPOINT_REGISTRAR_USUARIO, usuarioData);
+  await axiosApi.post(ENDPOINT_REGISTRAR_USUARIO, usuarioData, {
+    headers: { Authorization: token },
+  });
 
   const perfil1 = {
     nome: "perfil1",
@@ -51,11 +55,13 @@ test("Deve atualizar o perfil do usuário", async () => {
   const response = await axiosApi.put(
     `${ENDPOINT_ATUALIZAR_PERFIL}/${usuarioSalvo?.getUuid()}`,
     data,
+    { headers: { Authorization: token } },
   );
 
   await repoUsuario.excluirUsuario(`${usuarioSalvo?.getUuid()}`);
   await repoPerfil.excluirPerfil(`${perfil1Salvo?.getUuid()}`);
   await repoPerfil.excluirPerfil(`${perfil2Salvo?.getUuid()}`);
+  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });

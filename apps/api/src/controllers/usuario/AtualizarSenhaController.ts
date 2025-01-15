@@ -1,24 +1,23 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import AtualizarUsuario from "@packages/auth/src/usecases/usuario/AtualizarUsuario";
+import AtualizarSenha from "@packages/auth/src/usecases/usuario/AtualizarSenha";
 import { NextFunction, Request, Response, Router } from "express";
 
-export class AtualizarUsuarioController {
+export class AtualizarSenhaController {
   constructor(
     private server: Router,
-    private useCase: AtualizarUsuario,
+    private useCase: AtualizarSenha,
     ...middleware: Middleware[]
   ) {
     this.server.put(
-      "/atualizar-usuario/:id",
+      "/alterar-senha/:id",
       ...middleware,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = {
             id: req.params.id as string,
-            nomeCompleto: req.body.nome as string,
-            celular: req.body.telefone as string,
-            urlPerfil: req.body.urlPerfil as string,
-            email: req.body.email as string,
+            senhaAntiga: req.body.senhaAntiga as string,
+            senhaNova: req.body.senhaNova as string,
+            senhaNovaConfirmacao: req.body.senhaNovaConfirmacao as string,
           };
           await this.useCase.executar(input);
           res.sendStatus(201);

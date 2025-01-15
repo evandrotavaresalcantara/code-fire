@@ -5,9 +5,9 @@ import RepositorioPermissaoPrismaPg from "@/adapters/database/PermissaoRepositor
 import conexaoPrismaJest from "../db/ConexaoPrisma";
 import usuarioToken from "../usuarioToken";
 
-const ENDPOINT = "/auth/registrar-usuario";
+const ENDPOINT = "/auth/novo-usuario";
 
-test("Deve registrar um novo usuário ", async () => {
+test("Deve criar um novo usuário ", async () => {
   const token = await usuarioToken.token();
   const data = {
     nome: "Usuario Teste",
@@ -15,6 +15,7 @@ test("Deve registrar um novo usuário ", async () => {
     senha: "Abc@123",
     senhaConfirmacao: "Abc@123",
     telefone: "+5581922221111",
+    ativo: true,
   };
   const response = await axiosApi.post(ENDPOINT, data, {
     headers: { Authorization: token },
