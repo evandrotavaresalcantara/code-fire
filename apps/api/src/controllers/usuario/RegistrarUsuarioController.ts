@@ -18,7 +18,7 @@ export class RegistrarUsuarioController {
             senha: req.body.senha as string,
             senhaConfirmacao: req.body.senhaConfirmacao as string,
             email: req.body.email as string,
-            celular: req.body.telefone as string,
+            celular: req.body.celular as string,
             ativo: req.body.ativo as boolean,
           };
           await this.useCase.executar(input);

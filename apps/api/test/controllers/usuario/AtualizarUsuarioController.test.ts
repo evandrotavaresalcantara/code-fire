@@ -14,12 +14,12 @@ test("Deve editar um usuário ", async () => {
     email: "usuarioteste@zmail.com",
     senha: "Abc@123",
     senhaConfirmacao: "Abc@123",
-    telefone: "+5581922221111",
+    celular: "+5581922221111",
     ativo: true,
   };
   const data = {
     nome: "Usuario Atualizado",
-    telefone: "+5581933334444",
+    celular: "+5581933334444",
     urlPerfil: "http://github.com/dev.png",
     email: "usuariotesteup@zmail.com",
   };
