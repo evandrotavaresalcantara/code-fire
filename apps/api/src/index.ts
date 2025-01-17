@@ -209,7 +209,7 @@ const habilitarUsuario = new HabilitarUsuario(repositorioUsuarioPrisma);
 const desabilitarUsuario = new DesabilitarUsuario(repositorioUsuarioPrisma);
 const logoutUsuario = new LogoutUsuario(repositorioUsuarioPrisma);
 
-const obterUsuarios = new ObterUsuarios(repositorioUsuarioPrisma);
+const obterUsuarios = new ObterUsuarios(repositorioUsuario);
 const obterUsuarioPorId = new ObterUsuarioPorId(repositorioUsuarioPrisma);
 const atualizarUsuario = new AtualizarUsuario(repositorioUsuarioPrisma);
 const removerUsuarios = new RemoverUsuario(repositorioUsuarioPrisma);

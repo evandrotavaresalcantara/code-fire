@@ -20,6 +20,7 @@ export class CriarUsuarioController {
             email: req.body.email as string,
             celular: req.body.celular as string,
             ativo: req.body.ativo as boolean,
+            urlPerfil: req.body.urlPerfil as string,
           };
           await this.useCase.executar(input);
           res.sendStatus(201);

@@ -3,7 +3,7 @@ import path from "node:path/posix";
 import { Errors } from "../constants";
 
 export class Bucket {
-  private rootPath = path.resolve(__dirname, "../../../");
+  private rootPath = path.resolve(__dirname, "../");
   private rootFolder = "rootFolder";
   private bucketFolder: string;
   private userId: string;

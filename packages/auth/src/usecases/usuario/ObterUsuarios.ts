@@ -6,9 +6,9 @@ export interface UsuarioDTO {
   id?: string;
   nome?: string;
   email?: string;
-  urlPerfil?: string;
+  urlPerfil?: string | null;
   ativo?: boolean;
-  celular?: string;
+  celular?: string | null;
   perfis?: PerfilDTO[];
 }
 
@@ -18,14 +18,16 @@ export class ObterUsuarios implements CasoDeUso<void, UsuarioDTO[]> {
   async executar(): Promise<UsuarioDTO[]> {
     const usuariosBD = await this.repositorioUsuario.obterUsuarios();
 
-    return usuariosBD.map((usuario) => ({
-      id: usuario.getUuid(),
-      nome: usuario.getNome(),
-      email: usuario.getEmail(),
-      urlPerfil: usuario.getUrlPerfil(),
-      celular: usuario.getCelular(),
-      ativo: usuario.habilitado,
-      perfis: [],
-    }));
+    return usuariosBD.map((usuario) => {
+      return {
+        id: usuario.getUuid(),
+        nome: usuario.getNome(),
+        email: usuario.getEmail(),
+        celular: usuario.getCelular() ?? null,
+        urlPerfil: usuario.getUrlPerfil() ?? null,
+        ativo: usuario.habilitado,
+        perfis: [],
+      };
+    });
   }
 }

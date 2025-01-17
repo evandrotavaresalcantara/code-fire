@@ -1,6 +1,7 @@
 services:
   postgres:
     image: postgres:17-bookworm
+    restart: always
     environment:
       LC_ALL: C.UTF-8
       POSTGRES_PASSWORD: 123456
@@ -14,12 +15,13 @@ services:
 
   rabbitmq:
     image: rabbitmq:4-management
+    restart: always
     hostname: codefire-DEV
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=123
     ports:
-      - 5673:5672
+      - 5672:5672
       - 15672:15672
 
   mongo:

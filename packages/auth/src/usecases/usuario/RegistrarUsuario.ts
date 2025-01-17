@@ -1,4 +1,4 @@
-import { CasoDeUso, Celular, Email, NomeComposto } from "@packages/common";
+import { CasoDeUso, Email } from "@packages/common";
 import { Usuario } from "../../model";
 import SenhaForte from "../../model/obj-valor/SenhaForte";
 import { ProvedorCriptografia, RepositorioUsuario } from "../../provider";
@@ -10,6 +10,7 @@ interface Entrada {
   senhaConfirmacao?: string;
   celular?: string;
   ativo: boolean;
+  urlPerfil?: string;
 }
 
 export default class RegistrarUsuario implements CasoDeUso<Entrada, void> {
@@ -22,19 +23,18 @@ export default class RegistrarUsuario implements CasoDeUso<Entrada, void> {
     if (entrada.senha !== entrada.senhaConfirmacao) {
       throw new Error("Senhas diferentes.");
     }
-    const nomeCompleto = new NomeComposto({ valor: entrada.nomeCompleto });
-    const email = new Email(entrada.email);
     const senha = new SenhaForte(entrada.senha);
-    const celular = new Celular(entrada.celular);
     const hashSenha = this.provedorCriptografia.criptografar(senha.valor);
+    const email = new Email(entrada.email);
     const usuarioExiste = await this.repo.obterPorEmail(email.valor);
     if (usuarioExiste) throw new Error("Usuário já existe.");
     const usuario: Usuario = new Usuario({
-      nomeCompleto: nomeCompleto.nome,
-      email: email.valor,
+      nomeCompleto: entrada.nomeCompleto,
+      email: entrada.email,
       senha: hashSenha,
-      celular: celular.semMascara,
+      celular: entrada.celular,
       ativo: entrada.ativo,
+      urlPerfil: entrada.urlPerfil,
     });
     await this.repo.criarUsuario(usuario);
   }

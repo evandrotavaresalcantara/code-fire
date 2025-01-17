@@ -16,7 +16,7 @@ export class RabbitMQAdapter implements Queue {
   ) {
     this.url = `amqp://${amqpUser ?? "admin"}:${amqpPassword ?? "123"}@${
       amqpHost ?? "localhost"
-    }:${amqpPort ?? "5673"}`;
+    }:${amqpPort ?? "5672"}`;
   }
 
   // Método estático para obter a instância Singleton
