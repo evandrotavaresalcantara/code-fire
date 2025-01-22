@@ -23,8 +23,8 @@ export class VerificarTokenRedefinicaoSenha
     const expiracaoToken = usuario.getDataExpiracaoRecuperacaoSenha();
     if (expiracaoToken) {
       if (expiracaoToken.getTime() > new Date().getTime()) {
-        usuario.cleanRecuperacaoSenha();
-        await this.repositorioUsuario.editarUsuario(usuario);
+        // usuario.cleanRecuperacaoSenha();
+        // await this.repositorioUsuario.editarUsuario(usuario);
         return { isValid: true };
       }
     }

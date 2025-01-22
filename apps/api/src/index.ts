@@ -11,14 +11,29 @@ import {
   VerificarTokenRedefinicaoSenha,
 } from "@packages/auth/src";
 import ProvedorCriptografiaBcryptAdapter from "@packages/auth/src/adapter/Criptografia/ProvedorCriptografiaBcryptAdapter";
+import CriarPerfil from "@packages/auth/src/usecases/perfil/CriarPerfil";
+import EditarPerfil from "@packages/auth/src/usecases/perfil/EditarPerfil";
+import ExcluirPerfil from "@packages/auth/src/usecases/perfil/ExcluirPerfil";
+import CriarPermissao from "@packages/auth/src/usecases/permissao/CriarPermissao";
+import EditarPermissao from "@packages/auth/src/usecases/permissao/EditarPermissao";
+import ExcluirPermissao from "@packages/auth/src/usecases/permissao/ExcluirPermissao";
+import AtualizarPerfilUsuario from "@packages/auth/src/usecases/usuario/AtualizarPerfilUsuario";
+import AtualizarSenha from "@packages/auth/src/usecases/usuario/AtualizarSenha";
 import AtualizarSenhaPeloEmailToken from "@packages/auth/src/usecases/usuario/AtualizarSenhaPeloEmailToken";
+import AtualizarUsuario from "@packages/auth/src/usecases/usuario/AtualizarUsuario";
+import CriarUsuario from "@packages/auth/src/usecases/usuario/CriarUsuario";
+import DesabilitarUsuario from "@packages/auth/src/usecases/usuario/DesabilitarUsuario";
+import HabilitarUsuario from "@packages/auth/src/usecases/usuario/HabilitarUsuario";
 import LoginUsuario from "@packages/auth/src/usecases/usuario/LoginUsuario";
+import LogoutUsuario from "@packages/auth/src/usecases/usuario/LogoutUsuario";
 import RegistrarUsuario from "@packages/auth/src/usecases/usuario/RegistrarUsuario";
+import RemoverUsuario from "@packages/auth/src/usecases/usuario/RemoverUsuario";
 import { ServidorEmailNodeMailerAdapter } from "@packages/email/src";
 import {
   enviarEmailSenhaEsquecida,
   RabbitMQAdapter,
 } from "@packages/queue/src";
+import { PrismaClient } from "@prisma/client";
 import cors, { CorsOptions } from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import helmet from "helmet";
@@ -29,6 +44,10 @@ import {
   RepositorioPermissaoPgPromiseAdapter,
   RepositorioUsuarioPgPromiseAdapter,
 } from "./adapters";
+import PerfilRepositorioPgPrismaAdapter from "./adapters/database/PerfilRepositorioPgPrismaAdapter";
+import PermissaoRepositorioPgPrismaAdapter from "./adapters/database/PermissaoRepositorioPgPrismaAdapter";
+import UsuarioRepositorioPgPrismaAdapter from "./adapters/database/UsuarioRepositorioPgPrismaAdapter";
+import UsuarioMiddleware from "./adapters/middlewares/UsuarioMiddleware";
 import { ENV } from "./config";
 import {
   AtualizarAccessRefreshTokensController,
@@ -38,45 +57,26 @@ import {
   RegistrarUsuarioController,
   VerificarTokenRedefinicaoSenhaController,
 } from "./controllers";
-import { AtualizarSenhaPeloEmailTokenController } from "./controllers/usuario/AtualizarSenhaPeloEmailTokenController";
-import CriarPermissao from "@packages/auth/src/usecases/permissao/CriarPermissao";
-import PermissaoRepositorioPgPrismaAdapter from "./adapters/database/PermissaoRepositorioPgPrismaAdapter";
-import { CriarPermissaoController } from "./controllers/permissao/CriarPermissao";
-import EditarPermissao from "@packages/auth/src/usecases/permissao/EditarPermissao";
-import { EditarPermissaoController } from "./controllers/permissao/EditarPermissao";
-import ExcluirPermissao from "@packages/auth/src/usecases/permissao/ExcluirPermissao";
-import PerfilRepositorioPgPrismaAdapter from "./adapters/database/PerfilRepositorioPgPrismaAdapter";
-import { ExcluirPermissaoController } from "./controllers/permissao/ExcluirPermissao";
-import { ObterPermissoesController } from "./controllers/permissao/ObterPermissoes";
-import CriarPerfil from "@packages/auth/src/usecases/perfil/CriarPerfil";
-import EditarPerfil from "@packages/auth/src/usecases/perfil/EditarPerfil";
-import ExcluirPerfil from "@packages/auth/src/usecases/perfil/ExcluirPerfil";
 import { CriarPerfilController } from "./controllers/perfil/CriarPerfil";
 import { EditarPerfilController } from "./controllers/perfil/EditarPerfil";
 import { ExcluirPerfilController } from "./controllers/perfil/ExcluirPerfil";
+import { ObterPerfilPorIdController } from "./controllers/perfil/ObterPerfilPorId";
 import { ObterPerfisController } from "./controllers/perfil/ObterPerfis";
-import UsuarioRepositorioPgPrismaAdapter from "./adapters/database/UsuarioRepositorioPgPrismaAdapter";
-import AtualizarPerfilUsuario from "@packages/auth/src/usecases/usuario/AtualizarPerfilUsuario";
+import { CriarPermissaoController } from "./controllers/permissao/CriarPermissao";
+import { EditarPermissaoController } from "./controllers/permissao/EditarPermissao";
+import { ExcluirPermissaoController } from "./controllers/permissao/ExcluirPermissao";
+import { ObterPermissaoPorIdController } from "./controllers/permissao/ObterPermissaoPorId";
+import { ObterPermissoesController } from "./controllers/permissao/ObterPermissoes";
 import { AtualizarPerfilUsuarioController } from "./controllers/usuario/AtualizarPerfilUsuarioController";
+import { AtualizarSenhaController } from "./controllers/usuario/AtualizarSenhaController";
+import { AtualizarSenhaPeloEmailTokenController } from "./controllers/usuario/AtualizarSenhaPeloEmailTokenController";
+import { CriarUsuarioController } from "./controllers/usuario/CriarUsuarioController";
+import { DesabilitarUsuarioController } from "./controllers/usuario/DesabilitarUsuarioController";
+import { HabilitarUsuarioController } from "./controllers/usuario/HabilitarUsuarioController";
+import { LogoutUsuarioController } from "./controllers/usuario/LogoutUsuarioController";
 import { ObterUsuarioPorIdController } from "./controllers/usuario/ObterUsuarioPorId";
 import { ObterUsuariosController } from "./controllers/usuario/ObterUsuarios";
-import { ObterPermissaoPorIdController } from "./controllers/permissao/ObterPermissaoPorId";
-import { ObterPerfilPorIdController } from "./controllers/perfil/ObterPerfilPorId";
-import AtualizarUsuario from "@packages/auth/src/usecases/usuario/AtualizarUsuario";
-import RemoverUsuario from "@packages/auth/src/usecases/usuario/RemoverUsuario";
 import { RemoverUsuarioController } from "./controllers/usuario/RemoverUsuario";
-import { PrismaClient } from "@prisma/client";
-import UsuarioMiddleware from "./adapters/middlewares/UsuarioMiddleware";
-import AtualizarSenha from "@packages/auth/src/usecases/usuario/AtualizarSenha";
-import { AtualizarSenhaController } from "./controllers/usuario/AtualizarSenhaController";
-import CriarUsuario from "@packages/auth/src/usecases/usuario/CriarUsuario";
-import { CriarUsuarioController } from "./controllers/usuario/CriarUsuarioController";
-import HabilitarUsuario from "@packages/auth/src/usecases/usuario/HabilitarUsuario";
-import DesabilitarUsuario from "@packages/auth/src/usecases/usuario/DesabilitarUsuario";
-import { HabilitarUsuarioController } from "./controllers/usuario/HabilitarUsuarioController";
-import { DesabilitarUsuarioController } from "./controllers/usuario/DesabilitarUsuarioController";
-import LogoutUsuario from "@packages/auth/src/usecases/usuario/LogoutUsuario";
-import { LogoutUsuarioController } from "./controllers/usuario/LogoutUsuarioController";
 
 // Configuração Ambiente ----------------------------------------------
 console.log(`🟢 ENVIRONMENT: ${ENV.NODE_ENV} 🟢`);
