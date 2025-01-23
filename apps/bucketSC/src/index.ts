@@ -13,6 +13,7 @@ import {
   FindFileController,
   GetAllBucketsForUserIdController,
   GetAllFilesController,
+  PublicImageFilesController,
   PublicStaticFilesController,
   UploadFileController,
 } from "./controllers";
@@ -61,6 +62,8 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 v1Router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs, options));
 const bucketRouter = express.Router();
 v1Router.use("/bucket", bucketRouter);
+const staticRouter = express.Router();
+v1Router.use("/static", staticRouter);
 app.use(errorHandler);
 const databaseConnection = new DatabaseConnectionMongodbAdapter();
 const userRepository = new UserRepositoryMongodbAdapter(databaseConnection);
@@ -79,7 +82,8 @@ const getAllFiles = new GetAllFiles();
 new GetAllFilesController(bucketRouter, getAllFiles, authMiddleware);
 const deleteFile = new DeleteFile();
 new DeleteFileController(bucketRouter, deleteFile, authMiddleware);
-new PublicStaticFilesController(bucketRouter);
+new PublicStaticFilesController(staticRouter);
+new PublicImageFilesController(staticRouter);
 // userRepository
 //   .getByApiKey(
 //     "a6ece6bdd88b1d57aba1e1dc8cee63e91012a2cededbd1017023b512910f160a"

@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import path from "node:path/posix";
+import path from "path";
 import { Errors } from "../constants";
 
 export class Bucket {
