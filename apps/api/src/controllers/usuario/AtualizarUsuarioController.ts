@@ -19,6 +19,7 @@ export class AtualizarUsuarioController {
             celular: req.body.telefone as string,
             urlPerfil: req.body.urlPerfil as string,
             email: req.body.email as string,
+            ativo: req.body.ativo as boolean,
           };
           await this.useCase.executar(input);
           res.sendStatus(201);

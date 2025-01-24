@@ -6,6 +6,7 @@ interface Entrada extends EntidadeProps {
   celular?: string;
   urlPerfil?: string;
   email?: string;
+  ativo?: boolean;
 }
 
 export default class AtualizarUsuario implements CasoDeUso<Entrada, void> {
@@ -26,6 +27,7 @@ export default class AtualizarUsuario implements CasoDeUso<Entrada, void> {
       nomeCompleto: entrada.nomeCompleto,
       celular: entrada.celular,
       urlPerfil: entrada.urlPerfil,
+      ativo: entrada.ativo,
       ...(entrada.email !== undefined && { email: entrada.email }),
     });
     await this.repo.editarUsuario(usuarioAtualizado);
