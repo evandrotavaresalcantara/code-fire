@@ -34,6 +34,7 @@ export default class AtualizarSenhaPeloEmailToken
       novaSenha.valor,
     );
     const usuarioSenhaAtualizada = usuario.clonar({ senha: hashSenhaNova });
+    usuarioSenhaAtualizada.cleanRecuperacaoSenha();
     await this.repoUsuario.editarUsuario(usuarioSenhaAtualizada);
   }
 }
