@@ -19,3 +19,9 @@ export interface UsuarioPerfilsSchema {
   usuario_id: string;
   perfil_id: string;
 }
+
+export interface OtpSchema {
+  email: string;
+  codigo: string;
+  expira_em: Date;
+}

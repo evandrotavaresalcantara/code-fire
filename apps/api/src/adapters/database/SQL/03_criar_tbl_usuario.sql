@@ -20,6 +20,12 @@ CREATE TABLE IF NOT EXISTS usuario_perfils (
   PRIMARY KEY (perfil_id, usuario_id)
 );
 
+CREATE TABLE IF NOT EXISTS otp (
+  email VARCHAR(250) PRIMARY KEY,
+  codigo CHAR(6) NOT NULL,
+  expira_em TIMESTAMPTZ NOT NULL
+);
+
 -- Inserção do usuário inicial admin
 INSERT INTO usuario (
   id,

@@ -8,6 +8,7 @@ import {
   ObterUsuarioPorId,
   ObterUsuarios,
   RedefinirSenhaPorEmail,
+  ValidarOtp,
   VerificarTokenRedefinicaoSenha,
 } from "@packages/auth/src";
 import ProvedorCriptografiaBcryptAdapter from "@packages/auth/src/adapter/Criptografia/ProvedorCriptografiaBcryptAdapter";
@@ -40,6 +41,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import {
   PgPromiseAdapter,
+  RepositorioOtpPgPromiseAdapter,
   RepositorioPerfilPgPromiseAdapter,
   RepositorioPermissaoPgPromiseAdapter,
   RepositorioUsuarioPgPromiseAdapter,
@@ -55,6 +57,7 @@ import {
   LoginUsuarioController,
   RedefinirSenhaPorEmailController,
   RegistrarUsuarioController,
+  ValidarOtpController,
   VerificarTokenRedefinicaoSenhaController,
 } from "./controllers";
 import { CriarPerfilController } from "./controllers/perfil/CriarPerfil";
@@ -165,14 +168,17 @@ const repositorioUsuarioPrisma = new UsuarioRepositorioPgPrismaAdapter(
   conexaoPrisma,
   repositorioPerfilPrisma,
 );
+const repositorioOtp = new RepositorioOtpPgPromiseAdapter(databaseConnection);
 const provedorCriptografia = new ProvedorCriptografiaBcryptAdapter();
 const authToken = new AuthTokenJWTAsymmetricAdapter();
 const rotaProtegida = UsuarioMiddleware(repositorioUsuarioPrisma, authToken);
 // CASOS DE USO ------------------------------------------
 const loginUsuario = new LoginUsuario(
   repositorioUsuarioPrisma,
+  repositorioOtp,
   provedorCriptografia,
   authToken,
+  queueRabbitMQ,
 );
 const redefinirSenhaPorEmail = new RedefinirSenhaPorEmail(
   repositorioUsuarioPrisma,
@@ -237,8 +243,14 @@ const excluirPerfil = new ExcluirPerfil(
 );
 const obterPerfis = new ObterPerfis(repositorioPerfilPrisma);
 const obterPerfilPorId = new ObterPerfilPorId(repositorioPerfilPrisma);
+const validarOtp = new ValidarOtp(
+  repositorioUsuario,
+  repositorioOtp,
+  authToken,
+);
 // CONTROLLERS -------------------------------------------
 new LoginUsuarioController(authRouter, loginUsuario);
+new ValidarOtpController(authRouter, validarOtp);
 new RedefinirSenhaPorEmailController(authRouter, redefinirSenhaPorEmail);
 new VerificarTokenRedefinicaoSenhaController(
   authRouter,
