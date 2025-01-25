@@ -14,4 +14,5 @@ export * from "./RedefinirSenhaPorEmail";
 export * from "./RegistrarUsuario";
 export * from "./RemoverUsuario";
 export * from "./ValidarOtp";
+export * from "./VerificarOtpExiste";
 export * from "./VerificarTokenRedefinicaoSenha";

@@ -9,6 +9,7 @@ import {
   ObterUsuarios,
   RedefinirSenhaPorEmail,
   ValidarOtp,
+  VerificarOtpExiste,
   VerificarTokenRedefinicaoSenha,
 } from "@packages/auth/src";
 import ProvedorCriptografiaBcryptAdapter from "@packages/auth/src/adapter/Criptografia/ProvedorCriptografiaBcryptAdapter";
@@ -58,6 +59,7 @@ import {
   RedefinirSenhaPorEmailController,
   RegistrarUsuarioController,
   ValidarOtpController,
+  VerificarOtpExisteController,
   VerificarTokenRedefinicaoSenhaController,
 } from "./controllers";
 import { CriarPerfilController } from "./controllers/perfil/CriarPerfil";
@@ -219,6 +221,12 @@ const obterUsuarios = new ObterUsuarios(repositorioUsuario);
 const obterUsuarioPorId = new ObterUsuarioPorId(repositorioUsuarioPrisma);
 const atualizarUsuario = new AtualizarUsuario(repositorioUsuarioPrisma);
 const removerUsuarios = new RemoverUsuario(repositorioUsuarioPrisma);
+const validarOtp = new ValidarOtp(
+  repositorioUsuario,
+  repositorioOtp,
+  authToken,
+);
+const verificarOtpExiste = new VerificarOtpExiste(repositorioOtp);
 
 const criarPermissao = new CriarPermissao(repositorioPermissaoPrisma);
 const editarPermissao = new EditarPermissao(repositorioPermissaoPrisma);
@@ -243,14 +251,11 @@ const excluirPerfil = new ExcluirPerfil(
 );
 const obterPerfis = new ObterPerfis(repositorioPerfilPrisma);
 const obterPerfilPorId = new ObterPerfilPorId(repositorioPerfilPrisma);
-const validarOtp = new ValidarOtp(
-  repositorioUsuario,
-  repositorioOtp,
-  authToken,
-);
+
 // CONTROLLERS -------------------------------------------
 new LoginUsuarioController(authRouter, loginUsuario);
 new ValidarOtpController(authRouter, validarOtp);
+new VerificarOtpExisteController(authRouter, verificarOtpExiste);
 new RedefinirSenhaPorEmailController(authRouter, redefinirSenhaPorEmail);
 new VerificarTokenRedefinicaoSenhaController(
   authRouter,

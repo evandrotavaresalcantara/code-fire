@@ -7,4 +7,5 @@ export * from "./ObterUsuarios";
 export * from "./RedefinirSenhaPorEmailController";
 export * from "./RegistrarUsuarioController";
 export * from "./ValidarOtpController";
+export * from "./VerificarOtpExisteController";
 export * from "./VerificarTokenRedefinicaoSenhaController";
