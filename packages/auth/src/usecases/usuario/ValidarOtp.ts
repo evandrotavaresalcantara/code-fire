@@ -39,6 +39,7 @@ export class ValidarOtp implements CasoDeUso<Entrada, Output> {
     const token = this.authToken.create(payloadRefresh, "30d");
     usuario.setTokenReFreshToken(token, true);
     await this.repo.editarUsuario(usuario);
+    await this.repositorioOtp.excluirOtp(email.valor);
     return { tokenId, token };
   }
 }
