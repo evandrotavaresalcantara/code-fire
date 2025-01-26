@@ -28,6 +28,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/eslint-config-prettier": "^6.11.3"
+    "@types/eslint-config-prettier": "^6.11.3",
+    "@types/qrcode": "^1.5.5"
+  },
+  "dependencies": {
+    "otpauth": "^9.3.6",
+    "qrcode": "^1.5.4"
   }
 }

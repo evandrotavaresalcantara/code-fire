@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS usuario_perfils (
 
 CREATE TABLE IF NOT EXISTS otp (
   email VARCHAR(250) PRIMARY KEY,
-  codigo CHAR(6) NOT NULL,
+  codigo CHAR(64) NOT NULL,
   expira_em TIMESTAMPTZ NOT NULL
 );
 

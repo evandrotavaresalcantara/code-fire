@@ -4,18 +4,17 @@ import crypto from "node:crypto";
 export class Otp {
   private email: Email;
 
-  constructor(email: string, private codigo: string, private expired_at: Date) {
+  constructor(
+    email: string,
+    private codigoHash: string,
+    private expired_at: Date,
+    private codigo?: string,
+  ) {
     this.email = new Email(email);
   }
 
-  private static genCode(email: string) {
-    const data = `${email ?? "bucket@zmail.com"}${new Date().getTime()}`;
-    return crypto
-      .createHash("sha256")
-      .update(data)
-      .digest("hex")
-      .replace(/\D/g, "")
-      .slice(0, 6);
+  private static genCode() {
+    return crypto.randomInt(100000, 999999).toString();
   }
 
   private static expires(minutes: number) {
@@ -23,7 +22,13 @@ export class Otp {
   }
 
   static create(email: string) {
-    return new Otp(email, this.genCode(email), new Date(this.expires(10)));
+    const rawCode = this.genCode();
+    return new Otp(
+      email,
+      this.hashToken(rawCode),
+      new Date(this.expires(10)),
+      rawCode,
+    );
   }
 
   getEmail() {
@@ -34,6 +39,10 @@ export class Otp {
     return this.codigo;
   }
 
+  getCodigoHash() {
+    return this.codigoHash;
+  }
+
   getExpiredAt() {
     return this.expired_at;
   }
@@ -42,11 +51,34 @@ export class Otp {
     return new Date().getTime() > this.expired_at.getTime();
   }
 
-  private isValidCode(codigo: string) {
-    return codigo === this.codigo;
+  private isValidCode(codigo?: string) {
+    if (!codigo) return false;
+    const hashedCode = Otp.hashToken(codigo);
+    return crypto.timingSafeEqual(
+      Buffer.from(hashedCode),
+      Buffer.from(this.codigoHash),
+    );
   }
 
-  isValid(codigo: string) {
+  isValid(codigo?: string) {
     return this.isValidCode(codigo) && !this.isExpired();
+  }
+
+  static generateToken(length = 12) {
+    return crypto.randomBytes(length).toString("hex");
+  }
+
+  static hashToken(token: string) {
+    return crypto.createHash("sha256").update(token).digest("hex");
+  }
+
+  static verifyTokenHash(rawToken: string, hashToken: string): boolean {
+    // Faz o hash do rawToken usando o mesmo método de geração
+    const hashedToken = this.hashToken(rawToken);
+    // Compare o hash gerado com o token que estava em hash (armazenado)
+    return crypto.timingSafeEqual(
+      Buffer.from(hashedToken),
+      Buffer.from(hashToken),
+    );
   }
 }

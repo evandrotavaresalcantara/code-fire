@@ -1,6 +1,7 @@
 export * from "./AtualizarAccessRefreshTokensController";
 export * from "./AtualizarPerfilUsuarioController";
 export * from "./AtualizarUsuarioController";
+export * from "./CriarTokenParaQrCodeController";
 export * from "./LoginUsuarioController";
 export * from "./ObterUsuarioPorId";
 export * from "./ObterUsuarios";

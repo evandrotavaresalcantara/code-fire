@@ -3,6 +3,7 @@ export * from "./AtualizarPerfilUsuario";
 export * from "./AtualizarSenha";
 export * from "./AtualizarSenhaPeloEmailToken";
 export * from "./AtualizarUsuario";
+export * from "./CriarTokenParaQrCode";
 export * from "./CriarUsuario";
 export * from "./DesabilitarUsuario";
 export * from "./HabilitarUsuario";

@@ -14,7 +14,7 @@ export class RepositorioOtpPgPromiseAdapter implements RepositorioOtp {
     const statement = `INSERT INTO ${this.tabelaOtp} (email, codigo, expira_em) VALUES ($1, $2, $3)`;
     await this.conexao.query(statement, [
       otp.getEmail(),
-      otp.getCodigo(),
+      otp.getCodigoHash(),
       otp.getExpiredAt(),
     ]);
   }

@@ -1,6 +1,7 @@
 import {
   AtualizarAccessRefreshTokens,
   AuthTokenJWTAsymmetricAdapter,
+  CriarTokenParaQrCode,
   ObterPerfilPorId,
   ObterPerfis,
   ObterPermissaoPorId,
@@ -55,6 +56,7 @@ import { ENV } from "./config";
 import {
   AtualizarAccessRefreshTokensController,
   AtualizarUsuarioController,
+  CriarTokenParaQrCodeController,
   LoginUsuarioController,
   RedefinirSenhaPorEmailController,
   RegistrarUsuarioController,
@@ -227,6 +229,11 @@ const validarOtp = new ValidarOtp(
   authToken,
 );
 const verificarOtpExiste = new VerificarOtpExiste(repositorioOtp);
+const criarTokenParaQrCode = new CriarTokenParaQrCode(
+  repositorioUsuario,
+  repositorioOtp,
+  authToken,
+);
 
 const criarPermissao = new CriarPermissao(repositorioPermissaoPrisma);
 const editarPermissao = new EditarPermissao(repositorioPermissaoPrisma);
@@ -269,6 +276,11 @@ new RegistrarUsuarioController(authRouter, registrarUsuario);
 new AtualizarAccessRefreshTokensController(
   authRouter,
   atualizarAccessRefreshTokens,
+);
+new CriarTokenParaQrCodeController(
+  authRouter,
+  criarTokenParaQrCode,
+  rotaProtegida,
 );
 new AtualizarPerfilUsuarioController(
   authRouter,
