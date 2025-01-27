@@ -20,3 +20,38 @@ CREATE TABLE IF NOT EXISTS usuario_perfils (
   usuario_id UUID  NOT NULL REFERENCES usuario(id) ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY (perfil_id, usuario_id)
 );
+
+CREATE TABLE IF NOT EXISTS otp (
+  email VARCHAR(250) PRIMARY KEY,
+  codigo CHAR(64) NOT NULL,
+  expira_em TIMESTAMPTZ NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS qr_code_login (
+  email VARCHAR(250) PRIMARY KEY,
+  codigo CHAR(64) NOT NULL,
+  expira_em TIMESTAMPTZ NOT NULL,
+  token VARCHAR(650)
+);
+
+-- Inserção do usuário inicial admin
+INSERT INTO usuario (
+  id,
+  nome,
+  email,
+  senha,
+  data_criacao,
+  ativo,
+  dois_fatores
+)
+SELECT
+  gen_random_uuid(),
+  'Administrador',
+  'admin@admin.com',
+  '$2b$10$6hDAQ.phQHaZXWD9HT.E0.2YRfbaGqb7BD9vrpB0NJ1Ajh5N8THuC', -- Senha hasheada genSenhaParaUsuario.ts
+  NOW(),
+  true,
+  false
+WHERE NOT EXISTS (
+  SELECT 1 FROM usuario WHERE email = 'admin@admin.com'
+);

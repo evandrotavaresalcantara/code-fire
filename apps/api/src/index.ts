@@ -1,13 +1,18 @@
 import {
   AtualizarAccessRefreshTokens,
   AuthTokenJWTAsymmetricAdapter,
+  CriarTokenParaQrCode,
   ObterPerfilPorId,
   ObterPerfis,
   ObterPermissaoPorId,
   ObterPermissoes,
+  ObterTokenParaQrCode,
   ObterUsuarioPorId,
   ObterUsuarios,
   RedefinirSenhaPorEmail,
+  RemoverTokenParaQrCode,
+  ValidarOtp,
+  VerificarOtpExiste,
   VerificarTokenRedefinicaoSenha,
 } from "@packages/auth/src";
 import ProvedorCriptografiaBcryptAdapter from "@packages/auth/src/adapter/Criptografia/ProvedorCriptografiaBcryptAdapter";
@@ -40,6 +45,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import {
   PgPromiseAdapter,
+  RepositorioOtpPgPromiseAdapter,
   RepositorioPerfilPgPromiseAdapter,
   RepositorioPermissaoPgPromiseAdapter,
   RepositorioUsuarioPgPromiseAdapter,
@@ -52,9 +58,14 @@ import { ENV } from "./config";
 import {
   AtualizarAccessRefreshTokensController,
   AtualizarUsuarioController,
+  CriarTokenParaQrCodeController,
   LoginUsuarioController,
+  ObterTokenParaQrCodeController,
   RedefinirSenhaPorEmailController,
   RegistrarUsuarioController,
+  RemoverTokenParaQrCodeController,
+  ValidarOtpController,
+  VerificarOtpExisteController,
   VerificarTokenRedefinicaoSenhaController,
 } from "./controllers";
 import { CriarPerfilController } from "./controllers/perfil/CriarPerfil";
@@ -120,6 +131,10 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
       res.status(403).json({ message: error.message });
       return;
     }
+    if (error.message.endsWith("não encontrado")) {
+      res.status(404).json({ message: error.message });
+      return;
+    }
     res.status(500).json({ message: error.message });
     return;
   } else {
@@ -165,14 +180,17 @@ const repositorioUsuarioPrisma = new UsuarioRepositorioPgPrismaAdapter(
   conexaoPrisma,
   repositorioPerfilPrisma,
 );
+const repositorioOtp = new RepositorioOtpPgPromiseAdapter(databaseConnection);
 const provedorCriptografia = new ProvedorCriptografiaBcryptAdapter();
 const authToken = new AuthTokenJWTAsymmetricAdapter();
 const rotaProtegida = UsuarioMiddleware(repositorioUsuarioPrisma, authToken);
 // CASOS DE USO ------------------------------------------
 const loginUsuario = new LoginUsuario(
   repositorioUsuarioPrisma,
+  repositorioOtp,
   provedorCriptografia,
   authToken,
+  queueRabbitMQ,
 );
 const redefinirSenhaPorEmail = new RedefinirSenhaPorEmail(
   repositorioUsuarioPrisma,
@@ -213,6 +231,22 @@ const obterUsuarios = new ObterUsuarios(repositorioUsuario);
 const obterUsuarioPorId = new ObterUsuarioPorId(repositorioUsuarioPrisma);
 const atualizarUsuario = new AtualizarUsuario(repositorioUsuarioPrisma);
 const removerUsuarios = new RemoverUsuario(repositorioUsuarioPrisma);
+const validarOtp = new ValidarOtp(
+  repositorioUsuario,
+  repositorioOtp,
+  authToken,
+);
+const verificarOtpExiste = new VerificarOtpExiste(repositorioOtp);
+const criarTokenParaQrCode = new CriarTokenParaQrCode(
+  repositorioUsuario,
+  repositorioOtp,
+  authToken,
+);
+const obterTokenParaQrCode = new ObterTokenParaQrCode(
+  repositorioOtp,
+  authToken,
+);
+const removerTokenParaQrCode = new RemoverTokenParaQrCode(repositorioOtp);
 
 const criarPermissao = new CriarPermissao(repositorioPermissaoPrisma);
 const editarPermissao = new EditarPermissao(repositorioPermissaoPrisma);
@@ -237,8 +271,11 @@ const excluirPerfil = new ExcluirPerfil(
 );
 const obterPerfis = new ObterPerfis(repositorioPerfilPrisma);
 const obterPerfilPorId = new ObterPerfilPorId(repositorioPerfilPrisma);
+
 // CONTROLLERS -------------------------------------------
 new LoginUsuarioController(authRouter, loginUsuario);
+new ValidarOtpController(authRouter, validarOtp);
+new VerificarOtpExisteController(authRouter, verificarOtpExiste);
 new RedefinirSenhaPorEmailController(authRouter, redefinirSenhaPorEmail);
 new VerificarTokenRedefinicaoSenhaController(
   authRouter,
@@ -252,6 +289,22 @@ new RegistrarUsuarioController(authRouter, registrarUsuario);
 new AtualizarAccessRefreshTokensController(
   authRouter,
   atualizarAccessRefreshTokens,
+);
+new CriarTokenParaQrCodeController(
+  authRouter,
+  criarTokenParaQrCode,
+  // rotaProtegida,
+);
+// TODO: verificar a proteção da rota para usuario logado pode consultar apenas o seu token
+new ObterTokenParaQrCodeController(
+  authRouter,
+  obterTokenParaQrCode,
+  // rotaProtegida,
+);
+new RemoverTokenParaQrCodeController(
+  authRouter,
+  removerTokenParaQrCode,
+  // rotaProtegida,
 );
 new AtualizarPerfilUsuarioController(
   authRouter,

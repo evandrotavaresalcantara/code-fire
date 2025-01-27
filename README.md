@@ -7,9 +7,13 @@
 - copiar arquivo de exemplo env-example.env para .env da API e configurar principalmente o DATABASE_URL com o seguinte comando:
   `cp apps/api/env-example.env apps/api/.env`
 
-### Comandos executados na raiz do projeto
+> Os valores que já estão em DATABASE_URL, BASE_URL, CORS_ORIGIN, já estão com as opções padrão ajustadas para a configuração que está no docker-compose.dev.yml
 
-- executar o container com o banco de dados:
+### Aplicação Principal - S3curity
+
+#### Comandos executados na raiz do projeto
+
+- executar os containers com o banco de dados(postgres), rabbitmq, mongodb e mongo-express:
   `npm run docker:dev:start`
 
 - instalar os pacotes com o comando:
@@ -21,15 +25,25 @@
 - executar a API com o comando:
   `npm run api`
 
-## BucketSC
+#### Utilizar a Interface S3curityAdmin
 
-O buckestSc é um sistema de armazenamento de arquivos, que está inserido no projeto para
+Interface idealizada para o usuário do tipo s3curityadmin realizar a gestão de novos usuário, perfis e permissões.
+
+O sistema pode ser acessado através do `http://localhost:3000`
+
+- Usuário Administrador inicial: `admin@admin.com`
+
+- senha: `@Admin1`
+
+### Micro Serviço Armazenamento Arquivos - BucketSC
+
+O buckestSC é um sistema de armazenamento de arquivos, que está inserido no projeto para
 consumir o sistema de autenticação desenvolvido pelo equipe code-fire.
 
 O sistema bucketSC utiliza o sistema mongoDB e uma interface de cliente mongo/express
-que pode ser acessado através do http://localhost:8087/
+que pode ser acessado através do `http://localhost:8087/`
 
-### Comandos executados no diretório apps/bucketSC
+#### Comandos executados no diretório apps/bucketSC
 
 Inicializar: acessar diretório apps/bucketSC
 
@@ -39,19 +53,19 @@ Inicializar: acessar diretório apps/bucketSC
 - executar bucketSC:
   `npm run dev`
 
-- acesso swagger  
-  http://localhost:7000/v1/docs/
+- acesso documentação pelo swagger
+  `http://localhost:7000/v1/docs/`
 
-  Atualmente o backetSc está rodando de forma autônoma sem integração
+  Atualmente o bucketSC está rodando de forma autônoma sem integração
   com projeto de autenticação. Dessa forma qualquer interação será diretamente
-  com o backetSc via os endpoints expostos de acordo com swagger.
+  com o bucketSC via os endpoints expostos de acordo com swagger.
 
   Os arquivos são armazenados no diretório rootFolder na raiz do projeto bucketSC.
 
 ### Obs
 
-- Se precisar parar o container do banco de dados: `npm run docker:dev:stop`
-- Se precisar destruir o container do banco de dados: `npm run docker:dev:down`
+- Se precisar parar os containers: `npm run docker:dev:stop`
+- Se precisar destruir os containers: `npm run docker:dev:down`
 
 ## INSTALAÇÃO/USO MODO PRODUÇÃO
 

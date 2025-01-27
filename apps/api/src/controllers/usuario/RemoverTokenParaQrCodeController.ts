@@ -1,28 +1,27 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import LoginUsuario from "@packages/auth/src/usecases/usuario/LoginUsuario";
+import { RemoverTokenParaQrCode } from "@packages/auth/src";
 import { NextFunction, Request, Response, Router } from "express";
 
-export class LoginUsuarioController {
+export class RemoverTokenParaQrCodeController {
   constructor(
     private server: Router,
-    private useCase: LoginUsuario,
+    private useCase: RemoverTokenParaQrCode,
     ...middleware: Middleware[]
   ) {
-    this.server.post(
-      "/login",
+    this.server.delete(
+      "/qrcode/login",
       ...middleware,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = {
-            email: req.body.email as string,
-            senha: req.body.senha as string,
+            email: req.query.email as string,
           };
-          const output = await this.useCase.executar(input);
-          if (output.isAutenticacao2Fatores) {
-            res.sendStatus(303);
+          if (!input.email) {
+            res.status(422).json({ message: "email query params obrigatório" });
             return;
           }
-          res.status(200).json(output);
+          await this.useCase.executar(input);
+          res.sendStatus(204);
         } catch (error) {
           next(error);
         }
