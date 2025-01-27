@@ -7,6 +7,7 @@ export * from "./CriarTokenParaQrCode";
 export * from "./CriarUsuario";
 export * from "./DesabilitarUsuario";
 export * from "./HabilitarUsuario";
+export * from "./LoginPeloQrCode";
 export * from "./LoginUsuario";
 export * from "./LogoutUsuario";
 export * from "./ObterTokenParaQrCode";
