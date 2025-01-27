@@ -1,7 +1,6 @@
 import { AuthTokenJWTAsymmetricAdapter } from "@/adapter";
 import { Usuario } from "@/model";
 import { CriarTokenParaQrCode } from "@/usecases";
-import crypto from "node:crypto";
 import RepositorioOtpMock from "../../mock/RepositorioOtpMock";
 import RepositorioUsuarioMock from "../../mock/RepositorioUsuarioMock";
 
@@ -14,7 +13,7 @@ const usuario = {
   ativo: true,
 };
 
-test("Deve gerar um token e não gravar no banco pois usuario nao existe", async () => {
+test("Deve lançar um error Usuario não encontrado ao gerar um token usuario nao existe", async () => {
   const authToken = new AuthTokenJWTAsymmetricAdapter();
   const novoUsuario = new Usuario(usuario);
   const repositorioOtp = new RepositorioOtpMock();
@@ -23,11 +22,13 @@ test("Deve gerar um token e não gravar no banco pois usuario nao existe", async
     repositorioOtp,
     authToken,
   );
-  const input = { id: crypto.randomUUID() };
-  const output = await criarTokenParaQrCode.executar(input);
-  expect(output.token).toBeDefined();
+  const input = { email: "UsuarioTeste@zmail.com.teste" };
+  // const output = await criarTokenParaQrCode.executar(input);
+  await expect(criarTokenParaQrCode.executar(input)).rejects.toThrow(
+    Error(`Usuário ${input.email} não encontrado`),
+  );
   expect(
-    await repositorioOtp.obterOtpPorEmail(novoUsuario.getEmail()),
+    await repositorioOtp.obterQrCodeLoginPorEmail(novoUsuario.getEmail()),
   ).toBeUndefined();
 });
 
@@ -40,10 +41,10 @@ test("Deve gerar um token e gravar no RepositorioOTP", async () => {
     repositorioOtp,
     authToken,
   );
-  const input = { id: novoUsuario.getUuid() };
+  const input = { email: novoUsuario.getEmail() };
   const output = await criarTokenParaQrCode.executar(input);
   expect(output.token).toBeDefined();
   expect(
-    await repositorioOtp.obterOtpPorEmail("ususariofire1@dev.io"),
+    await repositorioOtp.obterQrCodeLoginPorEmail("ususariofire1@dev.io"),
   ).toBeDefined();
 });

@@ -9,6 +9,7 @@ export class Otp {
     private codigoHash: string,
     private expired_at: Date,
     private codigo?: string,
+    private tokenJwt?: string,
   ) {
     this.email = new Email(email);
   }
@@ -37,6 +38,14 @@ export class Otp {
 
   getCodigo() {
     return this.codigo;
+  }
+
+  getTokenJwt() {
+    return this.tokenJwt;
+  }
+
+  setTokenJwt(token: string) {
+    this.tokenJwt = token;
   }
 
   getCodigoHash() {

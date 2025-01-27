@@ -1,23 +1,27 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import { CriarTokenParaQrCode } from "@packages/auth/src";
+import { RemoverTokenParaQrCode } from "@packages/auth/src";
 import { NextFunction, Request, Response, Router } from "express";
 
-export class CriarTokenParaQrCodeController {
+export class RemoverTokenParaQrCodeController {
   constructor(
     private server: Router,
-    private useCase: CriarTokenParaQrCode,
+    private useCase: RemoverTokenParaQrCode,
     ...middleware: Middleware[]
   ) {
-    this.server.post(
+    this.server.delete(
       "/qrcode/login",
       ...middleware,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = {
-            email: req.body.email as string,
+            email: req.query.email as string,
           };
-          const output = await this.useCase.executar(input);
-          res.status(201).json(output);
+          if (!input.email) {
+            res.status(422).json({ message: "email query params obrigatório" });
+            return;
+          }
+          await this.useCase.executar(input);
+          res.sendStatus(204);
         } catch (error) {
           next(error);
         }

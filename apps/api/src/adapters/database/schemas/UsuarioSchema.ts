@@ -25,3 +25,10 @@ export interface OtpSchema {
   codigo: string;
   expira_em: Date;
 }
+
+export interface QrCodeLoginSchema {
+  email: string;
+  codigo: string;
+  expira_em: Date;
+  token: string;
+}

@@ -26,6 +26,13 @@ CREATE TABLE IF NOT EXISTS otp (
   expira_em TIMESTAMPTZ NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS qr_code_login (
+  email VARCHAR(250) PRIMARY KEY,
+  codigo CHAR(64) NOT NULL,
+  expira_em TIMESTAMPTZ NOT NULL,
+  token VARCHAR(650)
+);
+
 -- Inserção do usuário inicial admin
 INSERT INTO usuario (
   id,

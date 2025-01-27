@@ -4,7 +4,7 @@ import { Otp } from "../../model";
 import { AuthToken, RepositorioOtp, RepositorioUsuario } from "../../provider";
 
 interface Input {
-  id: string;
+  email: string;
 }
 
 interface Output {
@@ -21,24 +21,26 @@ export class CriarTokenParaQrCode implements CasoDeUso<Input, Output> {
   async executar(entrada: Input): Promise<Output> {
     const rawToken = Otp.generateToken(48);
     const hashToken = Otp.hashToken(rawToken);
-    const usuario = await this.repositorioUsuario.obterUsuarioPorId(entrada.id);
-    if (usuario) {
-      const otp = new Otp(
-        usuario.getEmail(),
-        hashToken,
-        new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 90),
-      );
-      const oldOtp = await this.repositorioOtp.obterOtpPorEmail(
-        usuario.getEmail(),
-      );
-      if (oldOtp) this.repositorioOtp.excluirOtp(usuario.getEmail());
-      await this.repositorioOtp.criarOtp(otp);
+    const usuario = await this.repositorioUsuario.obterPorEmail(entrada.email);
+    if (!usuario) {
+      throw new Error(`Usuário ${entrada.email} não encontrado`);
     }
+    const otp = new Otp(
+      usuario.getEmail(),
+      hashToken,
+      new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 90),
+    );
+    const oldOtp = await this.repositorioOtp.obterQrCodeLoginPorEmail(
+      usuario.getEmail(),
+    );
+    if (oldOtp) this.repositorioOtp.excluirQrCodeLogin(usuario.getEmail());
     const payload = {
       id: usuario?.getUuid() || crypto.randomUUID(),
       token: rawToken,
     };
     const token = this.authToken.create(payload, "90d");
+    otp.setTokenJwt(token);
+    await this.repositorioOtp.criarQrCodeLogin(otp);
     return { token };
   }
 }

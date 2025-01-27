@@ -6,9 +6,11 @@ import {
   ObterPerfis,
   ObterPermissaoPorId,
   ObterPermissoes,
+  ObterTokenParaQrCode,
   ObterUsuarioPorId,
   ObterUsuarios,
   RedefinirSenhaPorEmail,
+  RemoverTokenParaQrCode,
   ValidarOtp,
   VerificarOtpExiste,
   VerificarTokenRedefinicaoSenha,
@@ -58,8 +60,10 @@ import {
   AtualizarUsuarioController,
   CriarTokenParaQrCodeController,
   LoginUsuarioController,
+  ObterTokenParaQrCodeController,
   RedefinirSenhaPorEmailController,
   RegistrarUsuarioController,
+  RemoverTokenParaQrCodeController,
   ValidarOtpController,
   VerificarOtpExisteController,
   VerificarTokenRedefinicaoSenhaController,
@@ -125,6 +129,10 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     }
     if (error.message.startsWith("Não Autorizado: ")) {
       res.status(403).json({ message: error.message });
+      return;
+    }
+    if (error.message.endsWith("não encontrado")) {
+      res.status(404).json({ message: error.message });
       return;
     }
     res.status(500).json({ message: error.message });
@@ -234,6 +242,11 @@ const criarTokenParaQrCode = new CriarTokenParaQrCode(
   repositorioOtp,
   authToken,
 );
+const obterTokenParaQrCode = new ObterTokenParaQrCode(
+  repositorioOtp,
+  authToken,
+);
+const removerTokenParaQrCode = new RemoverTokenParaQrCode(repositorioOtp);
 
 const criarPermissao = new CriarPermissao(repositorioPermissaoPrisma);
 const editarPermissao = new EditarPermissao(repositorioPermissaoPrisma);
@@ -280,7 +293,18 @@ new AtualizarAccessRefreshTokensController(
 new CriarTokenParaQrCodeController(
   authRouter,
   criarTokenParaQrCode,
-  rotaProtegida,
+  // rotaProtegida,
+);
+// TODO: verificar a proteção da rota para usuario logado pode consultar apenas o seu token
+new ObterTokenParaQrCodeController(
+  authRouter,
+  obterTokenParaQrCode,
+  // rotaProtegida,
+);
+new RemoverTokenParaQrCodeController(
+  authRouter,
+  removerTokenParaQrCode,
+  // rotaProtegida,
 );
 new AtualizarPerfilUsuarioController(
   authRouter,
