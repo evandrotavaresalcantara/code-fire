@@ -12,7 +12,7 @@ const hash2 = "$2b$10$yxPNAEZibEGvZ0czM9tYA.UKYDx5dm/w1iNQFi6c2RXo8Pw6bCDES";
 const usuarioComHash = {
   nomeCompleto: "Fire Dev",
   email: "ususariofire1@dev.io",
-  celular: "81911112222",
+  telefone: "81911112222",
   senha: hash1,
   urlPerfil: "http://imagens.io/fire.png",
 };

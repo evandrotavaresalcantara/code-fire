@@ -13,6 +13,7 @@ export interface UsuarioSchema extends EntidadeSchema {
   dois_fatores: boolean;
   telefone: string;
   imagem_perfil: string;
+  sis_admin: boolean;
 }
 
 export interface UsuarioPerfilsSchema {

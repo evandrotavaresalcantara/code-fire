@@ -1,5 +1,5 @@
 import {
-  Celular,
+  Telefone,
   Email,
   Entidade,
   EntidadeProps,
@@ -14,15 +14,16 @@ export interface UsuarioProps extends EntidadeProps {
   nomeCompleto?: string;
   email?: string;
   senha?: string;
-  celular?: string;
+  telefone?: string;
   urlPerfil?: string;
   ativo?: boolean;
   tokenRecuperacaoSenha?: string;
   dataExpiracaoTokenRecuperacaoSenha?: Date;
   tokenRefreshToken?: string;
   dataExpiracaoTokenRefreshToken?: Date;
-  autenticaçãoDoisFatores?: boolean;
+  autenticacaoDoisFatores?: boolean;
   dataCriacao?: Date;
+  sisAdmin?: boolean;
 }
 
 export default class Usuario extends Entidade<Usuario, UsuarioProps> {
@@ -30,22 +31,23 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
   private email: Email;
   private senha: SenhaHash;
   private dataCriacao: Date;
-  private celular: Celular | null;
+  private telefone: Telefone | null;
   private urlPerfil: Url | null;
   private ativo: boolean;
   private tokenRefreshToken?: string;
   private dataExpiracaoTokenRefreshToken?: Date;
   private tokenRecuperacaoSenha?: string;
   private dataExpiracaoTokenRecuperacaoSenha?: Date;
-  private autenticaçãoDoisFatores: boolean;
+  private autenticacaoDoisFatores: boolean;
   private perfis: Perfil[];
+  private sisAdmin: boolean;
 
   constructor(props: UsuarioProps) {
     super(props);
     this.nomeCompleto = new NomeComposto({ valor: props.nomeCompleto });
     this.email = new Email(props.email);
     this.senha = new SenhaHash(props.senha);
-    this.celular = props.celular ? new Celular(props.celular) : null;
+    this.telefone = props.telefone ? new Telefone(props.telefone) : null;
     this.urlPerfil = props.urlPerfil ? new Url(props.urlPerfil) : null;
     this.dataCriacao = props.dataCriacao
       ? new Date(props.dataCriacao)
@@ -56,10 +58,11 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
     this.tokenRecuperacaoSenha = props.tokenRecuperacaoSenha;
     this.dataExpiracaoTokenRecuperacaoSenha =
       props.dataExpiracaoTokenRecuperacaoSenha;
-    this.autenticaçãoDoisFatores = props.autenticaçãoDoisFatores
-      ? props.autenticaçãoDoisFatores
+    this.autenticacaoDoisFatores = props.autenticacaoDoisFatores
+      ? props.autenticacaoDoisFatores
       : false;
     this.perfis = [];
+    this.sisAdmin = props.sisAdmin ? true : false;
   }
 
   getNome() {
@@ -77,14 +80,17 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
     return this.email.valor;
   }
 
-  getCelular() {
-    return this.celular?.semMascara;
+  getTelefone() {
+    return this.telefone?.semMascara;
   }
 
   getAutenticacaoDoisFatores() {
-    return this.autenticaçãoDoisFatores;
+    return this.autenticacaoDoisFatores;
   }
 
+  getSisAdmin() {
+    return this.sisAdmin;
+  }
   get obterPerfis(): Perfil[] {
     return this.perfis;
   }

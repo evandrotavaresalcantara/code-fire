@@ -16,7 +16,7 @@ export class AtualizarUsuarioController {
           const input = {
             id: req.params.id as string,
             nomeCompleto: req.body.nome as string,
-            celular: req.body.telefone as string,
+            telefone: req.body.celular as string,
             urlPerfil: req.body.urlPerfil as string,
             email: req.body.email as string,
           };

@@ -8,7 +8,7 @@ interface Entrada {
   email?: string;
   senha?: string;
   senhaConfirmacao?: string;
-  celular?: string;
+  telefone?: string;
   ativo: boolean;
   urlPerfil?: string;
 }
@@ -32,7 +32,7 @@ export default class RegistrarUsuario implements CasoDeUso<Entrada, void> {
       nomeCompleto: entrada.nomeCompleto,
       email: entrada.email,
       senha: hashSenha,
-      celular: entrada.celular,
+      telefone: entrada.telefone,
       ativo: entrada.ativo,
       urlPerfil: entrada.urlPerfil,
     });

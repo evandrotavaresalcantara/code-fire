@@ -15,7 +15,7 @@ test("Deve obter usuário pelo id", async () => {
   const usuario = {
     nomeCompleto: "Usuario Um",
     email: "usuarioum@dev.io",
-    celular: "81911112222",
+    telefone: "81911112222",
     senha: hash1,
   };
 
@@ -46,7 +46,7 @@ test("Deve retornar null para id não encotrado", async () => {
   const usuario = {
     nomeCompleto: "Usuario Um",
     email: "usuarioum@dev.io",
-    celular: "81911112222",
+    telefone: "81911112222",
     senha: hash1,
   };
 

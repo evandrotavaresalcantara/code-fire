@@ -12,7 +12,7 @@ test("Deve fazer o login e retornar tokens válido", async () => {
   const usuario = {
     nomeCompleto: "Fire Dev",
     email: "ususariofire1@dev.io",
-    celular: "81986598745",
+    telefone: "81986598745",
     senha: hash1,
     ativo: true,
   };
@@ -51,7 +51,7 @@ test("Deve gerar um erro ao tentar fazer o login com a senha errada", async () =
   const usuario = {
     nomeCompleto: "Fire Dev",
     email: "ususariofire1@dev.io",
-    celular: "81986598745",
+    telefone: "81986598745",
     senha: hash1,
     ativo: true,
   };
@@ -71,7 +71,7 @@ test("Deve gerar um erro ao tentar fazer o login com usuário desabilitado", asy
   const usuario = {
     nomeCompleto: "Fire Dev",
     email: "ususariofire1@dev.io",
-    celular: "81986598745",
+    telefone: "81986598745",
     senha: hash1,
     ativo: false,
   };

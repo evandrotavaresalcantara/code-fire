@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS usuario (
   dois_fatores BOOLEAN DEFAULT FALSE NOT NULL,
   telefone VARCHAR(11),
   imagem_perfil VARCHAR(250)
+  sis_admin BOOLEAN DEFAULT FALSE NOT NULL,
 );
 
 CREATE TABLE IF NOT EXISTS usuario_perfils (

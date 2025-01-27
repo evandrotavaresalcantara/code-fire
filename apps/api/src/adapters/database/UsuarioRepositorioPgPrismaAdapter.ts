@@ -25,7 +25,7 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
           nomeCompleto: usuarioData.nome,
           email: usuarioData.email,
           senha: usuarioData.senha,
-          celular: usuarioData.telefone ?? undefined,
+          telefone: usuarioData.telefone ?? undefined,
           urlPerfil: usuarioData.imagem_perfil ?? undefined,
           ativo: usuarioData.ativo,
           tokenRecuperacaoSenha: usuarioData.recuperar_senha_token ?? undefined,
@@ -34,7 +34,7 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
           tokenRefreshToken: usuarioData.refresh_token ?? undefined,
           dataExpiracaoTokenRefreshToken:
             usuarioData.data_expiracao_refresh_token ?? undefined,
-          autenticaçãoDoisFatores: usuarioData.dois_fatores,
+          autenticacaoDoisFatores: usuarioData.dois_fatores,
           dataCriacao: usuarioData.data_criacao,
         });
 
@@ -64,11 +64,11 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
       email: usuarioData.email,
       senha: usuarioData.senha,
       ativo: usuarioData.ativo,
-      autenticaçãoDoisFatores: usuarioData.dois_fatores,
+      autenticacaoDoisFatores: usuarioData.dois_fatores,
       dataCriacao: usuarioData.data_criacao,
       urlPerfil: usuarioData.imagem_perfil ?? undefined,
       tokenRefreshToken: usuarioData.refresh_token ?? undefined,
-      celular: usuarioData.telefone ?? undefined,
+      telefone: usuarioData.telefone ?? undefined,
       tokenRecuperacaoSenha: usuarioData.recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRecuperacaoSenha:
         usuarioData.data_expiraca_recuperar_senha_token ?? undefined,
@@ -96,11 +96,11 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
       email: usuarioData.email,
       senha: usuarioData.senha,
       ativo: usuarioData.ativo,
-      autenticaçãoDoisFatores: usuarioData.dois_fatores,
+      autenticacaoDoisFatores: usuarioData.dois_fatores,
       dataCriacao: usuarioData.data_criacao,
       urlPerfil: usuarioData.imagem_perfil ?? undefined,
       tokenRefreshToken: usuarioData.refresh_token ?? undefined,
-      celular: usuarioData.telefone ?? undefined,
+      telefone: usuarioData.telefone ?? undefined,
       tokenRecuperacaoSenha: usuarioData.recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRecuperacaoSenha:
         usuarioData.data_expiraca_recuperar_senha_token ?? undefined,
@@ -130,11 +130,11 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
       email: usuarioData.email,
       senha: usuarioData.senha,
       ativo: usuarioData.ativo,
-      autenticaçãoDoisFatores: usuarioData.dois_fatores,
+      autenticacaoDoisFatores: usuarioData.dois_fatores,
       dataCriacao: usuarioData.data_criacao,
       urlPerfil: usuarioData.imagem_perfil ?? undefined,
       tokenRefreshToken: usuarioData.refresh_token ?? undefined,
-      celular: usuarioData.telefone ?? undefined,
+      telefone: usuarioData.telefone ?? undefined,
       tokenRecuperacaoSenha: usuarioData.recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRecuperacaoSenha:
         usuarioData.data_expiraca_recuperar_senha_token ?? undefined,
@@ -167,11 +167,11 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
       email: usuarioData.email,
       senha: usuarioData.senha,
       ativo: usuarioData.ativo,
-      autenticaçãoDoisFatores: usuarioData.dois_fatores,
+      autenticacaoDoisFatores: usuarioData.dois_fatores,
       dataCriacao: usuarioData.data_criacao,
       urlPerfil: usuarioData.imagem_perfil ?? undefined,
       tokenRefreshToken: usuarioData.refresh_token ?? undefined,
-      celular: usuarioData.telefone ?? undefined,
+      telefone: usuarioData.telefone ?? undefined,
       tokenRecuperacaoSenha: usuarioData.recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRecuperacaoSenha:
         usuarioData.data_expiraca_recuperar_senha_token ?? undefined,
@@ -202,7 +202,7 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
         data_expiraca_recuperar_senha_token:
           usuario.getDataExpiracaoRecuperacaoSenha(),
         dois_fatores: usuario.getAutenticacaoDoisFatores(),
-        telefone: usuario.getCelular(),
+        telefone: usuario.getTelefone(),
         imagem_perfil: usuario.getUrlPerfil(),
       },
     });
@@ -234,7 +234,7 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
           data_expiraca_recuperar_senha_token:
             usuario.getDataExpiracaoRecuperacaoSenha() ?? null,
           dois_fatores: usuario.getAutenticacaoDoisFatores(),
-          telefone: usuario.getCelular() ?? null,
+          telefone: usuario.getTelefone() ?? null,
           imagem_perfil: usuario.getUrlPerfil() ?? null,
         },
       });

@@ -3,7 +3,7 @@ import { RepositorioUsuario } from "../../provider";
 
 interface Entrada extends EntidadeProps {
   nomeCompleto?: string;
-  celular?: string;
+  telefone?: string;
   urlPerfil?: string;
   email?: string;
 }
@@ -24,7 +24,7 @@ export default class AtualizarUsuario implements CasoDeUso<Entrada, void> {
 
     const usuarioAtualizado = usuario.clonar({
       nomeCompleto: entrada.nomeCompleto,
-      celular: entrada.celular,
+      telefone: entrada.telefone,
       urlPerfil: entrada.urlPerfil,
       ...(entrada.email !== undefined && { email: entrada.email }),
     });

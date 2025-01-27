@@ -8,7 +8,7 @@ export interface UsuarioDTO {
   email?: string;
   urlPerfil?: string | null;
   ativo?: boolean;
-  celular?: string | null;
+  telefone?: string | null;
   perfis?: PerfilDTO[];
 }
 
@@ -23,7 +23,7 @@ export class ObterUsuarios implements CasoDeUso<void, UsuarioDTO[]> {
         id: usuario.getUuid(),
         nome: usuario.getNome(),
         email: usuario.getEmail(),
-        celular: usuario.getCelular() ?? null,
+        telefone: usuario.getTelefone() ?? null,
         urlPerfil: usuario.getUrlPerfil() ?? null,
         ativo: usuario.habilitado,
         perfis: [],

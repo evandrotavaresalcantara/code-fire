@@ -13,7 +13,7 @@ const usuarioToken = {
     email: "usuariotoken@zmail.com",
     senha: "Abc@123",
     senhaConfirmacao: "Abc@123",
-    celular: "+5581922221111",
+    telefone: "81912341234",
     ativo: true,
   },
 

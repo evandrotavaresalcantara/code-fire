@@ -31,7 +31,7 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
           nomeCompleto: usuarioData.nome,
           email: usuarioData.email,
           senha: usuarioData.senha,
-          celular: usuarioData.telefone,
+          telefone: usuarioData.telefone,
           urlPerfil: usuarioData.imagem_perfil,
           ativo: usuarioData.ativo,
           tokenRecuperacaoSenha: usuarioData.recuperar_senha_token,
@@ -40,8 +40,9 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
           tokenRefreshToken: usuarioData.refresh_token,
           dataExpiracaoTokenRefreshToken:
             usuarioData.data_expiracao_refresh_token,
-          autenticaçãoDoisFatores: usuarioData.dois_fatores,
+          autenticacaoDoisFatores: usuarioData.dois_fatores,
           dataCriacao: usuarioData.data_criacao,
+          sisAdmin: usuarioData.sis_admin,
         });
         const statementPerfils = `SELECT * FROM ${this.tabelaUsuarioPerfils} WHERE usuario_id = $1`;
         const usuarioPerfilssData = await this.conexao.query<
@@ -70,7 +71,7 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
       nomeCompleto: usuarioData.nome,
       email: usuarioData.email,
       senha: usuarioData.senha,
-      celular: usuarioData.telefone,
+      telefone: usuarioData.telefone,
       urlPerfil: usuarioData.imagem_perfil,
       ativo: usuarioData.ativo,
       tokenRecuperacaoSenha: usuarioData.recuperar_senha_token,
@@ -78,8 +79,9 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
         usuarioData.data_expiraca_recuperar_senha_token,
       tokenRefreshToken: usuarioData.refresh_token,
       dataExpiracaoTokenRefreshToken: usuarioData.data_expiracao_refresh_token,
-      autenticaçãoDoisFatores: usuarioData.dois_fatores,
+      autenticacaoDoisFatores: usuarioData.dois_fatores,
       dataCriacao: usuarioData.data_criacao,
+      sisAdmin: usuarioData.sis_admin,
     });
     const statementPerfils = `SELECT * FROM ${this.tabelaUsuarioPerfils} WHERE usuario_id = $1`;
     const usuarioPerfilsData = await this.conexao.query<UsuarioPerfilsSchema[]>(
@@ -108,7 +110,7 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
       nomeCompleto: usuarioData.nome,
       email: usuarioData.email,
       senha: usuarioData.senha,
-      celular: usuarioData.telefone,
+      telefone: usuarioData.telefone,
       urlPerfil: usuarioData.imagem_perfil,
       ativo: usuarioData.ativo,
       tokenRecuperacaoSenha: usuarioData.recuperar_senha_token,
@@ -116,8 +118,9 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
         usuarioData.data_expiraca_recuperar_senha_token,
       tokenRefreshToken: usuarioData.refresh_token,
       dataExpiracaoTokenRefreshToken: usuarioData.data_expiracao_refresh_token,
-      autenticaçãoDoisFatores: usuarioData.dois_fatores,
+      autenticacaoDoisFatores: usuarioData.dois_fatores,
       dataCriacao: usuarioData.data_criacao,
+      sisAdmin: usuarioData.sis_admin,
     });
     const statementPerfils = `SELECT * FROM ${this.tabelaUsuarioPerfils} WHERE usuario_id = $1`;
     const usuarioPerfilsData = await this.conexao.query<UsuarioPerfilsSchema[]>(
@@ -170,7 +173,7 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
       nomeCompleto: usuarioData.nome,
       email: usuarioData.email,
       senha: usuarioData.senha,
-      celular: usuarioData.telefone,
+      telefone: usuarioData.telefone,
       urlPerfil: usuarioData.imagem_perfil,
       ativo: usuarioData.ativo,
       tokenRecuperacaoSenha: usuarioData.recuperar_senha_token,
@@ -178,8 +181,9 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
         usuarioData.data_expiraca_recuperar_senha_token,
       tokenRefreshToken: usuarioData.refresh_token,
       dataExpiracaoTokenRefreshToken: usuarioData.data_expiracao_refresh_token,
-      autenticaçãoDoisFatores: usuarioData.dois_fatores,
+      autenticacaoDoisFatores: usuarioData.dois_fatores,
       dataCriacao: usuarioData.data_criacao,
+      sisAdmin: usuarioData.sis_admin,
     });
     const statementPerfils = `SELECT * FROM ${this.tabelaUsuarioPerfils} WHERE usuario_id = $1`;
     const usuarioPerfilsData = await this.conexao.query<UsuarioPerfilsSchema[]>(
@@ -209,8 +213,10 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
       usuario.getTokenRecuperacaoSenha(),
       usuario.getDataExpiracaoRecuperacaoSenha(),
       usuario.getAutenticacaoDoisFatores(),
-      usuario.getCelular(),
+      usuario.getTelefone(),
       usuario.getUrlPerfil(),
+      usuario.getSisAdmin(),
+      usuario.getSisAdmin(),
     ]);
     for (const perfil of usuario.obterPerfis) {
       const statement = `INSERT INTO ${this.tabelaUsuarioPerfils} (perfil_id, usuario_id) VALUES ($1, $2)`;
@@ -233,9 +239,10 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
       usuario.getTokenRecuperacaoSenha(),
       usuario.getDataExpiracaoRecuperacaoSenha(),
       usuario.getAutenticacaoDoisFatores(),
-      usuario.getCelular(),
+      usuario.getTelefone(),
       usuario.getUrlPerfil(),
       usuario.getUuid(),
+      usuario.getSisAdmin(),
     ]);
     if (resultado.length === 0) {
       throw new Error(Errors.PERFIL_NAO_ENCONTRADO_ATUALIZACAO);

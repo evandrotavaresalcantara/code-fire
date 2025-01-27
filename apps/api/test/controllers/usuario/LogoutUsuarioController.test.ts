@@ -15,7 +15,7 @@ test("Deve realizar o logout do usuário", async () => {
     email: "usuarioteste@zmail.com",
     senha: "Abc@123",
     senhaConfirmacao: "Abc@123",
-    celular: "+5581922221111",
+    telefone: "81922221111",
     ativo: true,
   };
 

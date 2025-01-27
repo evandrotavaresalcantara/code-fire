@@ -18,7 +18,7 @@ export class CriarUsuarioController {
             senha: req.body.senha as string,
             senhaConfirmacao: req.body.senhaConfirmacao as string,
             email: req.body.email as string,
-            celular: req.body.celular as string,
+            telefone: req.body.celular as string,
             ativo: req.body.ativo as boolean,
             urlPerfil: req.body.urlPerfil as string,
           };
