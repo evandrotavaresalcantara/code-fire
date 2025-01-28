@@ -60,7 +60,7 @@ export class LoginPeloQrCode implements CasoDeUso<Entrada, Output> {
       }>(QueuesAuth.AUTH_SENHA_ESQUECIDA, msg);
       return {
         isAutenticacao2Fatores: true,
-        tokenId: "",
+        tokenId: usuario.getEmail(), // necessário para 2fa
         token: "",
       };
     }

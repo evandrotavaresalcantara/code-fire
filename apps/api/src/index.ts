@@ -2,6 +2,7 @@ import {
   AtualizarAccessRefreshTokens,
   AuthTokenJWTAsymmetricAdapter,
   CriarTokenParaQrCode,
+  LoginPeloQrCode,
   ObterPerfilPorId,
   ObterPerfis,
   ObterPermissaoPorId,
@@ -59,6 +60,7 @@ import {
   AtualizarAccessRefreshTokensController,
   AtualizarUsuarioController,
   CriarTokenParaQrCodeController,
+  LoginPeloQrCodeController,
   LoginUsuarioController,
   ObterTokenParaQrCodeController,
   RedefinirSenhaPorEmailController,
@@ -192,6 +194,12 @@ const loginUsuario = new LoginUsuario(
   authToken,
   queueRabbitMQ,
 );
+const loginPeloQrCode = new LoginPeloQrCode(
+  repositorioUsuario,
+  repositorioOtp,
+  authToken,
+  queueRabbitMQ,
+);
 const redefinirSenhaPorEmail = new RedefinirSenhaPorEmail(
   repositorioUsuarioPrisma,
   queueRabbitMQ,
@@ -274,6 +282,7 @@ const obterPerfilPorId = new ObterPerfilPorId(repositorioPerfilPrisma);
 
 // CONTROLLERS -------------------------------------------
 new LoginUsuarioController(authRouter, loginUsuario);
+new LoginPeloQrCodeController(authRouter, loginPeloQrCode);
 new ValidarOtpController(authRouter, validarOtp);
 new VerificarOtpExisteController(authRouter, verificarOtpExiste);
 new RedefinirSenhaPorEmailController(authRouter, redefinirSenhaPorEmail);
