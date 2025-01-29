@@ -28,10 +28,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.8",
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/qrcode": "^1.5.5"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "otpauth": "^9.3.6",
     "qrcode": "^1.5.4"
   }
