@@ -40,6 +40,7 @@ import {
   RabbitMQAdapter,
 } from "@packages/queue/src";
 import { PrismaClient } from "@prisma/client";
+import cookieParser from "cookie-parser";
 import cors, { CorsOptions } from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import helmet from "helmet";
@@ -54,6 +55,7 @@ import {
 import PerfilRepositorioPgPrismaAdapter from "./adapters/database/PerfilRepositorioPgPrismaAdapter";
 import PermissaoRepositorioPgPrismaAdapter from "./adapters/database/PermissaoRepositorioPgPrismaAdapter";
 import UsuarioRepositorioPgPrismaAdapter from "./adapters/database/UsuarioRepositorioPgPrismaAdapter";
+import UsuarioCookiesMiddleware from "./adapters/middlewares/UsuarioCookiesMiddleware";
 import UsuarioMiddleware from "./adapters/middlewares/UsuarioMiddleware";
 import { ENV } from "./config";
 import {
@@ -99,7 +101,7 @@ const app = express();
 const corsOptions: CorsOptions = {
   origin: ENV.CORS_ORIGIN,
   optionsSuccessStatus: 200,
-  // credentials: true,
+  credentials: true,
   // exposedHeaders: ["Content-Disposition"],
 };
 app.use(cors(corsOptions));
@@ -107,6 +109,7 @@ app.use(morgan(ENV.LOGGER_LEVELINFO));
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 // const userMiddleware = UserMiddleware()
 app.listen(ENV.API_PORT, () => {
   console.log(`🔥 Server is running on port ${ENV.API_PORT}`);
@@ -186,6 +189,10 @@ const repositorioOtp = new RepositorioOtpPgPromiseAdapter(databaseConnection);
 const provedorCriptografia = new ProvedorCriptografiaBcryptAdapter();
 const authToken = new AuthTokenJWTAsymmetricAdapter();
 const rotaProtegida = UsuarioMiddleware(repositorioUsuarioPrisma, authToken);
+const rotaProtegidaCookies = UsuarioCookiesMiddleware(
+  repositorioUsuarioPrisma,
+  authToken,
+);
 // CASOS DE USO ------------------------------------------
 const loginUsuario = new LoginUsuario(
   repositorioUsuarioPrisma,
@@ -302,18 +309,18 @@ new AtualizarAccessRefreshTokensController(
 new CriarTokenParaQrCodeController(
   authRouter,
   criarTokenParaQrCode,
-  // rotaProtegida,
+  rotaProtegidaCookies,
 );
 // TODO: verificar a proteção da rota para usuario logado pode consultar apenas o seu token
 new ObterTokenParaQrCodeController(
   authRouter,
   obterTokenParaQrCode,
-  // rotaProtegida,
+  rotaProtegidaCookies,
 );
 new RemoverTokenParaQrCodeController(
   authRouter,
   removerTokenParaQrCode,
-  // rotaProtegida,
+  rotaProtegidaCookies,
 );
 new AtualizarPerfilUsuarioController(
   authRouter,
