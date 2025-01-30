@@ -22,3 +22,4 @@ export * from "./RemoverUsuario";
 export * from "./ValidarOtp";
 export * from "./VerificarOtpExiste";
 export * from "./VerificarTokenRedefinicaoSenha";
+export * from "./AtualizarSenhaUsuarioNaoLogado";

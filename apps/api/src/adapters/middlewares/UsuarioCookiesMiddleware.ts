@@ -34,6 +34,10 @@ export default function UsuarioCookiesMiddleware(
         res.status(403).json({ message: "token inválido." });
         return;
       }
+      if (!usuario.getSisAdmin()) {
+        acessoNegado();
+        return;
+      }
       next();
     } catch {
       acessoNegado();

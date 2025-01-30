@@ -1,15 +1,15 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import AtualizarUsuario from "@packages/auth/src/usecases/usuario/AtualizarUsuario";
+import AtualizarSenhaUsuarioNaoLogado from "@packages/auth/src/usecases/usuario/AtualizarSenhaUsuarioNaoLogado";
 import { NextFunction, Request, Response, Router } from "express";
 
-export class AtualizarUsuarioController {
+export class AtualizarSenhaUsuarioNaoLogadoController {
   constructor(
     private server: Router,
-    private useCase: AtualizarUsuario,
+    private useCase: AtualizarSenhaUsuarioNaoLogado,
     ...middleware: Middleware[]
   ) {
     this.server.put(
-      "/atualizar-usuario/:id",
+      "/atualizar-usuario-nao-logado/:id",
       ...middleware,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
