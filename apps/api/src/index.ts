@@ -27,6 +27,7 @@ import ExcluirPermissao from "@packages/auth/src/usecases/permissao/ExcluirPermi
 import AtualizarPerfilUsuario from "@packages/auth/src/usecases/usuario/AtualizarPerfilUsuario";
 import AtualizarSenha from "@packages/auth/src/usecases/usuario/AtualizarSenha";
 import AtualizarSenhaPeloEmailToken from "@packages/auth/src/usecases/usuario/AtualizarSenhaPeloEmailToken";
+import AtualizarSenhaUsuarioNaoLogado from "@packages/auth/src/usecases/usuario/AtualizarSenhaUsuarioNaoLogado";
 import AtualizarUsuario from "@packages/auth/src/usecases/usuario/AtualizarUsuario";
 import CriarUsuario from "@packages/auth/src/usecases/usuario/CriarUsuario";
 import DesabilitarUsuario from "@packages/auth/src/usecases/usuario/DesabilitarUsuario";
@@ -99,6 +100,7 @@ import { LogoutUsuarioController } from "./controllers/usuario/LogoutUsuarioCont
 import { ObterUsuarioPorIdController } from "./controllers/usuario/ObterUsuarioPorId";
 import { ObterUsuariosController } from "./controllers/usuario/ObterUsuarios";
 import { RemoverUsuarioController } from "./controllers/usuario/RemoverUsuario";
+import { AtualizarSenhaUsuarioNaoLogadoController } from "./controllers/usuario/AtualizarSenhaUsuarioNaoLogadoController";
 
 // Configuração Ambiente ----------------------------------------------
 console.log(`🟢 ENVIRONMENT: ${ENV.NODE_ENV} 🟢`);
@@ -239,6 +241,10 @@ const atualizarSenhaPeloEmailToken = new AtualizarSenhaPeloEmailToken(
   repositorioUsuarioPrisma,
   provedorCriptografia,
 );
+const atualizarSenhaUsuarioNaoLogado = new AtualizarSenhaUsuarioNaoLogado(
+  repositorioUsuarioPrisma,
+  provedorCriptografia,
+)
 const registrarUsuario = new RegistrarUsuario(
   repositorioUsuarioPrisma,
   provedorCriptografia,
@@ -327,6 +333,10 @@ new AtualizarSenhaPeloEmailTokenController(
   authRouter,
   atualizarSenhaPeloEmailToken,
 );
+new AtualizarSenhaUsuarioNaoLogadoController(
+  authRouter,
+  atualizarSenhaUsuarioNaoLogado
+)
 new RegistrarUsuarioController(authRouter, registrarUsuario);
 new AtualizarAccessRefreshTokensController(
   authRouter,
