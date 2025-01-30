@@ -5,6 +5,7 @@ export * from "./CriarTokenParaQrCodeController";
 export * from "./LoginPeloQrCodeController";
 export * from "./LoginUsuarioController";
 export * from "./ObterTokenParaQrCodeController";
+export * from "./ObterUltimoLoginUsuarioController";
 export * from "./ObterUsuarioPorId";
 export * from "./ObterUsuarios";
 export * from "./RedefinirSenhaPorEmailController";

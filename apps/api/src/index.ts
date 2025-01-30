@@ -8,6 +8,7 @@ import {
   ObterPermissaoPorId,
   ObterPermissoes,
   ObterTokenParaQrCode,
+  ObterUltimoLoginUsuario,
   ObterUsuarioPorId,
   ObterUsuarios,
   RedefinirSenhaPorEmail,
@@ -38,6 +39,7 @@ import { ServidorEmailNodeMailerAdapter } from "@packages/email/src";
 import {
   enviarEmailSenhaEsquecida,
   RabbitMQAdapter,
+  registrarLoginRealizado,
 } from "@packages/queue/src";
 import { PrismaClient } from "@prisma/client";
 import cookieParser from "cookie-parser";
@@ -46,6 +48,8 @@ import express, { NextFunction, Request, Response } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import {
+  DatabaseConnectionMongodbAdapter,
+  LoginDaoMongoAdapter,
   PgPromiseAdapter,
   RepositorioOtpPgPromiseAdapter,
   RepositorioPerfilPgPromiseAdapter,
@@ -65,6 +69,7 @@ import {
   LoginPeloQrCodeController,
   LoginUsuarioController,
   ObterTokenParaQrCodeController,
+  ObterUltimoLoginUsuarioController,
   RedefinirSenhaPorEmailController,
   RegistrarUsuarioController,
   RemoverTokenParaQrCodeController,
@@ -120,6 +125,9 @@ app.use("/v1", v1Router);
 // ROTAS AUTH ---------------------------------------------
 const authRouter = express.Router();
 v1Router.use("/auth", authRouter);
+// ROTAS REPORT ---------------------------------------------
+const reportRouter = express.Router();
+v1Router.use("/report", reportRouter);
 
 // Error Handler ------------------------------------------
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
@@ -150,6 +158,12 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
 // ADAPTADORES --------------------------------------------
 const databaseConnection = new PgPromiseAdapter();
 const conexaoPrisma = new PrismaClient();
+const databaseConnectionMongoReport = new DatabaseConnectionMongodbAdapter(
+  ENV.DATABASE_REPORT_USERNAME,
+  ENV.DATABASE_REPORT_PASSWORD,
+  ENV.DATABASE_REPORT_HOST,
+  ENV.DATABASE_REPORT_PORT,
+);
 const queueRabbitMQ = RabbitMQAdapter.getInstance(
   ENV.AMQP_USER,
   ENV.AMQP_PASSWORD,
@@ -188,6 +202,8 @@ const repositorioUsuarioPrisma = new UsuarioRepositorioPgPrismaAdapter(
 const repositorioOtp = new RepositorioOtpPgPromiseAdapter(databaseConnection);
 const provedorCriptografia = new ProvedorCriptografiaBcryptAdapter();
 const authToken = new AuthTokenJWTAsymmetricAdapter();
+const loginDAOAdpter = new LoginDaoMongoAdapter(databaseConnectionMongoReport);
+// MIDDLEWARE ------------------------------------------
 const rotaProtegida = UsuarioMiddleware(repositorioUsuarioPrisma, authToken);
 const rotaProtegidaCookies = UsuarioCookiesMiddleware(
   repositorioUsuarioPrisma,
@@ -291,6 +307,7 @@ const excluirPerfil = new ExcluirPerfil(
 const obterPerfis = new ObterPerfis(repositorioPerfilPrisma);
 const obterPerfilPorId = new ObterPerfilPorId(repositorioPerfilPrisma);
 
+const obterUltimoLoginUsuario = new ObterUltimoLoginUsuario(loginDAOAdpter);
 // CONTROLLERS -------------------------------------------
 new LoginUsuarioController(authRouter, loginUsuario);
 new LoginPeloQrCodeController(authRouter, loginPeloQrCode);
@@ -353,8 +370,15 @@ new EditarPerfilController(v1Router, editarPerfil, rotaProtegida);
 new ExcluirPerfilController(v1Router, excluirPerfil, rotaProtegida);
 new ObterPerfisController(v1Router, obterPerfis, rotaProtegida);
 new ObterPerfilPorIdController(v1Router, obterPerfilPorId, rotaProtegida);
+
+new ObterUltimoLoginUsuarioController(
+  reportRouter,
+  obterUltimoLoginUsuario,
+  rotaProtegidaCookies,
+);
 // CONSUMERS ---------------------------------------------
 enviarEmailSenhaEsquecida(queueRabbitMQ, servidorEmail);
+registrarLoginRealizado(queueRabbitMQ, loginDAOAdpter);
 // Gerenciamento de Desconexão do RabbitMQ
 const shutdown = async () => {
   await queueRabbitMQ.disconnect(); // Chame o método de desconexão do RabbitMQ

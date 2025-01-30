@@ -1,3 +1,5 @@
+export * from "./LoginDAOMongoAdapter";
+export * from "./mongodb";
 export * from "./OtpRepositorioPgPromise";
 export * from "./PerfilRepositorioPgPrismaAdapter";
 export * from "./PerfilRepositorioPgPromiseAdapter";

@@ -12,6 +12,8 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
   private tabelaPerfil = "perfil";
   private tabelaUsuarioPerfils = "usuario_perfils";
   private tabelaUsuario = "usuario";
+  private tabelaOtp = "otp";
+  private tabelaQrCodeLogin = "qr_code_login";
 
   constructor(
     databaseConnection: DatabaseConnection,
@@ -260,6 +262,10 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
   }
 
   async excluirUsuario(id: string): Promise<void> {
+    const [user] = await this.conexao.query<{ email: string }[]>(
+      `SELECT email FROM ${this.tabelaUsuario} WHERE id = $1`,
+      [id],
+    );
     const statementPerfils = `DELETE FROM ${this.tabelaUsuarioPerfils} WHERE usuario_id = $1`;
     await this.conexao.query(statementPerfils, [id]);
     const statement = `DELETE FROM ${this.tabelaUsuario} WHERE id = $1 RETURNING id`;
@@ -269,5 +275,9 @@ export class RepositorioUsuarioPgPromiseAdapter implements RepositorioUsuario {
     if (resultado.length === 0) {
       throw new Error(Errors.USUARIO_NAO_ENCONTRADO_EXCLUSAO);
     }
+    const statementOtp = `DELETE FROM ${this.tabelaOtp} WHERE email = $1`;
+    await this.conexao.query(statementOtp, [user.email]);
+    const statementQrCode = `DELETE FROM ${this.tabelaQrCodeLogin} WHERE email = $1`;
+    await this.conexao.query(statementQrCode, [user.email]);
   }
 }
