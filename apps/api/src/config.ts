@@ -42,7 +42,7 @@ const envSchema = z.object({
     })
     .min(4)
     .max(4)
-    .default("5672"),
+    .default("5673"),
   EMAIL_HOST: z.optional(z.string()),
   EMAIL_HOST_USER: z.optional(z.string()),
   EMAIL_HOST_PASSWORD: z.optional(z.string()),
