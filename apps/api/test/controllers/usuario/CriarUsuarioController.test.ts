@@ -14,8 +14,9 @@ test("Deve criar um novo usuário ", async () => {
     email: "usuarioteste@zmail.com",
     senha: "Abc@123",
     senhaConfirmacao: "Abc@123",
-    telefone: "81922221111",
+    celular: "81922221111",
     ativo: true,
+    sisAdmin: true,
   };
   const response = await axiosApi.post(ENDPOINT, data, {
     headers: { Authorization: token },
@@ -33,7 +34,6 @@ test("Deve criar um novo usuário ", async () => {
 
   const usuarioSalvo = await repoUsuario.obterPorEmail(data.email);
   repoUsuario.excluirUsuario(`${usuarioSalvo?.getUuid()}`);
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });

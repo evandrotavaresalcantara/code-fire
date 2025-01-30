@@ -91,6 +91,10 @@ export default class Usuario extends Entidade<Usuario, UsuarioProps> {
   getSisAdmin() {
     return this.sisAdmin;
   }
+
+  getDoisFatores() {
+    return this.autenticacaoDoisFatores;
+  }
   get obterPerfis(): Perfil[] {
     return this.perfis;
   }

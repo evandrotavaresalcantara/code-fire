@@ -33,7 +33,6 @@ test("Deve editar um perfil existente", async () => {
     { headers: { Authorization: token } },
   );
   await repoPerfil.excluirPerfil(`${perfilSalvo?.getUuid()}`);
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });
@@ -92,7 +91,6 @@ test("Deve editar as permissões de perfil existente", async () => {
   await repoPermissao.excluirPermissao(`${permissaoSalva1?.getUuid()}`);
   await repoPermissao.excluirPermissao(`${permissaoSalva2?.getUuid()}`);
   await repoPerfil.excluirPerfil(`${perfilSalvo?.getUuid()}`);
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });

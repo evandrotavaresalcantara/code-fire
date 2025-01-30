@@ -19,6 +19,8 @@ export class AtualizarUsuarioController {
             telefone: req.body.celular as string,
             urlPerfil: req.body.urlPerfil as string,
             email: req.body.email as string,
+            autenticacaoDoisFatores: req.body
+              .autenticacaoDoisFatores as boolean,
           };
           await this.useCase.executar(input);
           res.sendStatus(201);

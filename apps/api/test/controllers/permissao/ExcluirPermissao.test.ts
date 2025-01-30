@@ -18,7 +18,6 @@ test("Deve excluir uma permissão existente", async () => {
   const response = await axiosApi.delete(ENDPOINTDELETE, {
     headers: { Authorization: token },
   });
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });

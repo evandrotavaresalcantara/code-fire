@@ -61,7 +61,6 @@ test("Deve atualizar o perfil do usuário", async () => {
   await repoUsuario.excluirUsuario(`${usuarioSalvo?.getUuid()}`);
   await repoPerfil.excluirPerfil(`${perfil1Salvo?.getUuid()}`);
   await repoPerfil.excluirPerfil(`${perfil2Salvo?.getUuid()}`);
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });

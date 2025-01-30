@@ -9,6 +9,8 @@ export interface UsuarioDTO {
   urlPerfil?: string | null;
   ativo?: boolean;
   telefone?: string | null;
+  doisFatores?: boolean;
+  sisAdmin?: boolean;
   perfis?: PerfilDTO[];
 }
 
@@ -26,6 +28,8 @@ export class ObterUsuarios implements CasoDeUso<void, UsuarioDTO[]> {
         telefone: usuario.getTelefone() ?? null,
         urlPerfil: usuario.getUrlPerfil() ?? null,
         ativo: usuario.habilitado,
+        doisFatores: usuario.getDoisFatores(),
+        sisAdmin: usuario.getSisAdmin(),
         perfis: [],
       };
     });

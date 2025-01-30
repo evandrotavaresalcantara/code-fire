@@ -34,6 +34,11 @@ export default function UsuarioMiddleware(
         return;
       }
 
+      if (!usuario.getSisAdmin()) {
+        acessoNegado();
+        return;
+      }
+
       next();
     } catch {
       acessoNegado();

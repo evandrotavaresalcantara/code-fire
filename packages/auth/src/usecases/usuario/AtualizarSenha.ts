@@ -16,7 +16,7 @@ export default class AtualizarSenha implements CasoDeUso<Entrada, void> {
 
   async executar(entrada: Entrada): Promise<void> {
     const id = new Id(entrada.id);
-    if (!entrada.senhaAntiga) throw new Error("email ou senha incorreto.");
+    if (!entrada.senhaAntiga) throw new Error("senha atual não informada.");
 
     if (entrada.senhaNova !== entrada.senhaNovaConfirmacao) {
       throw new Error("senha nova e confirmação da senha nova são diferentes.");
@@ -35,7 +35,7 @@ export default class AtualizarSenha implements CasoDeUso<Entrada, void> {
       hashSenha,
     );
 
-    if (!senhaAtualConfirmada) throw new Error("email ou senha incorreto.");
+    if (!senhaAtualConfirmada) throw new Error("senha atual inválida.");
 
     const hashSenhaNova = this.provedorCriptografia.criptografar(
       novaSenha.valor,

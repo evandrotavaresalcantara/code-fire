@@ -12,7 +12,7 @@ test("Deve registrar um novo usuário ", async () => {
     email: "usuarioteste@zmail.com",
     senha: "Abc@123",
     senhaConfirmacao: "Abc@123",
-    telefone: "(81)92222-1111",
+    celular: "(81)92222-1111",
   };
   const response = await axiosApi.post(ENDPOINT, data);
 

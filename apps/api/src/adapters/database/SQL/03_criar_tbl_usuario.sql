@@ -42,8 +42,9 @@ INSERT INTO usuario (
   senha,
   data_criacao,
   ativo,
-  dois_fatores
-)
+  dois_fatores,
+  sis_admin
+);
 SELECT
   gen_random_uuid(),
   'Administrador',
@@ -51,7 +52,8 @@ SELECT
   '$2b$10$6hDAQ.phQHaZXWD9HT.E0.2YRfbaGqb7BD9vrpB0NJ1Ajh5N8THuC', -- Senha hasheada genSenhaParaUsuario.ts
   NOW(),
   true,
-  false
+  false,
+  true
 WHERE NOT EXISTS (
   SELECT 1 FROM usuario WHERE email = 'admin@admin.com'
 );

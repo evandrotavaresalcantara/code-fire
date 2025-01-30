@@ -64,7 +64,7 @@ test("Deve gerar um erro ao tentar atualizar a senha, sem passar a senha antiga.
       senhaNova: senha2,
       senhaNovaConfirmacao: senha2,
     });
-  }).rejects.toThrow("email ou senha incorreto.");
+  }).rejects.toThrow("senha atual não informada.");
 });
 
 test("Deve gerar um erro ao atualizar senha, passando senha atual errada.", async () => {
@@ -80,7 +80,7 @@ test("Deve gerar um erro ao atualizar senha, passando senha atual errada.", asyn
       senhaNova: senha2,
       senhaNovaConfirmacao: senha2,
     });
-  }).rejects.toThrow("email ou senha incorreto.");
+  }).rejects.toThrow("senha atual inválida.");
 });
 
 test("Deve gerar um erro ao tentar atualizar senha, de usuári inexistente.", async () => {

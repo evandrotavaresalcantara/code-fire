@@ -49,7 +49,6 @@ test("Deve editar um usuário ", async () => {
 
   const usuarioAtualizado = await repoUsuario.obterPorEmail(data.email);
   repoUsuario.excluirUsuario(`${usuarioSalvo?.getUuid()}`);
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
   expect(usuarioAtualizado?.getNome()).toBe(data.nome);

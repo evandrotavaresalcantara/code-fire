@@ -36,6 +36,7 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
             usuarioData.data_expiracao_refresh_token ?? undefined,
           autenticacaoDoisFatores: usuarioData.dois_fatores,
           dataCriacao: usuarioData.data_criacao,
+          sisAdmin: usuarioData.sis_admin,
         });
 
         for (const usuarioPerfil of usuarioData.usuario_perfils) {
@@ -74,6 +75,7 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
         usuarioData.data_expiraca_recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRefreshToken:
         usuarioData.data_expiracao_refresh_token ?? undefined,
+      sisAdmin: usuarioData.sis_admin,
     });
     for (const usuarioPerfil of usuarioData.usuario_perfils) {
       const perfil = await this.perfilRepositorio.obterPerfilPorId(
@@ -106,6 +108,7 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
         usuarioData.data_expiraca_recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRefreshToken:
         usuarioData.data_expiracao_refresh_token ?? undefined,
+      sisAdmin: usuarioData.sis_admin,
     });
     for (const usuarioPerfil of usuarioData.usuario_perfils) {
       const perfil = await this.perfilRepositorio.obterPerfilPorId(
@@ -140,6 +143,7 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
         usuarioData.data_expiraca_recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRefreshToken:
         usuarioData.data_expiracao_refresh_token ?? undefined,
+      sisAdmin: usuarioData.sis_admin,
     });
 
     for (const usuarioPerfil of usuarioData.usuario_perfils) {
@@ -177,6 +181,7 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
         usuarioData.data_expiraca_recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRefreshToken:
         usuarioData.data_expiracao_refresh_token ?? undefined,
+      sisAdmin: usuarioData.sis_admin,
     });
     for (const usuarioPerfil of usuarioData.usuario_perfils) {
       const perfil = await this.perfilRepositorio.obterPerfilPorId(
@@ -204,6 +209,7 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
         dois_fatores: usuario.getAutenticacaoDoisFatores(),
         telefone: usuario.getTelefone(),
         imagem_perfil: usuario.getUrlPerfil(),
+        sis_admin: usuario.getSisAdmin(),
       },
     });
 
@@ -236,6 +242,7 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
           dois_fatores: usuario.getAutenticacaoDoisFatores(),
           telefone: usuario.getTelefone() ?? null,
           imagem_perfil: usuario.getUrlPerfil() ?? null,
+          sis_admin: usuario.getSisAdmin(),
         },
       });
     } catch {

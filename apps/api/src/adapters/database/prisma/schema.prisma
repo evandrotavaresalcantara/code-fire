@@ -49,6 +49,7 @@ model usuario {
   dois_fatores                        Boolean           @default(false)
   telefone                            String?           @db.VarChar(11)
   imagem_perfil                       String?           @db.VarChar(250)
+  sis_admin                           Boolean           @default(false)
   usuario_perfils                     usuario_perfils[]
 }
 
@@ -59,4 +60,17 @@ model usuario_perfils {
   usuario    usuario @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
 
   @@id([perfil_id, usuario_id])
+}
+
+model otp {
+  email     String   @id @db.VarChar(250)
+  codigo    String   @db.Char(64)
+  expira_em DateTime @db.Timestamptz(6)
+}
+
+model qr_code_login {
+  email     String   @id @db.VarChar(250)
+  codigo    String   @db.Char(64)
+  expira_em DateTime @db.Timestamptz(6)
+  token     String?  @db.VarChar(650)
 }

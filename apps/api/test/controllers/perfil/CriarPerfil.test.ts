@@ -23,7 +23,6 @@ test("Deve criar um novo perfil sem permissão", async () => {
   );
   const perfil = await repoPerfil.obterPerfilPorNome(data.nome);
   if (perfil) await repoPerfil.excluirPerfil(perfil.getUuid());
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });
@@ -54,7 +53,6 @@ test("Deve criar um novo perfil com uma permissão", async () => {
   const perfil = await repoPerfil.obterPerfilPorNome(data.nome);
   await repoPermissao.excluirPermissao(novaPermissao.getUuid());
   await repoPerfil.excluirPerfil(`${perfil?.getUuid()}`);
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });

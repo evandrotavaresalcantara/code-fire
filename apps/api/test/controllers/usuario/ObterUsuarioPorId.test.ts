@@ -36,7 +36,6 @@ test("Deve obter usuário pelo id", async () => {
     headers: { Authorization: token },
   });
   await repoUsuario.excluirUsuario(novoUsuario.getUuid());
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(200);
 });
@@ -66,7 +65,6 @@ test("Deve retornar null para id não encotrado", async () => {
     headers: { Authorization: token },
   });
   await repoUsuario.excluirUsuario(novoUsuario.getUuid());
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(200);
   expect(response.data).toBeNull();

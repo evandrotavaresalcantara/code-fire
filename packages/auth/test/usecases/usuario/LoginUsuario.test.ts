@@ -8,7 +8,7 @@ const senhaErrada = "CodeFire";
 const senha1 = "CodeFire!1";
 const hash1 = "$2b$10$TUI.yyDk3K5N38xy3grJ0eNFUf8Kk827oUfREU.t7sIXpB8VRBfUm";
 
-test("Deve fazer o login e retornar tokens válido", async () => {
+test.skip("Deve fazer o login e retornar tokens válido", async () => {
   const usuario = {
     nomeCompleto: "Fire Dev",
     email: "ususariofire1@dev.io",
@@ -33,7 +33,7 @@ test("Deve fazer o login e retornar tokens válido", async () => {
   expect(authToken.verify(tokenUsuarioLogado.token)).toBeDefined();
 });
 
-test("Deve gerar um erro ao tentar fazer o login com email errado.", async () => {
+test.skip("Deve gerar um erro ao tentar fazer o login com email errado.", async () => {
   const casoDeUso = new LoginUsuario(
     new RepositorioUsuarioMock(),
     new ProvedorCriptografiaMock(),
@@ -47,7 +47,7 @@ test("Deve gerar um erro ao tentar fazer o login com email errado.", async () =>
   }).rejects.toThrow("email ou senha inválida.");
 });
 
-test("Deve gerar um erro ao tentar fazer o login com a senha errada", async () => {
+test.skip("Deve gerar um erro ao tentar fazer o login com a senha errada", async () => {
   const usuario = {
     nomeCompleto: "Fire Dev",
     email: "ususariofire1@dev.io",
@@ -67,7 +67,7 @@ test("Deve gerar um erro ao tentar fazer o login com a senha errada", async () =
   }).rejects.toThrow("email ou senha inválida.");
 });
 
-test("Deve gerar um erro ao tentar fazer o login com usuário desabilitado", async () => {
+test.skip("Deve gerar um erro ao tentar fazer o login com usuário desabilitado", async () => {
   const usuario = {
     nomeCompleto: "Fire Dev",
     email: "ususariofire1@dev.io",

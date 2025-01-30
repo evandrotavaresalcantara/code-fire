@@ -38,6 +38,5 @@ test("Deve remover um usuário", async () => {
       headers: { Authorization: token },
     },
   );
-  await usuarioToken.excluirUsuario();
   expect(response.status).toBe(201);
 });

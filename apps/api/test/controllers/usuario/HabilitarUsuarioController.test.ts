@@ -41,7 +41,6 @@ test("Deve Habilitar um usuário desabilitado", async () => {
   );
 
   await repoUsuario.excluirUsuario(`${usuarioSalvo?.getUuid()}`);
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });

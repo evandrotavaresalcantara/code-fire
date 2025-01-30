@@ -47,7 +47,6 @@ test("Deve editar um usuário ", async () => {
   );
 
   repoUsuario.excluirUsuario(`${usuarioSalvo?.getUuid()}`);
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });

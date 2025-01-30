@@ -43,7 +43,6 @@ test("Deve obter usuários existentes", async () => {
   });
 
   await repoUsuario.excluirUsuario(novoUsuario1.getUuid());
-  await usuarioToken.excluirUsuario();
   await repoUsuario.excluirUsuario(novoUsuario2.getUuid());
 
   expect(response.status).toBe(200);

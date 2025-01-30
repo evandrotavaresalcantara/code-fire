@@ -27,7 +27,6 @@ test("Deve obter permissões existentes", async () => {
 
   await repoPermissao.excluirPermissao(`${permissao1data?.getUuid()}`);
   await repoPermissao.excluirPermissao(`${permissao2data?.getUuid()}`);
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(200);
 });

@@ -11,6 +11,8 @@ interface Entrada {
   telefone?: string;
   ativo: boolean;
   urlPerfil?: string;
+  autenticacaoDoisFatores: boolean;
+  sisAdmin: boolean;
 }
 
 export default class CriarUsuario implements CasoDeUso<Entrada, void> {
@@ -35,6 +37,8 @@ export default class CriarUsuario implements CasoDeUso<Entrada, void> {
       telefone: entrada.telefone,
       ativo: entrada.ativo,
       urlPerfil: entrada.urlPerfil,
+      autenticacaoDoisFatores: entrada.autenticacaoDoisFatores,
+      sisAdmin: entrada.sisAdmin,
     });
     await this.repo.criarUsuario(usuario);
   }
