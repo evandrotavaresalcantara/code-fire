@@ -18,7 +18,7 @@ export class LoginPeloQrCodeController {
           };
           const output = await this.useCase.executar(input);
           if (output.isAutenticacao2Fatores) {
-            res.sendStatus(303);
+            res.status(303).json(output);
             return;
           }
           res.status(200).json(output);

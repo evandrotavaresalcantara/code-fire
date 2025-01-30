@@ -16,6 +16,7 @@ export class ValidarOtpController {
           const input = {
             email: req.body.email as string,
             codigoOtp: req.body.otpCode as string,
+            loginType: req.body.loginType as string,
           };
           const output = await this.useCase.executar(input);
           res.status(200).json(output);

@@ -240,7 +240,10 @@ const criarUsuario = new CriarUsuario(
 );
 const habilitarUsuario = new HabilitarUsuario(repositorioUsuarioPrisma);
 const desabilitarUsuario = new DesabilitarUsuario(repositorioUsuarioPrisma);
-const logoutUsuario = new LogoutUsuario(repositorioUsuarioPrisma);
+const logoutUsuario = new LogoutUsuario(
+  repositorioUsuarioPrisma,
+  queueRabbitMQ,
+);
 
 const obterUsuarios = new ObterUsuarios(repositorioUsuario);
 const obterUsuarioPorId = new ObterUsuarioPorId(repositorioUsuarioPrisma);
@@ -250,6 +253,7 @@ const validarOtp = new ValidarOtp(
   repositorioUsuario,
   repositorioOtp,
   authToken,
+  queueRabbitMQ,
 );
 const verificarOtpExiste = new VerificarOtpExiste(repositorioOtp);
 const criarTokenParaQrCode = new CriarTokenParaQrCode(
@@ -331,7 +335,7 @@ new AtualizarSenhaController(authRouter, atualizarSenha, rotaProtegida);
 new CriarUsuarioController(authRouter, criarUsuario, rotaProtegida);
 new HabilitarUsuarioController(authRouter, habilitarUsuario, rotaProtegida);
 new DesabilitarUsuarioController(authRouter, desabilitarUsuario, rotaProtegida);
-new LogoutUsuarioController(authRouter, logoutUsuario, rotaProtegida);
+new LogoutUsuarioController(authRouter, logoutUsuario, rotaProtegidaCookies);
 
 new ObterUsuariosController(authRouter, obterUsuarios, rotaProtegida);
 new ObterUsuarioPorIdController(authRouter, obterUsuarioPorId, rotaProtegida);

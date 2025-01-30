@@ -8,13 +8,13 @@ export class LogoutUsuarioController {
     private useCase: LogoutUsuario,
     ...middleware: Middleware[]
   ) {
-    this.server.put(
-      "/logout/:id",
+    this.server.post(
+      "/logout",
       ...middleware,
       async (req: Request, res: Response, next: NextFunction) => {
         try {
           const input = {
-            id: req.params.id as string,
+            id: req.body.userId as string,
           };
           await this.useCase.executar(input.id);
           res.sendStatus(201);
