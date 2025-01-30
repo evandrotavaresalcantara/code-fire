@@ -44,7 +44,7 @@ INSERT INTO usuario (
   ativo,
   dois_fatores,
   sis_admin
-);
+)
 SELECT
   gen_random_uuid(),
   'Administrador',
