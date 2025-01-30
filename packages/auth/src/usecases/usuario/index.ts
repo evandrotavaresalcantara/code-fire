@@ -16,6 +16,7 @@ export * from "./ObterUsuarioPorId";
 export * from "./ObterUsuarios";
 export * from "./RedefinirSenhaPorEmail";
 export * from "./RegistrarLogin";
+export * from "./RegistrarLogout";
 export * from "./RegistrarUsuario";
 export * from "./RemoverTokenParaQrCode";
 export * from "./RemoverUsuario";

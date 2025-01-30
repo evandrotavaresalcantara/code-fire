@@ -40,6 +40,7 @@ import {
   enviarEmailSenhaEsquecida,
   RabbitMQAdapter,
   registrarLoginRealizado,
+  registrarLogoutRealizado,
 } from "@packages/queue/src";
 import { PrismaClient } from "@prisma/client";
 import cookieParser from "cookie-parser";
@@ -50,6 +51,7 @@ import morgan from "morgan";
 import {
   DatabaseConnectionMongodbAdapter,
   LoginDaoMongoAdapter,
+  LogoutDAOMongoAdapter,
   PgPromiseAdapter,
   RepositorioOtpPgPromiseAdapter,
   RepositorioPerfilPgPromiseAdapter,
@@ -203,6 +205,9 @@ const repositorioOtp = new RepositorioOtpPgPromiseAdapter(databaseConnection);
 const provedorCriptografia = new ProvedorCriptografiaBcryptAdapter();
 const authToken = new AuthTokenJWTAsymmetricAdapter();
 const loginDAOAdpter = new LoginDaoMongoAdapter(databaseConnectionMongoReport);
+const logoutDAOAdpter = new LogoutDAOMongoAdapter(
+  databaseConnectionMongoReport,
+);
 // MIDDLEWARE ------------------------------------------
 const rotaProtegida = UsuarioMiddleware(repositorioUsuarioPrisma, authToken);
 const rotaProtegidaCookies = UsuarioCookiesMiddleware(
@@ -379,6 +384,7 @@ new ObterUltimoLoginUsuarioController(
 // CONSUMERS ---------------------------------------------
 enviarEmailSenhaEsquecida(queueRabbitMQ, servidorEmail);
 registrarLoginRealizado(queueRabbitMQ, loginDAOAdpter);
+registrarLogoutRealizado(queueRabbitMQ, logoutDAOAdpter);
 // Gerenciamento de Desconexão do RabbitMQ
 const shutdown = async () => {
   await queueRabbitMQ.disconnect(); // Chame o método de desconexão do RabbitMQ
