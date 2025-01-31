@@ -9,5 +9,7 @@ export async function registrarLogoutRealizado(
   await queue.consume<{
     userEmail: string;
     logoutDate: Date;
-  }>(QueuesAuth.AUTH_LOGIN_REALIZADO, (data) => registrarLogout.executar(data));
+  }>(QueuesAuth.AUTH_LOGOUT_REALIZADO, (data) =>
+    registrarLogout.executar(data)
+  );
 }
