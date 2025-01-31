@@ -23,7 +23,12 @@ export default class AtualizarUsuario implements CasoDeUso<Entrada, void> {
       if (existeEmail && existeEmail.getUuid() !== usuario.getUuid())
         throw new Error("email já existe.");
     }
-
+    // let urlBucket = undefined;
+    // if (entrada.urlPerfil) {
+    //   urlBucket = (await this.bucket.saveImage(entrada.urlPerfil)) as {
+    //     url: string;
+    //   };
+    // }
     const usuarioAtualizado = usuario.clonar({
       nomeCompleto: entrada.nomeCompleto,
       telefone: entrada.telefone,

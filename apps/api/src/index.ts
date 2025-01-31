@@ -93,6 +93,7 @@ import { ObterPermissoesController } from "./controllers/permissao/ObterPermisso
 import { AtualizarPerfilUsuarioController } from "./controllers/usuario/AtualizarPerfilUsuarioController";
 import { AtualizarSenhaController } from "./controllers/usuario/AtualizarSenhaController";
 import { AtualizarSenhaPeloEmailTokenController } from "./controllers/usuario/AtualizarSenhaPeloEmailTokenController";
+import { AtualizarSenhaUsuarioNaoLogadoController } from "./controllers/usuario/AtualizarSenhaUsuarioNaoLogadoController";
 import { CriarUsuarioController } from "./controllers/usuario/CriarUsuarioController";
 import { DesabilitarUsuarioController } from "./controllers/usuario/DesabilitarUsuarioController";
 import { HabilitarUsuarioController } from "./controllers/usuario/HabilitarUsuarioController";
@@ -100,7 +101,6 @@ import { LogoutUsuarioController } from "./controllers/usuario/LogoutUsuarioCont
 import { ObterUsuarioPorIdController } from "./controllers/usuario/ObterUsuarioPorId";
 import { ObterUsuariosController } from "./controllers/usuario/ObterUsuarios";
 import { RemoverUsuarioController } from "./controllers/usuario/RemoverUsuario";
-import { AtualizarSenhaUsuarioNaoLogadoController } from "./controllers/usuario/AtualizarSenhaUsuarioNaoLogadoController";
 
 // Configuração Ambiente ----------------------------------------------
 console.log(`🟢 ENVIRONMENT: ${ENV.NODE_ENV} 🟢`);
@@ -146,6 +146,10 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     }
     if (error.message.startsWith("Não Autorizado: ")) {
       res.status(403).json({ message: error.message });
+      return;
+    }
+    if (error.message.endsWith("usuário não encontrado")) {
+      res.sendStatus(204);
       return;
     }
     if (error.message.endsWith("não encontrado")) {
@@ -244,7 +248,7 @@ const atualizarSenhaPeloEmailToken = new AtualizarSenhaPeloEmailToken(
 const atualizarSenhaUsuarioNaoLogado = new AtualizarSenhaUsuarioNaoLogado(
   repositorioUsuarioPrisma,
   provedorCriptografia,
-)
+);
 const registrarUsuario = new RegistrarUsuario(
   repositorioUsuarioPrisma,
   provedorCriptografia,
@@ -335,8 +339,8 @@ new AtualizarSenhaPeloEmailTokenController(
 );
 new AtualizarSenhaUsuarioNaoLogadoController(
   authRouter,
-  atualizarSenhaUsuarioNaoLogado
-)
+  atualizarSenhaUsuarioNaoLogado,
+);
 new RegistrarUsuarioController(authRouter, registrarUsuario);
 new AtualizarAccessRefreshTokensController(
   authRouter,

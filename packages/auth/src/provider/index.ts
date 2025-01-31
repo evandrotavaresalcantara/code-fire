@@ -2,6 +2,7 @@ import RepositorioPerfil from "./RepositorioPerfil";
 import RepositorioPermissao from "./RepositorioPermissao";
 import RepositorioUsuario from "./RepositorioUsuario";
 export * from "./AuthToken";
+export * from "./BucketGateway";
 export * from "./LoginDAO";
 export * from "./LogoutDAO";
 export * from "./ProvedorCriptografia";

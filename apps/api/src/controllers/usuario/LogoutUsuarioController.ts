@@ -17,7 +17,7 @@ export class LogoutUsuarioController {
             id: req.body.userId as string,
           };
           await this.useCase.executar(input.id);
-          res.sendStatus(201);
+          res.clearCookie("token").clearCookie("tokenId").sendStatus(200);
         } catch (error) {
           next(error);
         }
