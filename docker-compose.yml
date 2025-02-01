@@ -83,8 +83,8 @@ services:
     build:
       context: ./apps/bucketSC/
     restart: always
-    expose:
-      - 7000
+    ports:
+      - 7000:7000
     networks:
       - net_mq
       - net_backend
@@ -99,22 +99,25 @@ services:
     restart: always
     env_file:
       - ./config/apps_api.env
-    expose:
-      - 8000
+    ports:
+      - 8000:8000
     networks:
       - net_pg
       - net_mq
       - net_backend
       - net_mongo_bucket
+      - net_mongo_report
 
-  apps_web:
+  apps_frontend:
     depends_on:
       - backend
     build:
-      context: ./apps/web/
+      context: ./apps/frontend/
     restart: always
-    expose:
-      - 3000
+    env_file:
+      - ./config/apps_frontend.env
+    ports:
+      - 80:3000
     networks:
       - net_backend
 

@@ -9,6 +9,9 @@
 
 > Os valores que já estão em DATABASE_URL, BASE_URL, CORS_ORIGIN, já estão com as opções padrão ajustadas para a configuração que está no docker-compose.dev.yml
 
+- copiar o arquivo env.example para .env no projeto Frontend e configurar se caso necessário alguma alteração fora do padrão.
+  `cp apps/frontend/env.example apps/frontend/.env`
+
 ### Aplicação Principal - S3curity
 
 #### Comandos executados na raiz do projeto
@@ -16,14 +19,26 @@
 - executar os containers com o banco de dados(postgres), rabbitmq, mongodb e mongo-express:
   `npm run docker:dev:start`
 
-- instalar os pacotes com o comando:
+- instalar os pacotes da API com o comando:
   `npm run install`
+
+- instalar os pacotes do Bucket com o comando:
+  `npm run install:bucket`
+
+- instalar os pacotes do Frontend com o comando:
+  `npm run install:frontend`
 
 - atualizar tipos do prisma com o comando:
   `npm run prisma`
 
 - executar a API com o comando:
   `npm run api`
+
+- executar o Frontend com o comando:
+  `npm run fronend`
+
+- executar o BueckSC com o comando:
+  `npm run bucket`
 
 #### Utilizar a Interface S3curityAdmin
 
@@ -36,7 +51,11 @@ O sistema pode ser acessado através do `http://localhost:3000`
 - senha: `@Admin1`
 
 - formulário para cadastro de novo usuário fora da área admin: `accounts/register`
+
   > Esse formulário apenas usuários securytiAdmin conseguem acessar para cadastro
+
+- interface para acessar banco de dados dos registros de Login/Logout
+  `http://localhost:8088`
 
 ### Micro Serviço Armazenamento Arquivos - BucketSC
 
@@ -73,4 +92,10 @@ Inicializar: acessar diretório apps/bucketSC
 
 ## INSTALAÇÃO/USO MODO PRODUÇÃO
 
-> Em breve...
+- Instalar docker e docker compose no sistema operacional.
+
+- criar os arquivos de ambiente `.env` com o seguinte comando: `npm run genDotEnv`
+
+  > Para esse passo é necessário ter o NodeJs instalado, se não houver, pode copiar manualmente cada arquivo em config/seunome.env.example para config/seunome.env
+
+- iniciar o sistema através dos containers: `npm start`
