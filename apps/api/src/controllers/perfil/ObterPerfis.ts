@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import { ObterPerfis } from "@packages/auth/src";
+import { ObterPerfis } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class ObterPerfisController {

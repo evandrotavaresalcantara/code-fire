@@ -15,7 +15,7 @@ test("Deve verificar um token que existe e retornar true", async () => {
   const usuarioComHash = {
     nomeCompleto: "Fire Dev",
     email: "ususariofire1@dev.io",
-    celular: "81911112222",
+    telefone: "81911112222",
     senha: "$2b$10$TUI.yyDk3K5N38xy3grJ0eNFUf8Kk827oUfREU.t7sIXpB8VRBfUm",
     urlPerfil: "http://imagens.io/fire.png",
   };
@@ -34,7 +34,7 @@ test("Deve verificar um token expirado e retornar false", async () => {
   const usuarioComHash = {
     nomeCompleto: "Fire Dev",
     email: "ususariofire1@dev.io",
-    celular: "81911112222",
+    telefone: "81911112222",
     senha: "$2b$10$TUI.yyDk3K5N38xy3grJ0eNFUf8Kk827oUfREU.t7sIXpB8VRBfUm",
     urlPerfil: "http://imagens.io/fire.png",
   };
@@ -53,7 +53,7 @@ test("Deve verificar um token que não existe e retornar false", async () => {
   const usuarioComHash = {
     nomeCompleto: "Fire Dev",
     email: "ususariofire1@dev.io",
-    celular: "81911112222",
+    telefone: "81911112222",
     senha: "$2b$10$TUI.yyDk3K5N38xy3grJ0eNFUf8Kk827oUfREU.t7sIXpB8VRBfUm",
     urlPerfil: "http://imagens.io/fire.png",
   };

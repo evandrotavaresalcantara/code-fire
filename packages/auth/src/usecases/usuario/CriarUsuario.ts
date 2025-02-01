@@ -8,9 +8,11 @@ interface Entrada {
   email?: string;
   senha?: string;
   senhaConfirmacao?: string;
-  celular?: string;
+  telefone?: string;
   ativo: boolean;
   urlPerfil?: string;
+  autenticacaoDoisFatores: boolean;
+  sisAdmin: boolean;
 }
 
 export default class CriarUsuario implements CasoDeUso<Entrada, void> {
@@ -32,9 +34,11 @@ export default class CriarUsuario implements CasoDeUso<Entrada, void> {
       nomeCompleto: entrada.nomeCompleto,
       email: email.valor,
       senha: hashSenha,
-      celular: entrada.celular,
+      telefone: entrada.telefone,
       ativo: entrada.ativo,
       urlPerfil: entrada.urlPerfil,
+      autenticacaoDoisFatores: entrada.autenticacaoDoisFatores,
+      sisAdmin: entrada.sisAdmin,
     });
     await this.repo.criarUsuario(usuario);
   }

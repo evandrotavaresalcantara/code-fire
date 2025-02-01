@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import { RedefinirSenhaPorEmail } from "@packages/auth/src";
+import { RedefinirSenhaPorEmail } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class RedefinirSenhaPorEmailController {

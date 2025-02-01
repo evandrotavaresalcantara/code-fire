@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import CriarPerfil from "@packages/auth/src/usecases/perfil/CriarPerfil";
+import { CriarPerfil } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class CriarPerfilController {

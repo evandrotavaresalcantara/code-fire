@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import { ObterPermissaoPorId } from "@packages/auth/src/usecases/permissao";
+import { ObterPermissaoPorId } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class ObterPermissaoPorIdController {

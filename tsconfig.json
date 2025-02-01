@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@packages/auth/*": ["packages/auth/src/*"],
+      "@packages/common/*": ["packages/common/src/*"],
+      "@packages/email/*": ["packages/email/src/*"],
+      "@packages/queue/*": ["packages/queue/src/*"]
+    }
+  }
+}

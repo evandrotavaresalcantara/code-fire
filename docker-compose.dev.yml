@@ -24,26 +24,50 @@ services:
       - 5673:5672
       - 15672:15672
 
-  mongo:
+  # mongo:
+  #   image: mongo:8
+  #   restart: always
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: admin
+  #     MONGO_INITDB_ROOT_PASSWORD: 123456
+  #   ports:
+  #     - 27017:27017
+  #   volumes:
+  #     - type: bind
+  #       source: ./data
+  #       target: /data/db
+
+  # mongo-express:
+  #   image: mongo-express
+  #   restart: always
+  #   ports:
+  #     - 8087:8081
+  #   environment:
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: 123456
+  #     ME_CONFIG_MONGODB_URL: mongodb://admin:123456@mongo:27017/
+  #     ME_CONFIG_BASICAUTH: "false"
+
+  mongo_report:
     image: mongo:8
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: 123456
     ports:
-      - 27017:27017
-    volumes:
-      - type: bind
-        source: ./data
-        target: /data/db
+      - 27018:27017
+    # volumes:
+    #   - type: bind
+    #     source: ./data
+    #     target: /data/db
 
-  mongo-express:
+  mongo-express_report:
     image: mongo-express
     restart: always
     ports:
-      - 8087:8081
+      - 8088:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
       ME_CONFIG_MONGODB_ADMINPASSWORD: 123456
-      ME_CONFIG_MONGODB_URL: mongodb://admin:123456@mongo:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://admin:123456@mongo_report:27017/
       ME_CONFIG_BASICAUTH: "false"

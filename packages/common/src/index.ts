@@ -1,4 +1,4 @@
-import Celular from "./model/Celular";
+import Telefone from "./model/Telefone";
 import Email from "./model/Email";
 import Entidade, { EntidadeProps } from "./model/Entidade";
 import Id from "./model/Id";
@@ -16,4 +16,4 @@ export type {
   EntidadeProps,
 };
 
-export { Celular, Email, Entidade, Id, NomeComposto, Url };
+export { Telefone, Email, Entidade, Id, NomeComposto, Url };

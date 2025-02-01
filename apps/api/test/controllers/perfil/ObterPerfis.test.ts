@@ -32,7 +32,6 @@ test("Deve obter perfis existentes", async () => {
 
   await repoPerfil.excluirPerfil(`${perfil1data?.getUuid()}`);
   await repoPerfil.excluirPerfil(`${perfil2data?.getUuid()}`);
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(200);
 });

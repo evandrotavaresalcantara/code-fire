@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "npm run rm -rf dist && tsc -p tsconfig.build.json",
+    "copy-files": "cp -r src/adapter/JWT/*.pem dist/adapter/JWT/",
+    "build": "tsc -p tsconfig.build.json && npm run copy-files",
     "clean": "rm -rf dist coverage",
     "lint": "eslint .",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
@@ -30,6 +31,7 @@
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.10.1",
+    "@types/speakeasy": "^2.0.10",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "jest": "^29.7.0",
@@ -44,6 +46,7 @@
     "@packages/email": "*",
     "@packages/queue": "*",
     "bcrypt": "^5.1.1",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "speakeasy": "^2.0.0"
   }
 }

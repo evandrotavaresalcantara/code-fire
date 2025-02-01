@@ -14,12 +14,12 @@ test("Deve editar um usuário ", async () => {
     email: "usuarioteste@zmail.com",
     senha: "Abc@123",
     senhaConfirmacao: "Abc@123",
-    celular: "+5581922221111",
+    telefone: "81922221111",
     ativo: true,
   };
   const data = {
     nome: "Usuario Atualizado",
-    celular: "+5581933334444",
+    telefone: "81933334444",
     urlPerfil: "http://github.com/dev.png",
     email: "usuariotesteup@zmail.com",
   };
@@ -49,7 +49,6 @@ test("Deve editar um usuário ", async () => {
 
   const usuarioAtualizado = await repoUsuario.obterPorEmail(data.email);
   repoUsuario.excluirUsuario(`${usuarioSalvo?.getUuid()}`);
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
   expect(usuarioAtualizado?.getNome()).toBe(data.nome);

@@ -3,9 +3,11 @@ import { RepositorioUsuario } from "../../provider";
 
 interface Entrada extends EntidadeProps {
   nomeCompleto?: string;
-  celular?: string;
+  telefone?: string;
   urlPerfil?: string;
   email?: string;
+  autenticacaoDoisFatores?: boolean;
+  sisAdmin?: boolean;
 }
 
 export default class AtualizarUsuario implements CasoDeUso<Entrada, void> {
@@ -21,11 +23,18 @@ export default class AtualizarUsuario implements CasoDeUso<Entrada, void> {
       if (existeEmail && existeEmail.getUuid() !== usuario.getUuid())
         throw new Error("email já existe.");
     }
-
+    // let urlBucket = undefined;
+    // if (entrada.urlPerfil) {
+    //   urlBucket = (await this.bucket.saveImage(entrada.urlPerfil)) as {
+    //     url: string;
+    //   };
+    // }
     const usuarioAtualizado = usuario.clonar({
       nomeCompleto: entrada.nomeCompleto,
-      celular: entrada.celular,
+      telefone: entrada.telefone,
       urlPerfil: entrada.urlPerfil,
+      autenticacaoDoisFatores: entrada.autenticacaoDoisFatores,
+      sisAdmin: entrada.sisAdmin,
       ...(entrada.email !== undefined && { email: entrada.email }),
     });
     await this.repo.editarUsuario(usuarioAtualizado);

@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import AtualizarPerfilUsuario from "@packages/auth/src/usecases/usuario/AtualizarPerfilUsuario";
+import { AtualizarPerfilUsuario } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class AtualizarPerfilUsuarioController {

@@ -33,6 +33,9 @@ export class AtualizarAccessRefreshTokens
       id: string;
       nome: string;
       email: string;
+      urlPerfil: string;
+      isSisAdmin: boolean;
+      perfis: string[];
       iat: number;
       exp: number;
     };
@@ -45,6 +48,9 @@ export class AtualizarAccessRefreshTokens
       id: usuario.getUuid(),
       nome: usuario.getNome(),
       email: usuario.getEmail(),
+      urlPerfil: usuario.getUrlPerfil(),
+      isSisAdmin: usuario.getSisAdmin(),
+      perfis: usuario.obterPerfis,
     };
     const tokenId = this.authToken.create(payloadId, "15m");
     const payloadRefresh = { id: tokenId };

@@ -19,7 +19,6 @@ test("Deve obter permissão pelo id", async () => {
   );
 
   await repoPermissao.excluirPermissao(novaPermissao.getUuid());
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(200);
 });
@@ -35,7 +34,6 @@ test("Deve retornar null para id não encotrado", async () => {
     headers: { Authorization: token },
   });
   await repoPermissao.excluirPermissao(novaPermissao.getUuid());
-  await usuarioToken.excluirUsuario();
 
   expect(response.data).toBeNull();
   expect(response.status).toBe(200);

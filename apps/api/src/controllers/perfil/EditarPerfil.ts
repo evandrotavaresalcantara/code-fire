@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import EditarPerfil from "@packages/auth/src/usecases/perfil/EditarPerfil";
+import { EditarPerfil } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class EditarPerfilController {

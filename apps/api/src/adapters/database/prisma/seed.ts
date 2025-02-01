@@ -63,9 +63,9 @@ const permissao1 = {
 //   dataCriacao: new Date(),
 //   ativo: true,
 //   dataExpiracaoToken: null,
-//   autenticaçãoDoisFatores: false,
+//   autenticacaoDoisFatores: false,
 //   senha: hash1,
-//   celular: "81911112222",
+//   telefone: "81911112222",
 //   urlPerfil: "https://meuperfil/nomea.png",
 //   tokenRecuperacaoSenha: null,
 // };
@@ -76,9 +76,9 @@ const permissao1 = {
 //   dataCriacao: new Date(),
 //   ativo: true,
 //   dataExpiracaoToken: null,
-//   autenticaçãoDoisFatores: false,
+//   autenticacaoDoisFatores: false,
 //   senha: hash2,
-//   celular: "81911112222",
+//   telefone: "81911112222",
 //   urlPerfil: "https://meuperfil/nomeb.png",
 //   tokenRecuperacaoSenha: null,
 // };

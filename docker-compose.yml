@@ -1,23 +1,133 @@
 services:
   postgres:
     image: postgres:17-bookworm
+    restart: always
+    env_file:
+      - ./config/postgres.env
     environment:
       LC_ALL: C.UTF-8
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: app
     volumes:
       - ./apps/api/src/adapters/database/SQL/01_criar_tbl_permissao.sql:/docker-entrypoint-initdb.d/01_criar_tbl_permissao.sql
       - ./apps/api/src/adapters/database/SQL/02_criar_tbl_perfil.sql:/docker-entrypoint-initdb.d/02_criar_tbl_perfil.sql
       - ./apps/api/src/adapters/database/SQL/03_criar_tbl_usuario.sql:/docker-entrypoint-initdb.d/03_criar_tbl_usuario.sql
+      - postgres_data:/var/lib/postgresql/data
     networks:
-      - pg_net
+      - net_pg
 
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:4-management
+    restart: always
+    hostname: codefire-DEV
+    env_file:
+      - ./config/rabbitmq.env
     ports:
-      - 5672:5672
       - 15672:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - ./logs/rabbitmq:/var/log/rabbitmq
+    networks:
+      - net_mq
+
+  mongo_bucket:
+    image: mongo:8
+    restart: always
+    env_file:
+      - ./config/mongo_bucket.env
+    volumes:
+      - mongo_bucket_data:/data/db
+    networks:
+      - net_mongo_bucket
+
+  mongo-express_bucket:
+    image: mongo-express
+    restart: always
+    depends_on:
+      - mongo_bucket
+    ports:
+      - 8087:8081
+    env_file:
+      - ./config/mongo-express_bucket.env
+    environment:
+      ME_CONFIG_BASICAUTH: "true"
+    networks:
+      - net_mongo_bucket
+
+  mongo_report:
+    image: mongo:8
+    restart: always
+    env_file:
+      - ./config/mongo_report.env
+    volumes:
+      - mongo_report_data:/data/db
+    networks:
+      - net_mongo_report
+
+  mongo-express_report:
+    image: mongo-express
+    restart: always
+    depends_on:
+      - mongo_report
+    ports:
+      - 8087:8081
+    env_file:
+      - ./config/mongo-express_report.env
+    environment:
+      ME_CONFIG_BASICAUTH: "true"
+    networks:
+      - net_mongo_report
+
+  apps_bucket:
+    depends_on:
+      - rabbitmq
+      - mongo_bucket
+    build:
+      context: ./apps/bucketSC/
+    restart: always
+    expose:
+      - 7000
+    networks:
+      - net_mq
+      - net_backend
+      - net_mongo_bucket
+  apps_api:
+    depends_on:
+      - postgres
+      - mongo_report
+      - rabbitmq
+    build:
+      context: ./apps/api/
+    restart: always
+    env_file:
+      - ./config/apps_api.env
+    expose:
+      - 8000
+    networks:
+      - net_pg
+      - net_mq
+      - net_backend
+      - net_mongo_bucket
+
+  apps_web:
+    depends_on:
+      - backend
+    build:
+      context: ./apps/web/
+    restart: always
+    expose:
+      - 3000
+    networks:
+      - net_backend
 
 networks:
-  pg_net:
-  netBackend:
+  net_pg:
+  net_mq:
+  net_backend:
+  net_web:
+  net_mongo_bucket:
+  net_mongo_report:
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
+  mongo_bucket_data:
+  mongo_report_data:

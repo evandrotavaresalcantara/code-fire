@@ -20,9 +20,11 @@ export class ObterUsuarioPorId implements CasoDeUso<Entrada, Saida | null> {
       id: usuarioBD.getUuid(),
       nome: usuarioBD.getNome(),
       email: usuarioBD.getEmail(),
-      celular: usuarioBD.getCelular() ?? null,
+      telefone: usuarioBD.getTelefone() ?? null,
       urlPerfil: usuarioBD.getUrlPerfil() ?? null,
       ativo: usuarioBD.habilitado,
+      doisFatores: usuarioBD.getDoisFatores(),
+      sisAdmin: usuarioBD.getSisAdmin(),
       perfis: this.paraPerfilDTO(usuarioBD.obterPerfis),
     };
   }

@@ -17,7 +17,6 @@ test("Deve criar uma nova permissão", async () => {
   const repoPermissao = new RepositorioPermissaoPrismaPg(conexaoPrismaJest);
   const permissao = await repoPermissao.obterPermissaoPorNome(data.nome);
   await repoPermissao.excluirPermissao(`${permissao?.getUuid()}`);
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });

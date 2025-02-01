@@ -26,7 +26,7 @@ test("Deve atualizar o perfil do usuário", async () => {
     email: "usuarioteste@zmail.com",
     senha: "Abc@123",
     senhaConfirmacao: "Abc@123",
-    celular: "+5581922221111",
+    telefone: "81922221111",
   };
   await axiosApi.post(ENDPOINT_REGISTRAR_USUARIO, usuarioData, {
     headers: { Authorization: token },
@@ -61,7 +61,6 @@ test("Deve atualizar o perfil do usuário", async () => {
   await repoUsuario.excluirUsuario(`${usuarioSalvo?.getUuid()}`);
   await repoPerfil.excluirPerfil(`${perfil1Salvo?.getUuid()}`);
   await repoPerfil.excluirPerfil(`${perfil2Salvo?.getUuid()}`);
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });

@@ -17,7 +17,7 @@ test("Deve colocar na fila para envio de email a solicitação do usuário redef
   const usuarioComHash = {
     nomeCompleto: "Fire Dev",
     email: "ususariofire1@dev.io",
-    celular: "81911112222",
+    telefone: "81911112222",
     senha: "$2b$10$TUI.yyDk3K5N38xy3grJ0eNFUf8Kk827oUfREU.t7sIXpB8VRBfUm",
     urlPerfil: "http://imagens.io/fire.png",
   };

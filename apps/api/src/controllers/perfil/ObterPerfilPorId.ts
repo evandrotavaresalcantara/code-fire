@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import { ObterPerfilPorId } from "@packages/auth/src";
+import { ObterPerfilPorId } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class ObterPerfilPorIdController {

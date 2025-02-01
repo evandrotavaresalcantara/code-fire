@@ -13,6 +13,5 @@ test("Deve enviar um email e retornar status 204", async () => {
     headers: { Authorization: token },
   });
 
-  await usuarioToken.excluirUsuario();
   expect(response.status).toBe(204);
 });

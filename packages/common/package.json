@@ -2,9 +2,10 @@
   "name": "@packages/common",
   "version": "1.0.0",
   "description": "common-fire",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "npm run rm -rf dist && tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json",
     "clean": "rm -rf dist coverage",
     "lint": "eslint .",
     "test": "jest",

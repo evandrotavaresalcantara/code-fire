@@ -11,13 +11,13 @@ const hash1 = "$2b$10$TUI.yyDk3K5N38xy3grJ0eNFUf8Kk827oUfREU.t7sIXpB8VRBfUm";
 const usuario1 = {
   nomeCompleto: "Usuario Um",
   email: "usuarioum@dev.io",
-  celular: "81911112222",
+  telefone: "81911112222",
   senha: hash1,
 };
 const usuario2 = {
   nomeCompleto: "Usuario Dois",
   email: "usuariodois@dev.io",
-  celular: "81933334444",
+  telefone: "81933334444",
   senha: hash1,
   ativo: true,
 };
@@ -43,7 +43,6 @@ test("Deve obter usuários existentes", async () => {
   });
 
   await repoUsuario.excluirUsuario(novoUsuario1.getUuid());
-  await usuarioToken.excluirUsuario();
   await repoUsuario.excluirUsuario(novoUsuario2.getUuid());
 
   expect(response.status).toBe(200);

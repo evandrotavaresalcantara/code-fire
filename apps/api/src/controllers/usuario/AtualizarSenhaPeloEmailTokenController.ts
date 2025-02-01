@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import AtualizarSenhaPeloEmailToken from "@packages/auth/src/usecases/usuario/AtualizarSenhaPeloEmailToken";
+import { AtualizarSenhaPeloEmailToken } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class AtualizarSenhaPeloEmailTokenController {

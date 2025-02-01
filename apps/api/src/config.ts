@@ -3,6 +3,8 @@ import { z } from "zod";
 
 const MSG_API = "API_PORT deve ser um número entre 1000 a 9999";
 const MSG_AMQP_PORT = "AMQP_PORT deve ser um número entre 1000 a 9999";
+const MSG_MONGODB_PORT =
+  "DATABASE_REPORT_PORT deve ser um número entre 1000 a 29999";
 const MSG_EMAIL_HOST_PORT =
   "EMAIL_HOST_PORT deve ser um número entre 22 a 9999";
 const MSG_BASE_URL = "BASE_URL dever ser uma string de URL";
@@ -40,7 +42,7 @@ const envSchema = z.object({
     })
     .min(4)
     .max(4)
-    .default("5672"),
+    .default("5673"),
   EMAIL_HOST: z.optional(z.string()),
   EMAIL_HOST_USER: z.optional(z.string()),
   EMAIL_HOST_PASSWORD: z.optional(z.string()),
@@ -57,6 +59,17 @@ const envSchema = z.object({
     .string()
     .transform((value) => value === "true")
     .default("false"),
+  DATABASE_REPORT_USERNAME: z.string().default("admin"),
+  DATABASE_REPORT_PASSWORD: z.string().default("123456"),
+  DATABASE_REPORT_HOST: z.string().default("localhost"),
+  DATABASE_REPORT_PORT: z
+    .string()
+    .regex(/^\d+$/, {
+      message: MSG_MONGODB_PORT,
+    })
+    .min(4)
+    .max(5)
+    .default("27018"),
 });
 
 export const ENV = envSchema.parse(process.env);

@@ -35,10 +35,14 @@ O sistema pode ser acessado através do `http://localhost:3000`
 
 - senha: `@Admin1`
 
+- formulário para cadastro de novo usuário fora da área admin: `accounts/register`
+  > Esse formulário apenas usuários securytiAdmin conseguem acessar para cadastro
+
 ### Micro Serviço Armazenamento Arquivos - BucketSC
 
 O buckestSC é um sistema de armazenamento de arquivos, que está inserido no projeto para
-consumir o sistema de autenticação desenvolvido pelo equipe code-fire.
+consumir o sistema de autenticação desenvolvido pelo equipe code-fire e servir de servidor
+de arquivos estáticos com otimização na entrega das imagens dos usuários cadastrados.
 
 O sistema bucketSC utiliza o sistema mongoDB e uma interface de cliente mongo/express
 que pode ser acessado através do `http://localhost:8087/`

@@ -5,20 +5,14 @@ import RepositorioUsuarioPrismaPg from "@/adapters/database/UsuarioRepositorioPg
 import conexaoPrismaJest from "./db/ConexaoPrisma";
 
 const usuarioToken = {
-  ENDPOINT_REGISTRAR: "/auth/registrar-usuario",
   ENDPOINT_LOGIN: "/auth/login",
 
   data: {
-    nome: "Usuario Teste",
-    email: "usuariotoken@zmail.com",
-    senha: "Abc@123",
-    senhaConfirmacao: "Abc@123",
-    celular: "+5581922221111",
-    ativo: true,
+    email: "admin@admin.com",
+    senha: "@Admin1",
   },
 
   async token() {
-    await axiosApi.post(this.ENDPOINT_REGISTRAR, this.data);
     const login = await axiosApi.post(this.ENDPOINT_LOGIN, {
       email: this.data.email,
       senha: this.data.senha,

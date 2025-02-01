@@ -15,7 +15,7 @@ test("Deve obter usuário pelo id", async () => {
   const usuario = {
     nomeCompleto: "Usuario Um",
     email: "usuarioum@dev.io",
-    celular: "81911112222",
+    telefone: "81911112222",
     senha: hash1,
   };
 
@@ -36,7 +36,6 @@ test("Deve obter usuário pelo id", async () => {
     headers: { Authorization: token },
   });
   await repoUsuario.excluirUsuario(novoUsuario.getUuid());
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(200);
 });
@@ -46,7 +45,7 @@ test("Deve retornar null para id não encotrado", async () => {
   const usuario = {
     nomeCompleto: "Usuario Um",
     email: "usuarioum@dev.io",
-    celular: "81911112222",
+    telefone: "81911112222",
     senha: hash1,
   };
 
@@ -66,7 +65,6 @@ test("Deve retornar null para id não encotrado", async () => {
     headers: { Authorization: token },
   });
   await repoUsuario.excluirUsuario(novoUsuario.getUuid());
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(200);
   expect(response.data).toBeNull();

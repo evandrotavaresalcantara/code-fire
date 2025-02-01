@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import LoginUsuario from "@packages/auth/src/usecases/usuario/LoginUsuario";
+import { LoginUsuario } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class LoginUsuarioController {
@@ -18,6 +18,10 @@ export class LoginUsuarioController {
             senha: req.body.senha as string,
           };
           const output = await this.useCase.executar(input);
+          if (output.isAutenticacao2Fatores) {
+            res.sendStatus(303);
+            return;
+          }
           res.status(200).json(output);
         } catch (error) {
           next(error);

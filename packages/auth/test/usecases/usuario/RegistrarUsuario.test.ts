@@ -8,7 +8,7 @@ const senha1 = "CodeFire!1";
 const usuarioComSenha = {
   nomeCompleto: "Fire Dev",
   email: "ususariofire1@dev.io",
-  celular: "81911112222",
+  telefone: "81911112222",
   senha: senha1,
   senhaConfirmacao: senha1,
   urlPerfil: "http://imagens.io/fire.png",
@@ -18,7 +18,7 @@ const usuarioComSenha = {
 const usuarioComSenhaErrada = {
   nomeCompleto: "Fire Dev",
   email: "ususariofire1@dev.io",
-  celular: "81911112222",
+  telefone: "81911112222",
   senha: senha1,
   senhaConfirmacao: senhaErrada,
   urlPerfil: "http://imagens.io/fire.png",
@@ -33,7 +33,7 @@ test("Deve registrar um novo usuário", async () => {
   await casoDeUso.executar(usuarioComSenha);
 
   const usuarioSalvo = await repo.obterPorEmail(usuarioComSenha.email);
-  expect(usuarioSalvo?.getCelular()).toBe(usuarioComSenha.celular);
+  expect(usuarioSalvo?.getTelefone()).toBe(usuarioComSenha.telefone);
 });
 
 test("Deve gerar um erro ao receber atributo nomeCompleto inválido", async () => {

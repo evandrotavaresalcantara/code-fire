@@ -8,7 +8,7 @@ test("Deve obter usuário pelo Id", async () => {
   const usuario = {
     nomeCompleto: "Usuario Um",
     email: "usuarioum@dev.io",
-    celular: "81911112222",
+    telefone: "81911112222",
     senha: hash1,
   };
   const novoUsuario = new Usuario(usuario);
@@ -26,7 +26,7 @@ test("Deve retornar null para id não encontrado", async () => {
   const usuario = {
     nomeCompleto: "Usuario Um",
     email: "usuarioum@dev.io",
-    celular: "81911112222",
+    telefone: "81911112222",
     senha: hash1,
   };
   const novoUsuario = new Usuario(usuario);

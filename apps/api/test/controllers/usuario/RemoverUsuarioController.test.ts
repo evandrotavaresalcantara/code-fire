@@ -14,7 +14,7 @@ test("Deve remover um usuário", async () => {
     email: "usuarioteste@zmail.com",
     senha: "Abc@123",
     senhaConfirmacao: "Abc@123",
-    celular: "+5581922221111",
+    telefone: "81922221111",
     ativo: true,
   };
 
@@ -38,6 +38,5 @@ test("Deve remover um usuário", async () => {
       headers: { Authorization: token },
     },
   );
-  await usuarioToken.excluirUsuario();
   expect(response.status).toBe(201);
 });

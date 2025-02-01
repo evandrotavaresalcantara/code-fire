@@ -1,5 +1,9 @@
-import { Errors, RepositorioPerfil, Usuario } from "@packages/auth/src";
-import RepositorioUsuario from "@packages/auth/src/provider/RepositorioUsuario";
+import {
+  Errors,
+  RepositorioPerfil,
+  RepositorioUsuario,
+  Usuario,
+} from "@packages/auth";
 import { PrismaClient } from "@prisma/client";
 
 export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
@@ -25,7 +29,7 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
           nomeCompleto: usuarioData.nome,
           email: usuarioData.email,
           senha: usuarioData.senha,
-          celular: usuarioData.telefone ?? undefined,
+          telefone: usuarioData.telefone ?? undefined,
           urlPerfil: usuarioData.imagem_perfil ?? undefined,
           ativo: usuarioData.ativo,
           tokenRecuperacaoSenha: usuarioData.recuperar_senha_token ?? undefined,
@@ -34,8 +38,9 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
           tokenRefreshToken: usuarioData.refresh_token ?? undefined,
           dataExpiracaoTokenRefreshToken:
             usuarioData.data_expiracao_refresh_token ?? undefined,
-          autenticaçãoDoisFatores: usuarioData.dois_fatores,
+          autenticacaoDoisFatores: usuarioData.dois_fatores,
           dataCriacao: usuarioData.data_criacao,
+          sisAdmin: usuarioData.sis_admin,
         });
 
         for (const usuarioPerfil of usuarioData.usuario_perfils) {
@@ -64,16 +69,17 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
       email: usuarioData.email,
       senha: usuarioData.senha,
       ativo: usuarioData.ativo,
-      autenticaçãoDoisFatores: usuarioData.dois_fatores,
+      autenticacaoDoisFatores: usuarioData.dois_fatores,
       dataCriacao: usuarioData.data_criacao,
       urlPerfil: usuarioData.imagem_perfil ?? undefined,
       tokenRefreshToken: usuarioData.refresh_token ?? undefined,
-      celular: usuarioData.telefone ?? undefined,
+      telefone: usuarioData.telefone ?? undefined,
       tokenRecuperacaoSenha: usuarioData.recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRecuperacaoSenha:
         usuarioData.data_expiraca_recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRefreshToken:
         usuarioData.data_expiracao_refresh_token ?? undefined,
+      sisAdmin: usuarioData.sis_admin,
     });
     for (const usuarioPerfil of usuarioData.usuario_perfils) {
       const perfil = await this.perfilRepositorio.obterPerfilPorId(
@@ -96,16 +102,17 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
       email: usuarioData.email,
       senha: usuarioData.senha,
       ativo: usuarioData.ativo,
-      autenticaçãoDoisFatores: usuarioData.dois_fatores,
+      autenticacaoDoisFatores: usuarioData.dois_fatores,
       dataCriacao: usuarioData.data_criacao,
       urlPerfil: usuarioData.imagem_perfil ?? undefined,
       tokenRefreshToken: usuarioData.refresh_token ?? undefined,
-      celular: usuarioData.telefone ?? undefined,
+      telefone: usuarioData.telefone ?? undefined,
       tokenRecuperacaoSenha: usuarioData.recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRecuperacaoSenha:
         usuarioData.data_expiraca_recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRefreshToken:
         usuarioData.data_expiracao_refresh_token ?? undefined,
+      sisAdmin: usuarioData.sis_admin,
     });
     for (const usuarioPerfil of usuarioData.usuario_perfils) {
       const perfil = await this.perfilRepositorio.obterPerfilPorId(
@@ -130,16 +137,17 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
       email: usuarioData.email,
       senha: usuarioData.senha,
       ativo: usuarioData.ativo,
-      autenticaçãoDoisFatores: usuarioData.dois_fatores,
+      autenticacaoDoisFatores: usuarioData.dois_fatores,
       dataCriacao: usuarioData.data_criacao,
       urlPerfil: usuarioData.imagem_perfil ?? undefined,
       tokenRefreshToken: usuarioData.refresh_token ?? undefined,
-      celular: usuarioData.telefone ?? undefined,
+      telefone: usuarioData.telefone ?? undefined,
       tokenRecuperacaoSenha: usuarioData.recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRecuperacaoSenha:
         usuarioData.data_expiraca_recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRefreshToken:
         usuarioData.data_expiracao_refresh_token ?? undefined,
+      sisAdmin: usuarioData.sis_admin,
     });
 
     for (const usuarioPerfil of usuarioData.usuario_perfils) {
@@ -167,16 +175,17 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
       email: usuarioData.email,
       senha: usuarioData.senha,
       ativo: usuarioData.ativo,
-      autenticaçãoDoisFatores: usuarioData.dois_fatores,
+      autenticacaoDoisFatores: usuarioData.dois_fatores,
       dataCriacao: usuarioData.data_criacao,
       urlPerfil: usuarioData.imagem_perfil ?? undefined,
       tokenRefreshToken: usuarioData.refresh_token ?? undefined,
-      celular: usuarioData.telefone ?? undefined,
+      telefone: usuarioData.telefone ?? undefined,
       tokenRecuperacaoSenha: usuarioData.recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRecuperacaoSenha:
         usuarioData.data_expiraca_recuperar_senha_token ?? undefined,
       dataExpiracaoTokenRefreshToken:
         usuarioData.data_expiracao_refresh_token ?? undefined,
+      sisAdmin: usuarioData.sis_admin,
     });
     for (const usuarioPerfil of usuarioData.usuario_perfils) {
       const perfil = await this.perfilRepositorio.obterPerfilPorId(
@@ -202,8 +211,9 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
         data_expiraca_recuperar_senha_token:
           usuario.getDataExpiracaoRecuperacaoSenha(),
         dois_fatores: usuario.getAutenticacaoDoisFatores(),
-        telefone: usuario.getCelular(),
+        telefone: usuario.getTelefone(),
         imagem_perfil: usuario.getUrlPerfil(),
+        sis_admin: usuario.getSisAdmin(),
       },
     });
 
@@ -234,8 +244,9 @@ export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {
           data_expiraca_recuperar_senha_token:
             usuario.getDataExpiracaoRecuperacaoSenha() ?? null,
           dois_fatores: usuario.getAutenticacaoDoisFatores(),
-          telefone: usuario.getCelular() ?? null,
+          telefone: usuario.getTelefone() ?? null,
           imagem_perfil: usuario.getUrlPerfil() ?? null,
+          sis_admin: usuario.getSisAdmin(),
         },
       });
     } catch {

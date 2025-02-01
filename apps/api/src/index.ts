@@ -1,45 +1,59 @@
 import {
   AtualizarAccessRefreshTokens,
+  AtualizarPerfilUsuario,
+  AtualizarSenha,
+  AtualizarSenhaPeloEmailToken,
+  AtualizarSenhaUsuarioNaoLogado,
+  AtualizarUsuario,
   AuthTokenJWTAsymmetricAdapter,
+  CriarPerfil,
+  CriarPermissao,
+  CriarTokenParaQrCode,
+  CriarUsuario,
+  DesabilitarUsuario,
+  EditarPerfil,
+  EditarPermissao,
+  ExcluirPerfil,
+  ExcluirPermissao,
+  HabilitarUsuario,
+  LoginPeloQrCode,
+  LoginUsuario,
+  LogoutUsuario,
   ObterPerfilPorId,
   ObterPerfis,
   ObterPermissaoPorId,
   ObterPermissoes,
+  ObterTokenParaQrCode,
+  ObterUltimoLoginUsuario,
   ObterUsuarioPorId,
   ObterUsuarios,
+  ProvedorCriptografiaBcryptAdapter,
   RedefinirSenhaPorEmail,
+  RegistrarUsuario,
+  RemoverTokenParaQrCode,
+  RemoverUsuario,
+  ValidarOtp,
+  VerificarOtpExiste,
   VerificarTokenRedefinicaoSenha,
-} from "@packages/auth/src";
-import ProvedorCriptografiaBcryptAdapter from "@packages/auth/src/adapter/Criptografia/ProvedorCriptografiaBcryptAdapter";
-import CriarPerfil from "@packages/auth/src/usecases/perfil/CriarPerfil";
-import EditarPerfil from "@packages/auth/src/usecases/perfil/EditarPerfil";
-import ExcluirPerfil from "@packages/auth/src/usecases/perfil/ExcluirPerfil";
-import CriarPermissao from "@packages/auth/src/usecases/permissao/CriarPermissao";
-import EditarPermissao from "@packages/auth/src/usecases/permissao/EditarPermissao";
-import ExcluirPermissao from "@packages/auth/src/usecases/permissao/ExcluirPermissao";
-import AtualizarPerfilUsuario from "@packages/auth/src/usecases/usuario/AtualizarPerfilUsuario";
-import AtualizarSenha from "@packages/auth/src/usecases/usuario/AtualizarSenha";
-import AtualizarSenhaPeloEmailToken from "@packages/auth/src/usecases/usuario/AtualizarSenhaPeloEmailToken";
-import AtualizarUsuario from "@packages/auth/src/usecases/usuario/AtualizarUsuario";
-import CriarUsuario from "@packages/auth/src/usecases/usuario/CriarUsuario";
-import DesabilitarUsuario from "@packages/auth/src/usecases/usuario/DesabilitarUsuario";
-import HabilitarUsuario from "@packages/auth/src/usecases/usuario/HabilitarUsuario";
-import LoginUsuario from "@packages/auth/src/usecases/usuario/LoginUsuario";
-import LogoutUsuario from "@packages/auth/src/usecases/usuario/LogoutUsuario";
-import RegistrarUsuario from "@packages/auth/src/usecases/usuario/RegistrarUsuario";
-import RemoverUsuario from "@packages/auth/src/usecases/usuario/RemoverUsuario";
-import { ServidorEmailNodeMailerAdapter } from "@packages/email/src";
-import {
   enviarEmailSenhaEsquecida,
-  RabbitMQAdapter,
-} from "@packages/queue/src";
+  registrarLoginRealizado,
+  registrarLogoutRealizado,
+} from "@packages/auth";
+import { ServidorEmailNodeMailerAdapter } from "@packages/email";
+import { RabbitMQAdapter } from "@packages/queue";
 import { PrismaClient } from "@prisma/client";
+import cookieParser from "cookie-parser";
 import cors, { CorsOptions } from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import helmet from "helmet";
+import "module-alias/register";
 import morgan from "morgan";
 import {
+  DatabaseConnectionMongodbAdapter,
+  LoginDaoMongoAdapter,
+  LogoutDAOMongoAdapter,
   PgPromiseAdapter,
+  RepositorioOtpPgPromiseAdapter,
   RepositorioPerfilPgPromiseAdapter,
   RepositorioPermissaoPgPromiseAdapter,
   RepositorioUsuarioPgPromiseAdapter,
@@ -47,14 +61,22 @@ import {
 import PerfilRepositorioPgPrismaAdapter from "./adapters/database/PerfilRepositorioPgPrismaAdapter";
 import PermissaoRepositorioPgPrismaAdapter from "./adapters/database/PermissaoRepositorioPgPrismaAdapter";
 import UsuarioRepositorioPgPrismaAdapter from "./adapters/database/UsuarioRepositorioPgPrismaAdapter";
+import UsuarioCookiesMiddleware from "./adapters/middlewares/UsuarioCookiesMiddleware";
 import UsuarioMiddleware from "./adapters/middlewares/UsuarioMiddleware";
 import { ENV } from "./config";
 import {
   AtualizarAccessRefreshTokensController,
   AtualizarUsuarioController,
+  CriarTokenParaQrCodeController,
+  LoginPeloQrCodeController,
   LoginUsuarioController,
+  ObterTokenParaQrCodeController,
+  ObterUltimoLoginUsuarioController,
   RedefinirSenhaPorEmailController,
   RegistrarUsuarioController,
+  RemoverTokenParaQrCodeController,
+  ValidarOtpController,
+  VerificarOtpExisteController,
   VerificarTokenRedefinicaoSenhaController,
 } from "./controllers";
 import { CriarPerfilController } from "./controllers/perfil/CriarPerfil";
@@ -70,6 +92,7 @@ import { ObterPermissoesController } from "./controllers/permissao/ObterPermisso
 import { AtualizarPerfilUsuarioController } from "./controllers/usuario/AtualizarPerfilUsuarioController";
 import { AtualizarSenhaController } from "./controllers/usuario/AtualizarSenhaController";
 import { AtualizarSenhaPeloEmailTokenController } from "./controllers/usuario/AtualizarSenhaPeloEmailTokenController";
+import { AtualizarSenhaUsuarioNaoLogadoController } from "./controllers/usuario/AtualizarSenhaUsuarioNaoLogadoController";
 import { CriarUsuarioController } from "./controllers/usuario/CriarUsuarioController";
 import { DesabilitarUsuarioController } from "./controllers/usuario/DesabilitarUsuarioController";
 import { HabilitarUsuarioController } from "./controllers/usuario/HabilitarUsuarioController";
@@ -77,6 +100,7 @@ import { LogoutUsuarioController } from "./controllers/usuario/LogoutUsuarioCont
 import { ObterUsuarioPorIdController } from "./controllers/usuario/ObterUsuarioPorId";
 import { ObterUsuariosController } from "./controllers/usuario/ObterUsuarios";
 import { RemoverUsuarioController } from "./controllers/usuario/RemoverUsuario";
+// import { AuthTokenJWTAsymmetricAdapter } from "@packages/auth/index";
 
 // Configuração Ambiente ----------------------------------------------
 console.log(`🟢 ENVIRONMENT: ${ENV.NODE_ENV} 🟢`);
@@ -86,7 +110,7 @@ const app = express();
 const corsOptions: CorsOptions = {
   origin: ENV.CORS_ORIGIN,
   optionsSuccessStatus: 200,
-  // credentials: true,
+  credentials: true,
   // exposedHeaders: ["Content-Disposition"],
 };
 app.use(cors(corsOptions));
@@ -94,6 +118,7 @@ app.use(morgan(ENV.LOGGER_LEVELINFO));
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 // const userMiddleware = UserMiddleware()
 app.listen(ENV.API_PORT, () => {
   console.log(`🔥 Server is running on port ${ENV.API_PORT}`);
@@ -104,6 +129,9 @@ app.use("/v1", v1Router);
 // ROTAS AUTH ---------------------------------------------
 const authRouter = express.Router();
 v1Router.use("/auth", authRouter);
+// ROTAS REPORT ---------------------------------------------
+const reportRouter = express.Router();
+v1Router.use("/report", reportRouter);
 
 // Error Handler ------------------------------------------
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
@@ -120,6 +148,14 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
       res.status(403).json({ message: error.message });
       return;
     }
+    if (error.message.endsWith("usuário não encontrado")) {
+      res.sendStatus(204);
+      return;
+    }
+    if (error.message.endsWith("não encontrado")) {
+      res.status(404).json({ message: error.message });
+      return;
+    }
     res.status(500).json({ message: error.message });
     return;
   } else {
@@ -130,6 +166,12 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
 // ADAPTADORES --------------------------------------------
 const databaseConnection = new PgPromiseAdapter();
 const conexaoPrisma = new PrismaClient();
+const databaseConnectionMongoReport = new DatabaseConnectionMongodbAdapter(
+  ENV.DATABASE_REPORT_USERNAME,
+  ENV.DATABASE_REPORT_PASSWORD,
+  ENV.DATABASE_REPORT_HOST,
+  ENV.DATABASE_REPORT_PORT,
+);
 const queueRabbitMQ = RabbitMQAdapter.getInstance(
   ENV.AMQP_USER,
   ENV.AMQP_PASSWORD,
@@ -165,14 +207,32 @@ const repositorioUsuarioPrisma = new UsuarioRepositorioPgPrismaAdapter(
   conexaoPrisma,
   repositorioPerfilPrisma,
 );
+const repositorioOtp = new RepositorioOtpPgPromiseAdapter(databaseConnection);
 const provedorCriptografia = new ProvedorCriptografiaBcryptAdapter();
 const authToken = new AuthTokenJWTAsymmetricAdapter();
+const loginDAOAdpter = new LoginDaoMongoAdapter(databaseConnectionMongoReport);
+const logoutDAOAdpter = new LogoutDAOMongoAdapter(
+  databaseConnectionMongoReport,
+);
+// MIDDLEWARE ------------------------------------------
 const rotaProtegida = UsuarioMiddleware(repositorioUsuarioPrisma, authToken);
+const rotaProtegidaCookies = UsuarioCookiesMiddleware(
+  repositorioUsuarioPrisma,
+  authToken,
+);
 // CASOS DE USO ------------------------------------------
 const loginUsuario = new LoginUsuario(
   repositorioUsuarioPrisma,
+  repositorioOtp,
   provedorCriptografia,
   authToken,
+  queueRabbitMQ,
+);
+const loginPeloQrCode = new LoginPeloQrCode(
+  repositorioUsuario,
+  repositorioOtp,
+  authToken,
+  queueRabbitMQ,
 );
 const redefinirSenhaPorEmail = new RedefinirSenhaPorEmail(
   repositorioUsuarioPrisma,
@@ -182,6 +242,10 @@ const verificarTokenRedefinicaoSenha = new VerificarTokenRedefinicaoSenha(
   repositorioUsuarioPrisma,
 );
 const atualizarSenhaPeloEmailToken = new AtualizarSenhaPeloEmailToken(
+  repositorioUsuarioPrisma,
+  provedorCriptografia,
+);
+const atualizarSenhaUsuarioNaoLogado = new AtualizarSenhaUsuarioNaoLogado(
   repositorioUsuarioPrisma,
   provedorCriptografia,
 );
@@ -207,12 +271,32 @@ const criarUsuario = new CriarUsuario(
 );
 const habilitarUsuario = new HabilitarUsuario(repositorioUsuarioPrisma);
 const desabilitarUsuario = new DesabilitarUsuario(repositorioUsuarioPrisma);
-const logoutUsuario = new LogoutUsuario(repositorioUsuarioPrisma);
+const logoutUsuario = new LogoutUsuario(
+  repositorioUsuarioPrisma,
+  queueRabbitMQ,
+);
 
 const obterUsuarios = new ObterUsuarios(repositorioUsuario);
 const obterUsuarioPorId = new ObterUsuarioPorId(repositorioUsuarioPrisma);
 const atualizarUsuario = new AtualizarUsuario(repositorioUsuarioPrisma);
 const removerUsuarios = new RemoverUsuario(repositorioUsuarioPrisma);
+const validarOtp = new ValidarOtp(
+  repositorioUsuario,
+  repositorioOtp,
+  authToken,
+  queueRabbitMQ,
+);
+const verificarOtpExiste = new VerificarOtpExiste(repositorioOtp);
+const criarTokenParaQrCode = new CriarTokenParaQrCode(
+  repositorioUsuario,
+  repositorioOtp,
+  authToken,
+);
+const obterTokenParaQrCode = new ObterTokenParaQrCode(
+  repositorioOtp,
+  authToken,
+);
+const removerTokenParaQrCode = new RemoverTokenParaQrCode(repositorioOtp);
 
 const criarPermissao = new CriarPermissao(repositorioPermissaoPrisma);
 const editarPermissao = new EditarPermissao(repositorioPermissaoPrisma);
@@ -237,8 +321,13 @@ const excluirPerfil = new ExcluirPerfil(
 );
 const obterPerfis = new ObterPerfis(repositorioPerfilPrisma);
 const obterPerfilPorId = new ObterPerfilPorId(repositorioPerfilPrisma);
+
+const obterUltimoLoginUsuario = new ObterUltimoLoginUsuario(loginDAOAdpter);
 // CONTROLLERS -------------------------------------------
 new LoginUsuarioController(authRouter, loginUsuario);
+new LoginPeloQrCodeController(authRouter, loginPeloQrCode);
+new ValidarOtpController(authRouter, validarOtp);
+new VerificarOtpExisteController(authRouter, verificarOtpExiste);
 new RedefinirSenhaPorEmailController(authRouter, redefinirSenhaPorEmail);
 new VerificarTokenRedefinicaoSenhaController(
   authRouter,
@@ -248,10 +337,30 @@ new AtualizarSenhaPeloEmailTokenController(
   authRouter,
   atualizarSenhaPeloEmailToken,
 );
+new AtualizarSenhaUsuarioNaoLogadoController(
+  authRouter,
+  atualizarSenhaUsuarioNaoLogado,
+);
 new RegistrarUsuarioController(authRouter, registrarUsuario);
 new AtualizarAccessRefreshTokensController(
   authRouter,
   atualizarAccessRefreshTokens,
+);
+new CriarTokenParaQrCodeController(
+  authRouter,
+  criarTokenParaQrCode,
+  rotaProtegidaCookies,
+);
+// TODO: verificar a proteção da rota para usuario logado pode consultar apenas o seu token
+new ObterTokenParaQrCodeController(
+  authRouter,
+  obterTokenParaQrCode,
+  rotaProtegidaCookies,
+);
+new RemoverTokenParaQrCodeController(
+  authRouter,
+  removerTokenParaQrCode,
+  rotaProtegidaCookies,
 );
 new AtualizarPerfilUsuarioController(
   authRouter,
@@ -262,7 +371,7 @@ new AtualizarSenhaController(authRouter, atualizarSenha, rotaProtegida);
 new CriarUsuarioController(authRouter, criarUsuario, rotaProtegida);
 new HabilitarUsuarioController(authRouter, habilitarUsuario, rotaProtegida);
 new DesabilitarUsuarioController(authRouter, desabilitarUsuario, rotaProtegida);
-new LogoutUsuarioController(authRouter, logoutUsuario, rotaProtegida);
+new LogoutUsuarioController(authRouter, logoutUsuario, rotaProtegidaCookies);
 
 new ObterUsuariosController(authRouter, obterUsuarios, rotaProtegida);
 new ObterUsuarioPorIdController(authRouter, obterUsuarioPorId, rotaProtegida);
@@ -280,8 +389,16 @@ new EditarPerfilController(v1Router, editarPerfil, rotaProtegida);
 new ExcluirPerfilController(v1Router, excluirPerfil, rotaProtegida);
 new ObterPerfisController(v1Router, obterPerfis, rotaProtegida);
 new ObterPerfilPorIdController(v1Router, obterPerfilPorId, rotaProtegida);
+
+new ObterUltimoLoginUsuarioController(
+  reportRouter,
+  obterUltimoLoginUsuario,
+  rotaProtegidaCookies,
+);
 // CONSUMERS ---------------------------------------------
 enviarEmailSenhaEsquecida(queueRabbitMQ, servidorEmail);
+registrarLoginRealizado(queueRabbitMQ, loginDAOAdpter);
+registrarLogoutRealizado(queueRabbitMQ, logoutDAOAdpter);
 // Gerenciamento de Desconexão do RabbitMQ
 const shutdown = async () => {
   await queueRabbitMQ.disconnect(); // Chame o método de desconexão do RabbitMQ

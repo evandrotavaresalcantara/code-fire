@@ -13,7 +13,7 @@ const usuario = {
   nomeCompleto: "Maria Jullieta",
   email: "maria@dev.io",
   senha: "$2a$08$BXiml0an1MG9lZ/5Tcm1sO1Kl1QMttGxd0Eba9DtTRJkTe9BzY/L6",
-  celular: "81985698585",
+  telefone: "81985698585",
   urlPerfil: "https://meuperfil.online/maria.png",
   ativo: true,
   dataExpiracaoTokenRefreshToken: new Date(),
@@ -36,7 +36,7 @@ test("Deve criar um usuário somente com nome e email", () => {
   const novoUsuario = new Usuario(usuarioMinimo);
   expect(novoUsuario.qtdPerfils).toBe(0);
   expect(novoUsuario.getUrlPerfil()).toBeFalsy();
-  expect(novoUsuario.getCelular()).toBeFalsy();
+  expect(novoUsuario.getTelefone()).toBeFalsy();
 });
 
 test("Deve adicionar um perfil ao usuário", () => {

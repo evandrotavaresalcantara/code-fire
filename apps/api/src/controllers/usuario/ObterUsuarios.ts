@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import { ObterUsuarios } from "@packages/auth/src";
+import { ObterUsuarios } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class ObterUsuariosController {

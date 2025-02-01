@@ -7,7 +7,7 @@ const hash1 = "$2b$10$TUI.yyDk3K5N38xy3grJ0eNFUf8Kk827oUfREU.t7sIXpB8VRBfUm";
 const usuario = {
   nomeCompleto: "Fire Dev",
   email: "ususariofire1@dev.io",
-  celular: "81911112222",
+  telefone: "81911112222",
   senha: hash1,
   urlPerfil: "http://imagens.io/fire.png",
 };

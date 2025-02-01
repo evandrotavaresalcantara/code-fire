@@ -12,7 +12,7 @@ const hash2 = "$2b$10$yxPNAEZibEGvZ0czM9tYA.UKYDx5dm/w1iNQFi6c2RXo8Pw6bCDES";
 const usuarioComHash = {
   nomeCompleto: "Fire Dev",
   email: "ususariofire1@dev.io",
-  celular: "81911112222",
+  telefone: "81911112222",
   senha: hash1,
   urlPerfil: "http://imagens.io/fire.png",
 };
@@ -64,7 +64,7 @@ test("Deve gerar um erro ao tentar atualizar a senha, sem passar a senha antiga.
       senhaNova: senha2,
       senhaNovaConfirmacao: senha2,
     });
-  }).rejects.toThrow("email ou senha incorreto.");
+  }).rejects.toThrow("senha atual não informada.");
 });
 
 test("Deve gerar um erro ao atualizar senha, passando senha atual errada.", async () => {
@@ -80,7 +80,7 @@ test("Deve gerar um erro ao atualizar senha, passando senha atual errada.", asyn
       senhaNova: senha2,
       senhaNovaConfirmacao: senha2,
     });
-  }).rejects.toThrow("email ou senha incorreto.");
+  }).rejects.toThrow("senha atual inválida.");
 });
 
 test("Deve gerar um erro ao tentar atualizar senha, de usuári inexistente.", async () => {

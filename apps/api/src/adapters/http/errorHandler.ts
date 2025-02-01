@@ -1,4 +1,4 @@
-import { Errors } from "@packages/auth/src";
+import { Errors } from "@packages/auth";
 import { NextFunction, Request, Response } from "express";
 
 export function errorHandler(

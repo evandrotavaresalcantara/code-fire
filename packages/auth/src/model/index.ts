@@ -1,9 +1,6 @@
-import Permissao from "./Permissao"
-import Perfil from "./Perfil"
-import Usuario from "./Usuario"
+import Perfil from "./Perfil";
+import Permissao from "./Permissao";
+import Usuario from "./Usuario";
+export * from "./Otp";
 
-export {
-    Permissao,
-    Perfil,
-    Usuario
-}
+export { Perfil, Permissao, Usuario };

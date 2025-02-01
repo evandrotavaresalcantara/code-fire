@@ -22,7 +22,6 @@ test("Deve excluir um perfil existente", async () => {
     `${ENDPOINT}/${perfilSalvo?.getUuid()}`,
     { headers: { Authorization: token } },
   );
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });

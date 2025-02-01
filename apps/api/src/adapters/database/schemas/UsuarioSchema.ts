@@ -13,9 +13,23 @@ export interface UsuarioSchema extends EntidadeSchema {
   dois_fatores: boolean;
   telefone: string;
   imagem_perfil: string;
+  sis_admin: boolean;
 }
 
 export interface UsuarioPerfilsSchema {
   usuario_id: string;
   perfil_id: string;
+}
+
+export interface OtpSchema {
+  email: string;
+  codigo: string;
+  expira_em: Date;
+}
+
+export interface QrCodeLoginSchema {
+  email: string;
+  codigo: string;
+  expira_em: Date;
+  token: string;
 }

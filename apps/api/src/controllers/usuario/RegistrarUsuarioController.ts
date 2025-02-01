@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import RegistrarUsuario from "@packages/auth/src/usecases/usuario/RegistrarUsuario";
+import { RegistrarUsuario } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class RegistrarUsuarioController {
@@ -18,7 +18,7 @@ export class RegistrarUsuarioController {
             senha: req.body.senha as string,
             senhaConfirmacao: req.body.senhaConfirmacao as string,
             email: req.body.email as string,
-            celular: req.body.celular as string,
+            telefone: req.body.celular as string,
             ativo: req.body.ativo as boolean,
             urlPerfil: req.body.urlPerfil as string,
           };

@@ -4,6 +4,7 @@
   "description": "code-fire",
   "private": true,
   "scripts": {
+    "build": "npm run build -w packages/common && npm run build -w packages/email && npm run build -w packages/queue && npm run build -w packages/auth && npm run build -w apps/api",
     "frontend": "npm --prefix frontend run dev",
     "api": "npm --prefix apps/api run dev",
     "prisma": "npm --prefix apps/api run prisma",
@@ -28,6 +29,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/eslint-config-prettier": "^6.11.3"
+    "@types/cookie-parser": "^1.4.8",
+    "@types/eslint-config-prettier": "^6.11.3",
+    "@types/qrcode": "^1.5.5"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "otpauth": "^9.3.6",
+    "qrcode": "^1.5.4"
   }
 }

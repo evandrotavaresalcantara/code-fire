@@ -23,7 +23,6 @@ test("Deve editar uma permissão existente", async () => {
     headers: { Authorization: token },
   });
   await repoPermissao.excluirPermissao(`${permissao?.getUuid()}`);
-  await usuarioToken.excluirUsuario();
 
   expect(response.status).toBe(201);
 });

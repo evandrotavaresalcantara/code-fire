@@ -1,6 +1,6 @@
 import Nome, { NomeProps } from "./Nome";
 
-export interface NomePessoaProps extends NomeProps {}
+export type NomePessoaProps = NomeProps;
 
 export default class NomePessoa extends Nome {
   private existeSobrenome: boolean;
@@ -12,7 +12,7 @@ export default class NomePessoa extends Nome {
 
     super(props);
 
-    if (!/^[a-zA-ZÀ-ú'\.-\s]*$/.test(props.valor)) {
+    if (!/^[a-zA-ZÀ-ú'.-\s]*$/.test(props.valor)) {
       throw new Error("contém caracteres inválidos.");
     }
 

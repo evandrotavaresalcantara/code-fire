@@ -36,15 +36,29 @@ const app = express();
 // Configuração Básica ----------------------------------------------
 const corsOptions: CorsOptions = {
   origin: process.env.CORS_ORIGIN || "*",
+  allowedHeaders: ["Content-Type", "Authorization"],
   optionsSuccessStatus: 200,
+  // methods: ["GET"], // Especifica métodos permitidos
   // credentials: true,
   // exposedHeaders: ["Content-Disposition"],
 };
 app.use(cors(corsOptions));
 app.use(morgan(process.env.LOGGER_LEVELINFO || "common"));
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    crossOriginEmbedderPolicy: false,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", process.env.CORS_ORIGIN || "*");
+  res.header("Access-Control-Allow-Methods", "GET");
+  res.header("Cross-Origin-Resource-Policy", "cross-origin");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  next();
+});
 // const userMiddleware = UserMiddleware()
 app.listen(PORT, () => {
   console.log(`🔥 Server is running on port ${PORT}`);
