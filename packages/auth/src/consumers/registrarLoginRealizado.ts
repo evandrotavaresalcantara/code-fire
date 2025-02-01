@@ -1,9 +1,11 @@
-import { LoginDAO, QueuesAuth, RegistrarLogin } from "@packages/auth/src";
-import { Queue } from "@packages/queue/src";
+import { Queue } from "@packages/queue";
+import { QueuesAuth } from "../constants";
+import { LoginDAO } from "../provider";
+import { RegistrarLogin } from "../usecases";
 
 export async function registrarLoginRealizado(
   queue: Queue,
-  loginDAO: LoginDAO
+  loginDAO: LoginDAO,
 ) {
   const registrarLogin = new RegistrarLogin(loginDAO);
   await queue.consume<{

@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import { ObterUltimoLoginUsuario } from "@packages/auth/src";
+import { ObterUltimoLoginUsuario } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class ObterUltimoLoginUsuarioController {

@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import LoginUsuario from "@packages/auth/src/usecases/usuario/LoginUsuario";
+import { LoginUsuario } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class LoginUsuarioController {

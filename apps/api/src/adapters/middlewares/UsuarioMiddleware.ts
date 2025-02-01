@@ -1,5 +1,5 @@
-import { AuthToken, RepositorioUsuario } from "@packages/auth/src";
-import { Request, Response, NextFunction } from "express";
+import { AuthToken, RepositorioUsuario } from "@packages/auth";
+import { NextFunction, Request, Response } from "express";
 
 interface idToken {
   id: string;

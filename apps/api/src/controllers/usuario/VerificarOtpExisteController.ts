@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import { VerificarOtpExiste } from "@packages/auth/src";
+import { VerificarOtpExiste } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class VerificarOtpExisteController {

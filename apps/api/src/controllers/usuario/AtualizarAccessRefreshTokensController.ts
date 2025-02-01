@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import { AtualizarAccessRefreshTokens } from "@packages/auth/src";
+import { AtualizarAccessRefreshTokens } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class AtualizarAccessRefreshTokensController {

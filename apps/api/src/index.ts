@@ -1,8 +1,24 @@
 import {
   AtualizarAccessRefreshTokens,
+  AtualizarPerfilUsuario,
+  AtualizarSenha,
+  AtualizarSenhaPeloEmailToken,
+  AtualizarSenhaUsuarioNaoLogado,
+  AtualizarUsuario,
   AuthTokenJWTAsymmetricAdapter,
+  CriarPerfil,
+  CriarPermissao,
   CriarTokenParaQrCode,
+  CriarUsuario,
+  DesabilitarUsuario,
+  EditarPerfil,
+  EditarPermissao,
+  ExcluirPerfil,
+  ExcluirPermissao,
+  HabilitarUsuario,
   LoginPeloQrCode,
+  LoginUsuario,
+  LogoutUsuario,
   ObterPerfilPorId,
   ObterPerfis,
   ObterPermissaoPorId,
@@ -11,43 +27,26 @@ import {
   ObterUltimoLoginUsuario,
   ObterUsuarioPorId,
   ObterUsuarios,
+  ProvedorCriptografiaBcryptAdapter,
   RedefinirSenhaPorEmail,
+  RegistrarUsuario,
   RemoverTokenParaQrCode,
+  RemoverUsuario,
   ValidarOtp,
   VerificarOtpExiste,
   VerificarTokenRedefinicaoSenha,
-} from "@packages/auth/src";
-import ProvedorCriptografiaBcryptAdapter from "@packages/auth/src/adapter/Criptografia/ProvedorCriptografiaBcryptAdapter";
-import CriarPerfil from "@packages/auth/src/usecases/perfil/CriarPerfil";
-import EditarPerfil from "@packages/auth/src/usecases/perfil/EditarPerfil";
-import ExcluirPerfil from "@packages/auth/src/usecases/perfil/ExcluirPerfil";
-import CriarPermissao from "@packages/auth/src/usecases/permissao/CriarPermissao";
-import EditarPermissao from "@packages/auth/src/usecases/permissao/EditarPermissao";
-import ExcluirPermissao from "@packages/auth/src/usecases/permissao/ExcluirPermissao";
-import AtualizarPerfilUsuario from "@packages/auth/src/usecases/usuario/AtualizarPerfilUsuario";
-import AtualizarSenha from "@packages/auth/src/usecases/usuario/AtualizarSenha";
-import AtualizarSenhaPeloEmailToken from "@packages/auth/src/usecases/usuario/AtualizarSenhaPeloEmailToken";
-import AtualizarSenhaUsuarioNaoLogado from "@packages/auth/src/usecases/usuario/AtualizarSenhaUsuarioNaoLogado";
-import AtualizarUsuario from "@packages/auth/src/usecases/usuario/AtualizarUsuario";
-import CriarUsuario from "@packages/auth/src/usecases/usuario/CriarUsuario";
-import DesabilitarUsuario from "@packages/auth/src/usecases/usuario/DesabilitarUsuario";
-import HabilitarUsuario from "@packages/auth/src/usecases/usuario/HabilitarUsuario";
-import LoginUsuario from "@packages/auth/src/usecases/usuario/LoginUsuario";
-import LogoutUsuario from "@packages/auth/src/usecases/usuario/LogoutUsuario";
-import RegistrarUsuario from "@packages/auth/src/usecases/usuario/RegistrarUsuario";
-import RemoverUsuario from "@packages/auth/src/usecases/usuario/RemoverUsuario";
-import { ServidorEmailNodeMailerAdapter } from "@packages/email/src";
-import {
   enviarEmailSenhaEsquecida,
-  RabbitMQAdapter,
   registrarLoginRealizado,
   registrarLogoutRealizado,
-} from "@packages/queue/src";
+} from "@packages/auth";
+import { ServidorEmailNodeMailerAdapter } from "@packages/email";
+import { RabbitMQAdapter } from "@packages/queue";
 import { PrismaClient } from "@prisma/client";
 import cookieParser from "cookie-parser";
 import cors, { CorsOptions } from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import helmet from "helmet";
+import "module-alias/register";
 import morgan from "morgan";
 import {
   DatabaseConnectionMongodbAdapter,
@@ -101,6 +100,7 @@ import { LogoutUsuarioController } from "./controllers/usuario/LogoutUsuarioCont
 import { ObterUsuarioPorIdController } from "./controllers/usuario/ObterUsuarioPorId";
 import { ObterUsuariosController } from "./controllers/usuario/ObterUsuarios";
 import { RemoverUsuarioController } from "./controllers/usuario/RemoverUsuario";
+// import { AuthTokenJWTAsymmetricAdapter } from "@packages/auth/index";
 
 // Configuração Ambiente ----------------------------------------------
 console.log(`🟢 ENVIRONMENT: ${ENV.NODE_ENV} 🟢`);

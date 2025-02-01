@@ -1,15 +1,17 @@
-import { LogoutDAO, QueuesAuth, RegistrarLogout } from "@packages/auth/src";
-import { Queue } from "@packages/queue/src";
+import { Queue } from "@packages/queue";
+import { QueuesAuth } from "../constants";
+import { LogoutDAO } from "../provider";
+import { RegistrarLogout } from "../usecases";
 
 export async function registrarLogoutRealizado(
   queue: Queue,
-  logoutDAO: LogoutDAO
+  logoutDAO: LogoutDAO,
 ) {
   const registrarLogout = new RegistrarLogout(logoutDAO);
   await queue.consume<{
     userEmail: string;
     logoutDate: Date;
   }>(QueuesAuth.AUTH_LOGOUT_REALIZADO, (data) =>
-    registrarLogout.executar(data)
+    registrarLogout.executar(data),
   );
 }

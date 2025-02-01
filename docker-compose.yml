@@ -10,7 +10,7 @@ services:
       - ./apps/api/src/adapters/database/SQL/01_criar_tbl_permissao.sql:/docker-entrypoint-initdb.d/01_criar_tbl_permissao.sql
       - ./apps/api/src/adapters/database/SQL/02_criar_tbl_perfil.sql:/docker-entrypoint-initdb.d/02_criar_tbl_perfil.sql
       - ./apps/api/src/adapters/database/SQL/03_criar_tbl_usuario.sql:/docker-entrypoint-initdb.d/03_criar_tbl_usuario.sql
-      - ./data/postgres:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - net_pg
 
@@ -23,8 +23,8 @@ services:
     ports:
       - 15672:15672
     volumes:
-      - ./data/rabbitmq:/var/lib/rabbitmq
-      - ./data/logs/rabbitmq:/var/log/rabbitmq
+      - rabbitmq_data:/var/lib/rabbitmq
+      - ./logs/rabbitmq:/var/log/rabbitmq
     networks:
       - net_mq
 
@@ -34,7 +34,7 @@ services:
     env_file:
       - ./config/mongo_bucket.env
     volumes:
-      - ./data/mongo_bucket:/data/db
+      - mongo_bucket_data:/data/db
     networks:
       - net_mongo_bucket
 
@@ -58,7 +58,7 @@ services:
     env_file:
       - ./config/mongo_report.env
     volumes:
-      - ./data/mongo_report:/data/db
+      - mongo_report_data:/data/db
     networks:
       - net_mongo_report
 
@@ -76,6 +76,19 @@ services:
     networks:
       - net_mongo_report
 
+  apps_bucket:
+    depends_on:
+      - rabbitmq
+      - mongo_bucket
+    build:
+      context: ./apps/bucketSC/
+    restart: always
+    expose:
+      - 7000
+    networks:
+      - net_mq
+      - net_backend
+      - net_mongo_bucket
   apps_api:
     depends_on:
       - postgres
@@ -94,7 +107,7 @@ services:
       - net_backend
       - net_mongo_bucket
 
-  web:
+  apps_web:
     depends_on:
       - backend
     build:
@@ -109,5 +122,12 @@ networks:
   net_pg:
   net_mq:
   net_backend:
+  net_web:
   net_mongo_bucket:
   net_mongo_report:
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
+  mongo_bucket_data:
+  mongo_report_data:

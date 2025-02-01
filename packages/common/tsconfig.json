@@ -1,14 +1,22 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
+    "declaration": true,
+    "declarationMap": true,
+    "incremental": true,
+    "target": "es2018",
+    "module": "Node16",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "outDir": "build",
+    "outDir": "dist",
+    "removeComments": true,
     "allowJs": true
   },
-  "include": ["."],
-  "exclude": ["dist", "build", "node_modules", "apoio", "coverage"]
+  "include": ["**/*.ts"],
+  "exclude": ["dist", "node_modules", "coverage"]
 }

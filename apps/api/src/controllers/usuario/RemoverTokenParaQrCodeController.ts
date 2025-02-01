@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import { RemoverTokenParaQrCode } from "@packages/auth/src";
+import { RemoverTokenParaQrCode } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class RemoverTokenParaQrCodeController {

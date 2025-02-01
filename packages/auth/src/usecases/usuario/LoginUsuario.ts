@@ -1,5 +1,5 @@
 import { CasoDeUso, Email } from "@packages/common";
-import { Queue } from "@packages/queue/src";
+import { Queue } from "@packages/queue";
 import { QueuesAuth } from "../../constants";
 import { Otp } from "../../model";
 import {
@@ -70,6 +70,7 @@ export default class LoginUsuario implements CasoDeUso<Entrada, Output> {
       id: usuario.getUuid(),
       nome: usuario.getNome(),
       email: usuario.getEmail(),
+      urlPerfil: usuario.getUrlPerfil(),
       isSisAdmin: usuario.getSisAdmin(),
       perfis: usuario.obterPerfis,
     };

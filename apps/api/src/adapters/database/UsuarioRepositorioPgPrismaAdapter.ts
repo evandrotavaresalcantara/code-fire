@@ -1,5 +1,9 @@
-import { Errors, RepositorioPerfil, Usuario } from "@packages/auth/src";
-import RepositorioUsuario from "@packages/auth/src/provider/RepositorioUsuario";
+import {
+  Errors,
+  RepositorioPerfil,
+  RepositorioUsuario,
+  Usuario,
+} from "@packages/auth";
 import { PrismaClient } from "@prisma/client";
 
 export default class RepositorioUsuarioPrismaPg implements RepositorioUsuario {

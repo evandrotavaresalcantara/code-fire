@@ -3,7 +3,7 @@ import {
   Perfil,
   RepositorioPerfil,
   RepositorioPermissao,
-} from "@packages/auth/src";
+} from "@packages/auth";
 import { DatabaseConnection } from "./providers";
 import { PerfilPermissoesSchema, PerfilSchema } from "./schemas";
 

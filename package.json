@@ -4,6 +4,7 @@
   "description": "code-fire",
   "private": true,
   "scripts": {
+    "build": "npm run build -w packages/common && npm run build -w packages/email && npm run build -w packages/queue && npm run build -w packages/auth && npm run build -w apps/api",
     "frontend": "npm --prefix frontend run dev",
     "api": "npm --prefix apps/api run dev",
     "prisma": "npm --prefix apps/api run prisma",

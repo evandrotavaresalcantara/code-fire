@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import RemoverUsuario from "@packages/auth/src/usecases/usuario/RemoverUsuario";
+import { RemoverUsuario } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class RemoverUsuarioController {

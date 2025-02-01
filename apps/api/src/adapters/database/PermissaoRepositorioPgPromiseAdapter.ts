@@ -1,4 +1,4 @@
-import { Errors, Permissao, RepositorioPermissao } from "@packages/auth/src";
+import { Errors, Permissao, RepositorioPermissao } from "@packages/auth";
 import { DatabaseConnection } from "./providers";
 import { PermissaoSchema } from "./schemas";
 

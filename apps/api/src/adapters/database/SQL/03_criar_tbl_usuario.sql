@@ -43,6 +43,7 @@ INSERT INTO usuario (
   data_criacao,
   ativo,
   dois_fatores,
+  imagem_perfil,
   sis_admin
 )
 SELECT
@@ -53,6 +54,7 @@ SELECT
   NOW(),
   true,
   false,
+  'http://localhost:7000/v1/static/images/f_webp/admin.png',
   true
 WHERE NOT EXISTS (
   SELECT 1 FROM usuario WHERE email = 'admin@admin.com'

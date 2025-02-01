@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import { ValidarOtp } from "@packages/auth/src";
+import { ValidarOtp } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class ValidarOtpController {

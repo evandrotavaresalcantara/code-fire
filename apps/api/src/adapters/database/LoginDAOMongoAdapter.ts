@@ -1,4 +1,4 @@
-import { LoginDAO } from "@packages/auth/src";
+import { LoginDAO } from "@packages/auth";
 import { Collection } from "mongodb";
 import { DatabaseConnectionMongodbAdapter } from "./mongodb";
 

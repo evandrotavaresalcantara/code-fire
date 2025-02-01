@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import ExcluirPerfil from "@packages/auth/src/usecases/perfil/ExcluirPerfil";
+import { ExcluirPerfil } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class ExcluirPerfilController {

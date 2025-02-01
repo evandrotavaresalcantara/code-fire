@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import CriarPermissao from "@packages/auth/src/usecases/permissao/CriarPermissao";
+import { CriarPermissao } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class CriarPermissaoController {

@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import { ObterTokenParaQrCode } from "@packages/auth/src";
+import { ObterTokenParaQrCode } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class ObterTokenParaQrCodeController {

@@ -3,7 +3,7 @@ import {
   RepositorioPerfil,
   RepositorioUsuario,
   Usuario,
-} from "@packages/auth/src";
+} from "@packages/auth";
 import { DatabaseConnection } from "./providers";
 import { UsuarioPerfilsSchema, UsuarioSchema } from "./schemas";
 

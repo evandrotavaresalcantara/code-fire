@@ -12,6 +12,7 @@ export default class Email {
     this.endereco = valor;
   }
   get nome(): string {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.endereco.split("@")[0]!;
   }
 
@@ -21,7 +22,7 @@ export default class Email {
 
   static isValido(valor: string): boolean {
     const regex =
-      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
+      /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/;
     return regex.test(valor);
   }
 }

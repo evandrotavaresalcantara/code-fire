@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import RegistrarUsuario from "@packages/auth/src/usecases/usuario/RegistrarUsuario";
+import { RegistrarUsuario } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class RegistrarUsuarioController {

@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import HabilitarUsuario from "@packages/auth/src/usecases/usuario/HabilitarUsuario";
+import { HabilitarUsuario } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class HabilitarUsuarioController {

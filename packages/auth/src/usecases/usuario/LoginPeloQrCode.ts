@@ -1,5 +1,5 @@
 import { CasoDeUso } from "@packages/common";
-import { Queue } from "@packages/queue/src";
+import { Queue } from "@packages/queue";
 import { QueuesAuth } from "../../constants";
 import { Otp } from "../../model";
 import { AuthToken, RepositorioOtp, RepositorioUsuario } from "../../provider";
@@ -68,6 +68,7 @@ export class LoginPeloQrCode implements CasoDeUso<Entrada, Output> {
       id: usuario.getUuid(),
       nome: usuario.getNome(),
       email: usuario.getEmail(),
+      urlPerfil: usuario.getUrlPerfil(),
       isSisAdmin: usuario.getSisAdmin(),
       perfis: usuario.obterPerfis,
     };

@@ -1,4 +1,4 @@
-import { Otp, RepositorioOtp } from "@packages/auth/src";
+import { Otp, RepositorioOtp } from "@packages/auth";
 import { DatabaseConnection } from "./providers";
 import { OtpSchema, QrCodeLoginSchema } from "./schemas";
 

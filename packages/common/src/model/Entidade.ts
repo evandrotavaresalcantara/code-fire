@@ -23,6 +23,7 @@ export default abstract class Entidade<Tipo, Props extends EntidadeProps> {
 
   clonar(novasProps: Props): Tipo {
     const propsClonada = { ...this.props, ...novasProps };
+    // eslint-disable-next-line @typescript-eslint/prefer-function-type
     return new (this.constructor as { new (props: Props): Tipo })(propsClonada);
   }
 

@@ -1,5 +1,5 @@
 import { Middleware } from "@/adapters/middlewares/middleware";
-import { VerificarTokenRedefinicaoSenha } from "@packages/auth/src";
+import { VerificarTokenRedefinicaoSenha } from "@packages/auth";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class VerificarTokenRedefinicaoSenhaController {

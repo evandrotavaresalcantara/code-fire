@@ -1,5 +1,4 @@
-import RepositorioPermissao from "@packages/auth/src/provider/RepositorioPermissao";
-import { Errors, Permissao } from "@packages/auth/src";
+import { Errors, Permissao, RepositorioPermissao } from "@packages/auth";
 import { PrismaClient } from "@prisma/client";
 
 export default class RepositorioPermissaoPrismaPg

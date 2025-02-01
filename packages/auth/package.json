@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "npm run rm -rf dist && tsc -p tsconfig.build.json",
+    "copy-files": "cp -r src/adapter/JWT/*.pem dist/adapter/JWT/",
+    "build": "tsc -p tsconfig.build.json && npm run copy-files",
     "clean": "rm -rf dist coverage",
     "lint": "eslint .",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",

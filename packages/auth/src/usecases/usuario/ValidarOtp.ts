@@ -1,5 +1,5 @@
 import { CasoDeUso, Email } from "@packages/common";
-import { Queue } from "@packages/queue/src";
+import { Queue } from "@packages/queue";
 import { QueuesAuth } from "../../constants";
 import { AuthToken, RepositorioOtp, RepositorioUsuario } from "../../provider";
 
@@ -37,6 +37,7 @@ export class ValidarOtp implements CasoDeUso<Entrada, Output> {
       id: usuario.getUuid(),
       nome: usuario.getNome(),
       email: usuario.getEmail(),
+      urlPerfil: usuario.getUrlPerfil(),
       isSisAdmin: usuario.getSisAdmin(),
       perfis: usuario.obterPerfis,
     };
