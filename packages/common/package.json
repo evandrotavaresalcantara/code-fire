@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "rm -rf dist coverage",
+    "build": "shx rm -rf dist && tsc -p tsconfig.build.json",
+    "clean": "shx rm -rf build dist",
     "lint": "eslint .",
     "test": "jest",
     "test:watch": "jest --watchAll --collectCoverage",

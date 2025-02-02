@@ -1,4 +1,7 @@
+import path from "node:path";
 import { Options } from "swagger-jsdoc";
+
+const isDev = process.env.NODE_ENV !== "production";
 
 const options: Options = {
   definition: {
@@ -15,7 +18,12 @@ const options: Options = {
       },
     ],
   },
-  apis: ["./src/controllers/**/*.ts"], // Caminho para os arquivos onde as anotações estão
+  apis: [
+    path.join(
+      __dirname,
+      isDev ? "../src/controllers/**/*.ts" : "./controllers/**/*.js"
+    ),
+  ], // Caminho para os arquivos onde as anotações estão
 };
 
 export default options;

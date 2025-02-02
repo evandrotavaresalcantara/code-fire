@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "rm -rf dist coverage",
+    "build": "shx rm -rf dist && tsc -p tsconfig.build.json",
+    "clean": "shx rm -rf build dist coverage",
     "start": "node -r tsconfig-paths/register dist/index.js",
     "lint": "eslint .",
     "dev:linux": "nodemon --watch 'src/**' --ext 'ts,json' --ignore 'src/**/*.test.ts' --exec 'ts-node -r tsconfig-paths/register src/index.ts/'",

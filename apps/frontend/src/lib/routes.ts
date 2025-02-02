@@ -1,6 +1,6 @@
 // API - V1 -------------------------------------
 export const API_BASE_URL_USE_SERVER =
-  process.env.NEXT_PUBLIC_API_BASE_URL_USE_SERVER || "";
+  process.env.API_BASE_URL_USE_SERVER || "";
 export const API_BASE_URL_USE_CLIENT =
   process.env.NEXT_PUBLIC_API_BASE_URL_USE_CLIENT || "";
 // export const API_BASE_URL = "http://host.docker.internal:8000/v1";

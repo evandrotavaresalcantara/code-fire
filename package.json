@@ -4,12 +4,16 @@
   "description": "code-fire",
   "private": true,
   "scripts": {
+    "genDotEnv": "node genDotEnv.js",
     "build": "npm run build -w packages/common && npm run build -w packages/email && npm run build -w packages/queue && npm run build -w packages/auth && npm run build -w apps/api",
-    "frontend": "npm --prefix frontend run dev",
+    "frontend": "npm --prefix apps/frontend run dev",
+    "install:frontend": "npm install --prefix apps/frontend",
+    "bucket": "npm --prefix apps/bucketSC run dev",
+    "install:bucket": "npm install --prefix apps/bucketSC",
     "api": "npm --prefix apps/api run dev",
     "prisma": "npm --prefix apps/api run prisma",
-    "docker:start": "docker compose up -d",
-    "docker:stop": "docker compose stop",
+    "start": "docker compose up -d",
+    "stop": "docker compose down",
     "docker:dev:start": "docker-compose -f docker-compose.dev.yml up -d",
     "docker:dev:stop": "docker-compose -f docker-compose.dev.yml stop",
     "docker:dev:down": "docker-compose -f docker-compose.dev.yml down",
@@ -31,7 +35,8 @@
   "devDependencies": {
     "@types/cookie-parser": "^1.4.8",
     "@types/eslint-config-prettier": "^6.11.3",
-    "@types/qrcode": "^1.5.5"
+    "@types/qrcode": "^1.5.5",
+    "shx": "^0.3.4"
   },
   "dependencies": {
     "cookie-parser": "^1.4.7",

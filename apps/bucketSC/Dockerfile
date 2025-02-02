@@ -48,12 +48,11 @@ COPY --from=builder --chown=express:nodejs /app/dist ./dist
 # COPY ./src/assets/images /app/src/assets/images
 COPY --from=builder --chown=express:nodejs /app/node_modules ./node_modules
 COPY --chown=express:nodejs package.json ./
+COPY --chown=express:nodejs tsconfig.json ./
 
-USER express
+# USER express
 
-EXPOSE 8000
-
-# ENV API_PORT 8000
+EXPOSE 7000
 
 # Start the application
 CMD [ "npm", "start" ]
