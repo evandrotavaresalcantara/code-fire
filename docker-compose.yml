@@ -28,30 +28,6 @@ services:
     networks:
       - net_mq
 
-  mongo_bucket:
-    image: mongo:8
-    restart: always
-    env_file:
-      - ./config/mongo_bucket.env
-    volumes:
-      - mongo_bucket_data:/data/db
-    networks:
-      - net_mongo_bucket
-
-  mongo-express_bucket:
-    image: mongo-express
-    restart: always
-    depends_on:
-      - mongo_bucket
-    ports:
-      - 8087:8081
-    env_file:
-      - ./config/mongo-express_bucket.env
-    environment:
-      ME_CONFIG_BASICAUTH: "true"
-    networks:
-      - net_mongo_bucket
-
   mongo_report:
     image: mongo:8
     restart: always
@@ -72,30 +48,31 @@ services:
     env_file:
       - ./config/mongo-express_report.env
     environment:
-      ME_CONFIG_BASICAUTH: "true"
+      ME_CONFIG_BASICAUTH: "false"
     networks:
       - net_mongo_report
 
   apps_bucket:
     depends_on:
       - rabbitmq
-      - mongo_bucket
     build:
       context: ./apps/bucketSC/
     restart: always
     ports:
       - 7000:7000
+    volumes:
+      - ./apps/bucketSC/public:/app/public
+      - ./apps/bucketSC/rootFolder:/app/rootFolder
     networks:
       - net_mq
       - net_backend
-      - net_mongo_bucket
   apps_api:
     depends_on:
       - postgres
       - mongo_report
       - rabbitmq
     build:
-      context: ./apps/api/
+      context: .
     restart: always
     env_file:
       - ./config/apps_api.env
@@ -105,12 +82,11 @@ services:
       - net_pg
       - net_mq
       - net_backend
-      - net_mongo_bucket
       - net_mongo_report
 
   apps_frontend:
     depends_on:
-      - backend
+      - apps_api
     build:
       context: ./apps/frontend/
     restart: always
@@ -125,12 +101,9 @@ networks:
   net_pg:
   net_mq:
   net_backend:
-  net_web:
-  net_mongo_bucket:
   net_mongo_report:
 
 volumes:
   postgres_data:
   rabbitmq_data:
-  mongo_bucket_data:
   mongo_report_data:

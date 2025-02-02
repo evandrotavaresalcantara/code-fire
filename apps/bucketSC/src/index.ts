@@ -2,11 +2,11 @@ import cors, { CorsOptions } from "cors";
 import "dotenv/config";
 import express from "express";
 import helmet from "helmet";
+import "module-alias/register";
 import morgan from "morgan";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi, { SwaggerUiOptions } from "swagger-ui-express";
-import { errorHandler, UserRepositoryMongodbAdapter } from "./adapters";
-import { DatabaseConnectionMongodbAdapter } from "./adapters/database/mongoose";
+import { AuthTokenJWTAsymmetricAdapter, errorHandler } from "./adapters";
 import {
   CreateBucketController,
   DeleteFileController,
@@ -25,7 +25,7 @@ import {
   FindFile,
   GetAllFiles,
 } from "./core";
-import { userApiKeyAuthMiddleware } from "./middlewares";
+import { userSecurityJWTAuthMiddleware } from "./middlewares";
 import swaggerOptions from "./swaggerOptions";
 
 // Configuração Ambiente ----------------------------------------------
@@ -79,10 +79,13 @@ v1Router.use("/bucket", bucketRouter);
 const staticRouter = express.Router();
 v1Router.use("/static", staticRouter);
 app.use(errorHandler);
-const databaseConnection = new DatabaseConnectionMongodbAdapter();
-const userRepository = new UserRepositoryMongodbAdapter(databaseConnection);
+// const databaseConnection = new DatabaseConnectionMongodbAdapter();
+// const userRepository = new UserRepositoryMongodbAdapter(databaseConnection);
 // MIDDLEWARES --------------------------------------------
-const authMiddleware = userApiKeyAuthMiddleware(userRepository);
+// const authMiddleware = userApiKeyAuthMiddleware(userRepository);
+const authMiddleware = userSecurityJWTAuthMiddleware(
+  new AuthTokenJWTAsymmetricAdapter()
+);
 // USECASES/CONTROLLERS -------------------------------------------
 const createBucket = new CreateBucket();
 new CreateBucketController(bucketRouter, createBucket, authMiddleware);

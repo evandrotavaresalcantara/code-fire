@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "Storage Micro-Service as S3",
   "scripts": {
-    "build": "npm run clean && tsc -p tsconfig.build.json",
+    "copy-pubkey": "cp -r src/adapters/JWT/*.pem dist/adapters/JWT/",
+    "build": "npm run clean && tsc -p tsconfig.build.json && npm run copy-pubkey",
     "clean": "rm -rf dist coverage",
-    "start": "NODE_ENV=production node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/index.js",
+    "start": "NODE_ENV=production node -r tsconfig-paths/register dist/index.js",
     "lint": "eslint .",
     "dev:linux": "nodemon --watch 'src/**' --ext 'ts,json' --ignore 'src/**/*.test.ts' --exec 'ts-node -r tsconfig-paths/register src/index.ts'",
     "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.test.ts\" --exec \"ts-node -r tsconfig-paths/register src/index.ts\"",
@@ -22,6 +23,7 @@
     "@types/eslint__js": "^8.42.3",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.8",
     "@types/morgan": "^1.9.9",
     "@types/multer": "^1.4.12",
     "@types/node": "^22.10.5",
@@ -45,11 +47,16 @@
     "express": "^5.0.0",
     "helmet": "^8.0.0",
     "ipx": "^3.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
     "mongodb": "^6.12.0",
     "mongoose": "^8.9.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }

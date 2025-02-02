@@ -13,7 +13,7 @@
     "api": "npm --prefix apps/api run dev",
     "prisma": "npm --prefix apps/api run prisma",
     "start": "docker compose up -d",
-    "stop": "docker compose stop",
+    "stop": "docker compose down",
     "docker:dev:start": "docker-compose -f docker-compose.dev.yml up -d",
     "docker:dev:stop": "docker-compose -f docker-compose.dev.yml stop",
     "docker:dev:down": "docker-compose -f docker-compose.dev.yml down",

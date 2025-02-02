@@ -11,6 +11,7 @@
 
 - copiar o arquivo env.example para .env no projeto Frontend e configurar se caso necessário alguma alteração fora do padrão.
   `cp apps/frontend/env.example apps/frontend/.env`
+  > Se for utilizar modo de produção não gerar o .env
 
 ### Aplicação Principal - S3curity
 
@@ -35,27 +36,10 @@
   `npm run api`
 
 - executar o Frontend com o comando:
-  `npm run fronend`
+  `npm run frontend`
 
 - executar o BueckSC com o comando:
   `npm run bucket`
-
-#### Utilizar a Interface S3curityAdmin
-
-Interface idealizada para o usuário do tipo s3curityadmin realizar a gestão de novos usuário, perfis e permissões.
-
-O sistema pode ser acessado através do `http://localhost:3000`
-
-- Usuário Administrador inicial: `admin@admin.com`
-
-- senha: `@Admin1`
-
-- formulário para cadastro de novo usuário fora da área admin: `accounts/register`
-
-  > Esse formulário apenas usuários securytiAdmin conseguem acessar para cadastro
-
-- interface para acessar banco de dados dos registros de Login/Logout
-  `http://localhost:8088`
 
 ### Micro Serviço Armazenamento Arquivos - BucketSC
 
@@ -76,19 +60,18 @@ Inicializar: acessar diretório apps/bucketSC
 - executar bucketSC:
   `npm run dev`
 
+  > Esses passos não são necessário se realizou na etapa anterior como descrito em Comandos executados na raiz do projeto
+
 - acesso documentação pelo swagger
   `http://localhost:7000/v1/docs/`
 
-  Atualmente o bucketSC está rodando de forma autônoma sem integração
-  com projeto de autenticação. Dessa forma qualquer interação será diretamente
-  com o bucketSC via os endpoints expostos de acordo com swagger.
-
-  Os arquivos são armazenados no diretório rootFolder na raiz do projeto bucketSC.
+Os arquivos são armazenados no diretório rootFolder na raiz do projeto bucketSC.
 
 ### Obs
 
 - Se precisar parar os containers: `npm run docker:dev:stop`
 - Se precisar destruir os containers: `npm run docker:dev:down`
+- Se precisar iniciar os containers: `npm run docker:dev:start`
 
 ## INSTALAÇÃO/USO MODO PRODUÇÃO
 
@@ -99,3 +82,36 @@ Inicializar: acessar diretório apps/bucketSC
   > Para esse passo é necessário ter o NodeJs instalado, se não houver, pode copiar manualmente cada arquivo em config/seunome.env.example para config/seunome.env
 
 - iniciar o sistema através dos containers: `npm start`
+
+- desligar o sistema através dos containers: `npm stop`
+
+> Esses comandos apenas funcionarão se a versão do docker compose >=2, se for a versão 1 será necessário o seguinte comando para iniciar:
+> `docker-compose up -d`
+
+## Utilizar a Interface S3curityAdmin
+
+Interface idealizada para o usuário do tipo s3curityadmin realizar a gestão de novos usuário, perfis e permissões.
+
+O sistema pode ser acessado através do `http://localhost:3000` em modo dev e em `http://localhost` modo produção
+
+- Usuário Administrador inicial: `admin@admin.com`
+
+- senha: `@Admin1`
+
+- formulário para cadastro de novo usuário fora da área admin: `accounts/register`
+
+  > Esse formulário apenas usuários securytiAdmin conseguem acessar para cadastro
+
+- interface para acessar banco de dados dos registros de Login/Logout
+  `http://localhost:8088` em modo dev e em `http://localhost:8087` modo produção
+
+- interface para acessar RabbitMQ
+  `http://localhost:15672` em modo dev e em modo produção
+
+- acesso documentação do BucketSC para testes pelo swagger colocando o cookie tokenId no `Authorize` do swagger para autenticar as rotas
+  `http://localhost:7000/v1/docs/`
+
+Para uso dos serviços de e-mail como recuperar senha por e-mail e autenticação por dois fatores, é obrigatório cadastrar os dados de um servidor de e-mail em `./config/apps_api.env` na seção EMAIL
+
+Segue link do Vídeo de Demonstração do Projeto em funcionamento:
+`https://drive.google.com/file/d/1epza0cGZlaD_Sy_kCmMhlsUVehJqxi4f/view?usp=sharing`

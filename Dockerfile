@@ -39,7 +39,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 express
 
 RUN apt-get update && apt-get upgrade -y && \
-  apt-get install -y tzdata locales netcat-openbsd vim file && \
+  apt-get install -y tzdata locales netcat-openbsd vim file openssl && \
   ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && \
   sed -i 's/# pt_BR.UTF-8 UTF-8/pt_BR.UTF-8 UTF-8/' /etc/locale.gen && \
   locale-gen && \
